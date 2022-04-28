@@ -1,0 +1,17 @@
+Grafika
+/Content/Sprites/Postavy - tvorba pøítelkynì - https://www.behance.net/domkadiva
+Veškerá ostatní grafika je vlastní tvorba
+Zvuky
+/Content/Sound/click - Licence: CC0 1.0 - https://freesound.org/people/JonnyRuss01/sounds/478197/
+/Content/Sound/ledove_kopi - Licence: CC0 1.0 - https://freesound.org/people/qubodup/sounds/442872/
+/Content/Sound/fireball - Licence: CC BY 4.0 - https://freesound.org/people/LiamG_SFX/sounds/334234/
+/Content/Sound/luk_natah - Licence: CC BY-NC 4.0 - https://freesound.org/people/LiamG_SFX/sounds/322215/
+/Content/Sound/netrefil_sip - Licence: CC BY 3.0 - https://freesound.org/people/smcameron/sounds/50772/
+/Content/Sound/zasah - Licence: CC0 1.0 - https://freesound.org/people/Kreastricon62/sounds/323526/
+/Content/Sound/battlecry - Licence: CC BY-NC 3.0 - https://freesound.org/people/Akrythael/sounds/334915/
+/Content/Sound/regen - Licence: CC BY 3.0 - https://freesound.org/people/jtn191/sounds/514273/
+Hudba
+/Content/Music/intromusic - Licence: CC BY 4.0 - https://www.free-stock-music.com/alexander-nakarada-medieval-loop-one.html
+/Content/Music/mapmusic - Licence: CC BY 4.0 - https://www.free-stock-music.com/alexander-nakarada-tavern-loop-one.html 
+/Content/Music/battlemusic - Licence: CC BY 4.0 - https://www.free-stock-music.com/alexander-nakarada-battle-of-the-creek.html
+/Content/Music/createmusic - Licence: CC BY 3.0 - https://www.free-stock-music.com/alex-productions-medieval-and-celtic-music-lands.html
