@@ -1,29 +1,29 @@
-Zaèarovanı les
+ZaÄarovanÃ½ les
 
-Ovládání
-F5 - Uloení hry (funkèní pouze pøi pohybu na mapì)
-F9 - Naètení hry (funkèní v kadé fázi hry)
-Kurzorové šipky - Pohyb po mapì
-Myš - LTM na tlaèítka
+OvlÃ¡dÃ¡nÃ­
+F5 - UloÅ¾enÃ­ hry (funkÄnÃ­ pouze pÅ™i pohybu na mapÄ›)
+F9 - NaÄtenÃ­ hry (funkÄnÃ­ v kaÅ¾dÃ© fÃ¡zi hry)
+KurzorovÃ© Å¡ipky - Pohyb po mapÄ›
+MyÅ¡ - LTM na tlaÄÃ­tka
 
 Mapy
-Pro hru se dají vytváøet vlastní mapy, staèí vloit soubor do sloky Maps ve tvaru mapa(x).csv (bez závorek, kde x je èíslo mapy)
-Pøi spuštìní nové hry si hra automaticky projde mapy od mapa1 po mapax. Pøi ukládání hry se data mapy ukládají take i kdy mapy ve sloce zmìníme hra bude vycházet z naètenıch dat.
+Pro hru se dajÃ­ vytvÃ¡Å™et vlastnÃ­ mapy, staÄÃ­ vloÅ¾it soubor do sloÅ¾ky Maps ve tvaru mapa(x).csv (bez zÃ¡vorek, kde x je ÄÃ­slo mapy)
+PÅ™i spuÅ¡tÄ›nÃ­ novÃ© hry si hra automaticky projde mapy od mapa1 po mapax. PÅ™i uklÃ¡dÃ¡nÃ­ hry se data mapy uklÃ¡dajÃ­ takÅ¾e i kdyÅ¾ mapy ve sloÅ¾ce zmÄ›nÃ­me hra bude vychÃ¡zet z naÄtenÃ½ch dat.
 
-Herní mapy mají velikost 12x12 políèek.
-jednotlivá políèka oddìlíme støedníkem a nebo novım øádkem pokud u jsme u 12. políèka øádku
-Kadá mapa by mìla obsahovat poèáteèní pozici hráèe. Hra zaèíná na první mapì (mapa1.csv)
+HernÃ­ mapy majÃ­ velikost 12x12 polÃ­Äek.
+jednotlivÃ¡ polÃ­Äka oddÄ›lÃ­me stÅ™ednÃ­kem a nebo novÃ½m Å™Ã¡dkem pokud uÅ¾ jsme u 12. polÃ­Äka Å™Ã¡dku
+KaÅ¾dÃ¡ mapa by mÄ›la obsahovat poÄÃ¡teÄnÃ­ pozici hrÃ¡Äe. Hra zaÄÃ­nÃ¡ na prvnÃ­ mapÄ› (mapa1.csv)
 
-0 = nic (tráva)
-1 = kámen (pevnı objekt)
-2 = strom (pevnı objekt)
-3 = hráè (poèáteèní pozice hráèe na dané mapì)
-4 = dveøe do další mapy (mapa(x+1).csv)
-5 = dveøe do pøedchozí mapy (mapa(x-1).csv)
-6 = jednoduchı soupeø
-7 = støednì tìkı soupeø
-8 = tìkı soupeø
-9 = lahvièka zdraví
-10 = lahvièka mana
-11 = dveøe konec hry (poslední dveøe, které ukonèí hru)
+0 = nic (trÃ¡va)
+1 = kÃ¡men (pevnÃ½ objekt)
+2 = strom (pevnÃ½ objekt)
+3 = hrÃ¡Ä (poÄÃ¡teÄnÃ­ pozice hrÃ¡Äe na danÃ© mapÄ›)
+4 = dveÅ™e do dalÅ¡Ã­ mapy (mapa(x+1).csv)
+5 = dveÅ™e do pÅ™edchozÃ­ mapy (mapa(x-1).csv)
+6 = jednoduchÃ½ soupeÅ™
+7 = stÅ™ednÄ› tÄ›Å¾kÃ½ soupeÅ™
+8 = tÄ›Å¾kÃ½ soupeÅ™
+9 = lahviÄka zdravÃ­
+10 = lahviÄka mana
+11 = dveÅ™e konec hry (poslednÃ­ dveÅ™e, kterÃ© ukonÄÃ­ hru)
 
