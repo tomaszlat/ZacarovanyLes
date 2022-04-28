@@ -7,7 +7,7 @@ Kurzorové šipky - Pohyb po mapì
 Myš - LTM na tlaèítka
 
 Mapy
-Pro hru se dají vytváøet vlastní mapy, staèí vloit soubor do sloky mapy ve tvaru mapa(x).csv (bez závorek, kde x je èíslo mapy)
+Pro hru se dají vytváøet vlastní mapy, staèí vloit soubor do sloky Maps ve tvaru mapa(x).csv (bez závorek, kde x je èíslo mapy)
 Pøi spuštìní nové hry si hra automaticky projde mapy od mapa1 po mapax. Pøi ukládání hry se data mapy ukládají take i kdy mapy ve sloce zmìníme hra bude vycházet z naètenıch dat.
 
 Herní mapy mají velikost 12x12 políèek.
