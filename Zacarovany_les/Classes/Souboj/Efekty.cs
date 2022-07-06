@@ -13,6 +13,11 @@ namespace Zacarovany_les.Classes
         public int Horeni { get; set; } = 0;
         public int Mraz { get; set; } = 0;
         public int Pokrik { get; set; } = 0;
+        public int Soustredeni { get; set; } = 0;
+        public int Rychlost { get; set; } = 0;
+        public int Krvaceni { get; set; } = 0;
+        public int Omraceni { get; set; } = 0;
+        public int Jed { get; set; } = 0;
 
         public int PuvodniIntelekt { get; set; }
         public int PuvodniObratnost { get; set; }
@@ -39,6 +44,14 @@ namespace Zacarovany_les.Classes
                 {
                     Postava.Sila = PuvodniSila;
                 }
+            Horeni = 0;
+            Mraz = 0;
+            Pokrik = 0;
+            Soustredeni = 0;
+            Rychlost = 0;
+            Krvaceni = 0;
+            Omraceni = 0;
+            Jed = 0;
         }
         public void AktivujMraz()
         {
@@ -61,14 +74,6 @@ namespace Zacarovany_les.Classes
 
         public void ZhodnotEfekty()
         {
-            if (Pokrik > 0)
-            {
-                Pokrik--;
-            }
-            if (Horeni > 0)
-            {
-                Horeni--;
-            }
             if (Mraz == 1)
             {
                 if (Postava.Inteligence != PuvodniIntelekt)
@@ -85,22 +90,39 @@ namespace Zacarovany_les.Classes
                 }
                 Mraz--;
             }
+            if (Pokrik > 0)
+            {
+                Pokrik--;
+            }
+            if (Soustredeni > 0)
+            {
+                Soustredeni--;
+            }
+            if (Rychlost > 0)
+            {
+                Rychlost--;
+            }
+            if (Krvaceni > 0)
+            {
+                Krvaceni--;
+            }
+            if (Omraceni > 0)
+            {
+                Omraceni--;
+            }
+            if (Horeni > 0)
+            {
+                Horeni--;
+            }
+            if (Jed > 0)
+            {
+                Jed--;
+            }
             if (Mraz > 1)
             {
-                if (Postava.Inteligence == PuvodniIntelekt)
-                {
-                    Postava.Inteligence = (int)Math.Round(Postava.Inteligence - Postava.Inteligence / 5.0);
-                }
-                if (Postava.Obratnost == PuvodniObratnost)
-                {
-                    Postava.Obratnost = (int)Math.Round(Postava.Obratnost - Postava.Obratnost / 5.0);
-                }
-                if (Postava.Sila == PuvodniSila)
-                {
-                    Postava.Sila = (int)Math.Round(Postava.Sila - Postava.Sila / 5.0);
-                }
                 Mraz--;
             }
+            
         }
     }
 }

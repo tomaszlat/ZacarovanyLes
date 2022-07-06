@@ -15,6 +15,7 @@ namespace Zacarovany_les.Classes.Interface
         public bool _isMouseOver;
 
         public event EventHandler Click;
+        public event EventHandler RightClick;
         public bool Clicked { get; private set; }
         public Color FontColor { get; set; } = Color.Black;
         public Vector2 Position { get; set; }
@@ -134,6 +135,10 @@ namespace Zacarovany_les.Classes.Interface
                     if (Clicable && _currentState.LeftButton == ButtonState.Released && _previousState.LeftButton == ButtonState.Pressed )
                     {
                         Click?.Invoke(this, new EventArgs());
+                    }
+                    if (Clicable && _currentState.RightButton == ButtonState.Released && _previousState.RightButton == ButtonState.Pressed)
+                    {
+                        RightClick?.Invoke(this, new EventArgs());
                     }
                 }
             }

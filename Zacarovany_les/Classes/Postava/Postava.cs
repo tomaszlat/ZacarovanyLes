@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -34,6 +35,7 @@ namespace Zacarovany_les.Classes
             bw.Write(Inventar.LahvickyZdravi);
             bw.Write(Inventar.LahvickyMany);
             bw.Write(Level);
+            bw.Write(Zkusenosti);
             bw.Write(Name);
         }
          public static Postava Read(BinaryReader br)
@@ -44,15 +46,18 @@ namespace Zacarovany_les.Classes
             int lz = br.ReadInt32();
             int lm = br.ReadInt32();
             int lvl = br.ReadInt32();
+            int zk = br.ReadInt32();
             string name = br.ReadString();
-            return new Postava(tr, po, mi, new Inventar(lz,lm),Majitel.Hrac, lvl, name);
+            Postava pos = new Postava(tr, po, mi, new Inventar(lz, lm), Majitel.Hrac, lvl, name);
+            pos.Zkusenosti = zk;
+            return pos;
         }
         public int ObdrzPoskozeni(int poskozeni, bool magicke)
         {
             int realne;
             if (magicke)
             {
-                realne = Math.Max(0, poskozeni - Brneni / 2);
+                realne = (int)Math.Round(Math.Max(0, poskozeni - Brneni / 2.0));
             }
             else
             {
@@ -89,14 +94,12 @@ namespace Zacarovany_les.Classes
             switch (druh)
             {
                 case Druh.Lahvicka_Zdravi:
-                    PridejNeboUberZdravi(100);
                     return 100;
                 case Druh.Lahvicka_Many:
-                    PridejNeboUberManu(100);
                     return 100;
                 default:
                     Schopnost sch = VratSchopnost(druh);
-                    return sch != null ? sch.Pouzij(Sila, Obratnost, Inteligence) : 0;
+                    return sch != null ? sch.Pouzij(this,true) : 0;
 
             }
         }
@@ -169,14 +172,16 @@ namespace Zacarovany_les.Classes
                         Inteligence++;
                         break;
                     case Trida.Lucistnik:
-                        Sila ++;
+                        Sila++;
                         Obratnost+=2;
                         Inteligence++;
                         break;
                     case Trida.Kouzelnik:
                         Sila++;
-                        Obratnost ++;
+                        Obratnost++;
                         Inteligence+=2;
+                        break;
+                    default:
                         break;
                 }
             }
@@ -199,52 +204,58 @@ namespace Zacarovany_les.Classes
             switch (trida)
             {
                 case Trida.Bojovnik:
+                    Sila = 5 + (level - 1) * 2;
+                    Obratnost = 5 + (level - 1) * 1;
+                    Inteligence = 5 + (level - 1) * 1;
                     Sila += 3;
                     Obratnost -= 1;
                     Inteligence -= 2;
                     Brneni += 2;
-                    Sila = 5 + (level - 1) * 2;
-                    Obratnost = 5 + (level - 1) * 1;
-                    Inteligence = 5 + (level - 1) * 1;
-                    Schopnosti.Add(new Schopnost(Druh.Utok_Mecem, 0, 0, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Obrana_Stitem, 3, 0, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Bojovy_Pokrik, 2, 0, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Regenerace, 2, 0, 20));
+                    Schopnosti.Add(new Schopnost(Druh.Utok_Mecem, 0, 0, 0,false));
+                    Schopnosti.Add(new Schopnost(Druh.Obrana_Stitem, 3, 0, 0,false));
+                    Schopnosti.Add(new Schopnost(Druh.Bojovy_Pokrik, 2, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Regenerace, 2, 0, 20,true));
+                    Schopnosti.Add(new Schopnost(Druh.Uder_stitem, 5, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Vrh_sekerou, 3, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Berserk, 2, 0, 0, false));
                     break;
                 case Trida.Lucistnik:
+                    Sila = 5 + (level - 1) * 1;
+                    Obratnost = 5 + (level - 1) * 2;
+                    Inteligence = 5 + (level - 1) * 1;
                     Obratnost += 3;
                     Sila -= 1;
                     Inteligence -= 1;
                     Brneni += 1;
-                    Sila = 5 + (level - 1) * 1;
-                    Obratnost = 5 + (level - 1) * 2;
-                    Inteligence = 5 + (level - 1) * 1;
-                    Schopnosti.Add(new Schopnost(Druh.Bodnuti_Dykou, 0, 0, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Uskok, 3, 0, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Strelba_Lukem, 0, 1, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Magicky_sip, 0, 1, 20));
+                    Schopnosti.Add(new Schopnost(Druh.Bodnuti_Dykou, 0, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Uskok, 3, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Strelba_Lukem, 0, 1, 0,false));
+                    Schopnosti.Add(new Schopnost(Druh.Magicky_sip, 0, 1, 20,true));
+                    Schopnosti.Add(new Schopnost(Druh.Rychlost, 6, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Lesni_bobule, 4, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Jedova_sipka, 3, 0, 0, false));
                     break;
                 case Trida.Kouzelnik:
+                    Sila = 5 + (level - 1) * 1;
+                    Obratnost = 5 + (level - 1) * 1;
+                    Inteligence = 5 + (level - 1) * 2;
                     Inteligence += 3;
                     ManaMax += 80;
                     Sila -= 2;
                     Obratnost -= 1;
                     Brneni = 0;
-                    Sila = 5 + (level - 1) * 1;
-                    Obratnost = 5 + (level - 1) * 1;
-                    Inteligence = 5 + (level - 1) * 2;
-                    Schopnosti.Add(new Schopnost(Druh.Uder_Holi, 0, 0, 0));
-                    Schopnosti.Add(new Schopnost(Druh.Magicky_Stit, 3, 0, 10));
-                    Schopnosti.Add(new Schopnost(Druh.Ohniva_Koule, 0, 0, 20));
-                    Schopnosti.Add(new Schopnost(Druh.Ledove_Kopi, 0, 0, 20));
+                    Schopnosti.Add(new Schopnost(Druh.Uder_Holi, 0, 0, 0, false));
+                    Schopnosti.Add(new Schopnost(Druh.Magicky_Stit, 3, 0, 10, true));
+                    Schopnosti.Add(new Schopnost(Druh.Ohniva_Koule, 0, 0, 20, true));
+                    Schopnosti.Add(new Schopnost(Druh.Ledove_Kopi, 0, 0, 20, true));
+                    Schopnosti.Add(new Schopnost(Druh.Vysati_zivota, 3, 0, 10, true));
+                    Schopnosti.Add(new Schopnost(Druh.Vysati_many, 4, 0, 10,true));
+                    Schopnosti.Add(new Schopnost(Druh.Magicke_soustredeni, 5, 0, 0, true));
                     break;
             }
-            if (majitel == Majitel.Hrac)
-            {
-                //Schopnosti.Add(new Schopnost(Druh.Utek, 2, 0, 0));
-                Schopnosti.Add(new Schopnost(Druh.Lahvicka_Many, 0, 0, 0));
-                Schopnosti.Add(new Schopnost(Druh.Lahvicka_Zdravi, 0, 0, 0));
-            }
+                Schopnosti.Add(new Schopnost(Druh.Lahvicka_Many, 0, 0, 0, false));
+                Schopnosti.Add(new Schopnost(Druh.Lahvicka_Zdravi, 0, 0, 0, false));
+
             switch (Pohlavi)
             {
                 case Pohlavi.Zena:

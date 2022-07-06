@@ -27,6 +27,7 @@ namespace Zacarovany_les
         private Texture2D intro;
         private Texture2D pozadi;
         private Texture2D buttonNovaHra;
+        private Texture2D button1v1Texture;
         private Texture2D buttonKonec;
         private Texture2D dvere;
         private Texture2D enemyLehky;
@@ -43,6 +44,7 @@ namespace Zacarovany_les
         private Texture2D trava;
         //Buttons
         Button buttonNewGame;
+        Button button1v1;
         Button buttonEndGame;
         public MenuState(ZacarovanyLes game, ContentManager content) : base(game, content)
         {
@@ -59,6 +61,7 @@ namespace Zacarovany_les
             intro = _content.Load<Texture2D>("Sprites\\GUI\\intro");
             pozadi = _content.Load<Texture2D>("Sprites\\GUI\\hlavni_menu");
             buttonNovaHra = _content.Load<Texture2D>("Sprites\\GUI\\nova_hra");
+            button1v1Texture = _content.Load<Texture2D>("Sprites\\GUI\\1_v_1");
             buttonKonec = _content.Load<Texture2D>("Sprites\\GUI\\konec");
             dvere = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\dvere");
             enemyLehky = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_lehky");
@@ -77,7 +80,10 @@ namespace Zacarovany_les
             buttonNewGame = new Button(fontText, new Vector2(275, 200),buttonNovaHra,250,75,Color.White);
             buttonNewGame.Animated = false;
             buttonNewGame.Click += ButtonNewGameClickedHandler;
-            buttonEndGame = new Button(fontText, new Vector2(275, 300), buttonKonec, 250, 75, Color.White);
+            button1v1 = new Button(fontText, new Vector2(275, 300), button1v1Texture, 250, 75, Color.White);
+            button1v1.Animated = false;
+            button1v1.Click += Button1v1ClickedHandler;
+            buttonEndGame = new Button(fontText, new Vector2(275, 400), buttonKonec, 250, 75, Color.White);
             buttonEndGame.Animated = false;
             buttonEndGame.Click += ButtonEndGameClickedHandler;
         }
@@ -92,6 +98,7 @@ namespace Zacarovany_les
             if(!isIntro)
             {
                 buttonNewGame.Update(gameTime);
+                button1v1.Update(gameTime);
                 buttonEndGame.Update(gameTime);
             }
 
@@ -133,6 +140,7 @@ namespace Zacarovany_les
             {
                 spriteBatch.Draw(pozadi, new Rectangle(0, 0, 800, 600), Color.White);
                 buttonNewGame.Draw(gameTime,spriteBatch);
+                button1v1.Draw(gameTime, spriteBatch);
                 buttonEndGame.Draw(gameTime, spriteBatch);
 
             }
@@ -144,7 +152,7 @@ namespace Zacarovany_les
             ZacarovanyLes.gameState = null;
             ZacarovanyLes.mapState = null;
             int cislomapy = 1;
-            string mapa = "..\\..\\..\\Maps\\mapa";
+            string mapa = "Maps\\mapa";
             List<Map> maps = new List<Map>();
             while (File.Exists(mapa + cislomapy + ".csv"))
             {
@@ -229,6 +237,12 @@ namespace Zacarovany_les
 
             _game.ChangeState(new CreateCharacterState(_game, _content));
         }
+        private void Button1v1ClickedHandler(object sender, EventArgs args)
+        {
+            click.Play();
+            _game.ChangeState(new CreateCharactersState(_game, _content));
+        }
+
         private void ButtonEndGameClickedHandler(object sender, EventArgs args)
         {
             click.Play();

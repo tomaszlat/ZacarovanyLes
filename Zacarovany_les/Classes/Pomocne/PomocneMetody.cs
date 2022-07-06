@@ -46,6 +46,12 @@ namespace Zacarovany_les.Classes.Pomocne
                     return "Bojový pokřik";
                 case Druh.Regenerace:
                     return "Regenerace";
+                case Druh.Uder_stitem:
+                    return "Úder štítem";
+                case Druh.Vrh_sekerou:
+                    return "Vrh sekerou";
+                case Druh.Berserk:
+                    return "Berserk";
                 case Druh.Bodnuti_Dykou:
                     return "Bodnutí dýkou";
                 case Druh.Strelba_Lukem:
@@ -54,6 +60,12 @@ namespace Zacarovany_les.Classes.Pomocne
                     return "Magický šíp";
                 case Druh.Uskok:
                     return "Úskok";
+                case Druh.Rychlost:
+                    return "Rychlost";
+                case Druh.Lesni_bobule:
+                    return "Lesní bobule";
+                case Druh.Jedova_sipka:
+                    return "Jedová šipka";
                 case Druh.Uder_Holi:
                     return "Úder Holí";
                 case Druh.Ledove_Kopi:
@@ -62,6 +74,12 @@ namespace Zacarovany_les.Classes.Pomocne
                     return "Magický šťít";
                 case Druh.Ohniva_Koule:
                     return "Ohnivá koule";
+                case Druh.Vysati_zivota:
+                    return "Vysátí života";
+                case Druh.Vysati_many:
+                    return "Vysátí many";
+                case Druh.Magicke_soustredeni:
+                    return "Magické soustředění";
                 case Druh.Lahvicka_Many:
                     return "Lahvička many";
                 case Druh.Lahvicka_Zdravi:
@@ -71,7 +89,6 @@ namespace Zacarovany_les.Classes.Pomocne
                 case Druh.Zadna:
                 default:
                     return "";
-
             }
         }
 
@@ -84,70 +101,77 @@ namespace Zacarovany_les.Classes.Pomocne
             }
             return "";
         }
-        
-        public static void NastavButton(Button butt,Schopnost sch, Postava pos, int x, int y, int width, int height, SpriteFont font, Texture2D texture, Color buttonCol, Color textCol)
+
+        public static Pohlavi StringToPohlavi(string pohlavi)
         {
-            string text = "";
+            switch (pohlavi)
+            {
+                case "Muž": return Pohlavi.Muz;
+                case "Žena": return Pohlavi.Zena;
+                default: return Pohlavi.Muz;
+            }
+        }
+
+        public static Majitel StringToMajitel(string majitel)
+        {
+            switch (majitel)
+            {
+                case "Hráč": return Majitel.Hrac;
+                case "AI": return Majitel.Pocitac_Tezky;
+                default: return Majitel.Hrac;
+            }
+        }
+        public static Minulost StringToMinulost(string minulost)
+        {
+            switch (minulost)
+            {
+                case "Rytíř": return Minulost.Rytir;
+                case "Lovec": return Minulost.Lovec;
+                case "Čaroděj": return Minulost.Carodej;
+                default: return Minulost.Rytir;
+            }
+        }
+
+        public static Trida StringToTrida(string trida)
+        {
+            switch (trida)
+            {
+                case "Válečník": return Trida.Bojovnik;
+                case "Lučištník": return Trida.Lucistnik;
+                case "Kouzelník": return Trida.Kouzelnik;
+                default: return Trida.Bojovnik;
+            }
+        }
+
+        public static void NastavButton(Efekty efekty, Button butt, Schopnost sch, Postava pos, int x, int y, int width, int height, SpriteFont font, Texture2D texture, Color buttonCol, Color textCol)
+        {
+            string text = SchopnostToString(sch.Druh);
             switch (sch.Druh)
             {
-                case Druh.Bodnuti_Dykou:
-                    text = "Bodnutí dýkou";
-                    break;
-                case Druh.Bojovy_Pokrik:
-                    text = "Bojový pokřik";
-                    break;
                 case Druh.Lahvicka_Many:
-                    text = "Lahvička many [" + pos.Inventar.LahvickyMany + "]";
+                    text += " [" + pos.Inventar.LahvickyMany + "]";
                     break;
                 case Druh.Lahvicka_Zdravi:
-                    text = "Lahvička zdraví [" + pos.Inventar.LahvickyZdravi + "]";
-                    break;
-                case Druh.Ledove_Kopi:
-                    text = "Ledové kopí [" + sch.CenaMany + "]";
-                    break;
-                case Druh.Magicky_sip:
-                    text = "Magický šíp [" + sch.CenaMany + "]";
-                    break;
-                case Druh.Magicky_Stit:
-                    text = "Magický štít [" + sch.CenaMany + "]";
-                    break;
-                case Druh.Obrana_Stitem:
-                    text = "Obrana štítem";
-                    break;
-                case Druh.Ohniva_Koule:
-                    text = "Ohnivá koule [" + sch.CenaMany + "]";
-                    break;
-                case Druh.Regenerace:
-                    text = "Regenerace [" + sch.CenaMany + "]";
-                    break;
-                case Druh.Strelba_Lukem:
-                    text = "Střelba lukem";
-                    break;
-                case Druh.Uder_Holi:
-                    text = "Úder holí";
-                    break;
-                case Druh.Uskok:
-                    text = "Úskok";
-                    break;
-                case Druh.Utek:
-                    text = "Útěk";
-                    break;
-                case Druh.Utok_Mecem:
-                    text = "Útok mečem";
+                    text += " [" + pos.Inventar.LahvickyZdravi + "]";
                     break;
                 default:
-                    text = "";
+                    if (sch.CenaMany > 0)
+                    {
+                        text += " [" + (efekty.Soustredeni > 0 ? sch.CenaMany / 2 : sch.CenaMany) + "]";
+                    }
                     break;
             }
             butt.Position = new Vector2(x, y);
             butt.Texture = texture;
+            butt.Color1 = buttonCol;
+            butt.FontColor = textCol;
             butt.Text = text;
             butt.Druh = sch.Druh;
             if (sch.Cd > 0)
             {
                 butt.Text += " (" + sch.Cd + ")";
             }
-            if (sch.Cd > 0 || sch.CenaMany > pos.Mana)
+            if (sch.Cd > 0 ||  (sch.CenaMany > pos.Mana && efekty.Soustredeni==0) || (sch.CenaMany/2 > pos.Mana && efekty.Soustredeni > 0))
             {
                 butt.Clicable = false;
             }

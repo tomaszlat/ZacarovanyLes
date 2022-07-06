@@ -429,6 +429,12 @@ namespace Zacarovany_les
                 ZacarovanyLes.keyDelay = ZacarovanyLes.DELAY_TIME;
                 UkladaniNacitani.Uloz();
             }
+            if (ZacarovanyLes.newState.IsKeyDown(Keys.OemPlus) && (!ZacarovanyLes.keyDelayed || ZacarovanyLes.oldState.IsKeyUp(Keys.OemPlus)) && !vyhra)
+            {
+                ZacarovanyLes.keyDelayed = true;
+                ZacarovanyLes.keyDelay = ZacarovanyLes.DELAY_TIME;
+                ZacarovanyLes.utocnik.PridejZkusenosti(50);
+            }
         }
         public override void PostUpdate(GameTime gameTime)
         {

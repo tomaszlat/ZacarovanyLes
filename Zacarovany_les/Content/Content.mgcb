@@ -99,6 +99,18 @@
 /processorParam:Quality=Best
 /build:Sound/zasah.wav
 
+#begin Sprites/GUI/1 v 1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/GUI/1 v 1.png;Sprites/GUI/1_v_1.png
+
 #begin Sprites/GUI/hlavni_menu.bmp
 /importer:TextureImporter
 /processor:TextureProcessor
