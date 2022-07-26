@@ -26,6 +26,7 @@ namespace Zacarovany_les
         private string messagePrvni = "";
         private string messageDruhy = "";
         private bool zacatek = true;
+        private bool oznaceniUtocnik = true;
         //Zvuky
         SoundEffect fireball;
         SoundEffect frostbolt;
@@ -218,6 +219,8 @@ namespace Zacarovany_les
                         messageDruhy = "";
                         if (souboj.Utocnik.Zivoty <= 0)
                         {
+                            oznaceniUtocnik = false;
+                            messageKolo = souboj.PocetKol + ". kolo, " + souboj.Obrance.Name + " zvítěžil";
                             messagePrvni = souboj.Utocnik.Name + " byl poražen";
                             messageDruhy = souboj.Obrance.Name + " zvítězil !";
                             faze = Faze.VyhraObrance;
@@ -226,6 +229,8 @@ namespace Zacarovany_les
                         }
                         else
                         {
+                            oznaceniUtocnik = true;
+                            messageKolo = souboj.PocetKol + ". kolo, " + souboj.Utocnik.Name + " zvítěžil";
                             messagePrvni = souboj.Obrance.Name + " byl poražen";
                             messageDruhy = souboj.Utocnik.Name + " zvítězil !";
                             faze = Faze.VyhraUtocnik;
@@ -278,7 +283,8 @@ namespace Zacarovany_les
                 case Faze.EfektyPrvni:
                     if (!ZacarovanyLes.delayed)
                     {
-
+                        oznaceniUtocnik = hrajici == souboj.Utocnik ? true : false;
+                        messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + hrajici.Name;
                         Efekty efektyHrajici = hrajici == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
                         messagePrvni = "";
@@ -338,6 +344,8 @@ namespace Zacarovany_les
                 case Faze.EfektyDruhy:
                     if (!ZacarovanyLes.delayed)
                     {
+                        oznaceniUtocnik = souper == souboj.Utocnik ? true : false;
+                        messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + souper.Name;
                         Efekty efektySouper = souper == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
                         if (souper == souboj.Obrance)
@@ -428,6 +436,7 @@ namespace Zacarovany_les
                         messagePrvni = "";
                         messageDruhy = "";
                         messageKolo = souboj.PocetKol + ". kolo, začíná ho " + hrajici.Name;
+                        oznaceniUtocnik = hrajici == souboj.Utocnik ? true : false;
                         faze = Faze.Zacatek;
                     }
                     break;
@@ -467,6 +476,8 @@ namespace Zacarovany_les
                     break;
                 case Faze.VyberDruhy:
                     messageDruhy = souper.Name + " vybírá schopnost";
+                    messageKolo = souboj.PocetKol + ". kolo, nyní hraje " + souper.Name;
+                    oznaceniUtocnik = souper == souboj.Utocnik ? true : false;
                     if (!ZacarovanyLes.delayed)
                     {
                         if (souper.Majitel == Majitel.Hrac && vybranaSouper != null)
@@ -490,6 +501,8 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.UtokPrvni:
+                    oznaceniUtocnik = hrajici == souboj.Utocnik ? true : false;
+                    messageKolo = souboj.PocetKol + ". kolo, " + hrajici.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
                         Efekty efektyHrajici = hrajici == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
@@ -755,6 +768,8 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.UtokDruhy:
+                    oznaceniUtocnik = souper == souboj.Utocnik ? true : false;
+                    messageKolo = souboj.PocetKol + ". kolo, " + souper.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
                         Efekty efektySouper = souper == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
@@ -1194,11 +1209,21 @@ namespace Zacarovany_les
             obrancePortret = DejPortret(souboj.Obrance.Pohlavi, souboj.Obrance.Trida);
             spriteBatch.Begin();
             //sprites
-            spriteBatch.Draw(panel, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(plocha, new Vector2(200, 0), Color.White);
-            spriteBatch.Draw(panel, new Vector2(600, 0), Color.White);
-            spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.White);
-            spriteBatch.Draw(obrancePortret, new Rectangle(605, 37, 190, 190), Color.White);
+            if (oznaceniUtocnik)
+            {
+                spriteBatch.Draw(panel, new Vector2(0, 0), Color.White);
+                spriteBatch.Draw(panel, new Vector2(600, 0), Color.LightGray);
+                spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.White);
+                spriteBatch.Draw(obrancePortret, new Rectangle(605, 37, 190, 190), Color.LightGray);
+            }
+            else
+            {
+                spriteBatch.Draw(panel, new Vector2(0, 0), Color.LightGray);
+                spriteBatch.Draw(panel, new Vector2(600, 0), Color.White);
+                spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.LightGray);
+                spriteBatch.Draw(obrancePortret, new Rectangle(605, 37, 190, 190), Color.White);
+            }
             //text
             //portret
             delkaU = fontNadpis.MeasureString(souboj.Utocnik.Name);
@@ -1760,8 +1785,8 @@ namespace Zacarovany_les
                                     }
                                 }
                             }
-                            if (souper.Brneni > 1 || (vybranaSouper!=null && (vybranaSouper.Druh == Druh.Magicky_sip || vybranaSouper.Druh == Druh.Strelba_Lukem) && vybranaSouper.Faze > 0) ||
-                                (vybranaSouper!=null&&(vybranaSouper.Druh == Druh.Magicky_sip || vybranaSouper.Druh == Druh.Strelba_Lukem) && vybranaSouper.Faze == 0 && hrajici == pocitac))
+                            if (souper.Brneni > 1 || (vybranaSouper != null && (vybranaSouper.Druh == Druh.Magicky_sip || vybranaSouper.Druh == Druh.Strelba_Lukem) && vybranaSouper.Faze > 0) ||
+                                (vybranaSouper != null && (vybranaSouper.Druh == Druh.Magicky_sip || vybranaSouper.Druh == Druh.Strelba_Lukem) && vybranaSouper.Faze == 0 && hrajici == pocitac))
                             {
                                 if (efektySouper.Mraz == 0)
                                 {

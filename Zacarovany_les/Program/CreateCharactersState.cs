@@ -375,8 +375,8 @@ namespace Zacarovany_les
         private void buttonBojHandler(object sender, EventArgs args)
         {
             click.Play();
-            ZacarovanyLes.utocnik = new Postava(PomocneMetody.StringToTrida(buttonHrac1Trida.Text), PomocneMetody.StringToPohlavi(buttonHrac1Pohlavi.Text), PomocneMetody.StringToMinulost(buttonHrac1Minulost.Text), new Inventar(1, 1), PomocneMetody.StringToMajitel(buttonHrac1Majitel.Text), int.Parse(buttonLevel.Text), "Útočník");
-            ZacarovanyLes.obrance = new Postava(PomocneMetody.StringToTrida(buttonHrac2Trida.Text), PomocneMetody.StringToPohlavi(buttonHrac2Pohlavi.Text), PomocneMetody.StringToMinulost(buttonHrac2Minulost.Text), new Inventar(1, 1), PomocneMetody.StringToMajitel(buttonHrac2Majitel.Text), int.Parse(buttonLevel.Text), "Obránce");
+            ZacarovanyLes.utocnik = new Postava(PomocneMetody.StringToTrida(buttonHrac1Trida.Text), PomocneMetody.StringToPohlavi(buttonHrac1Pohlavi.Text), PomocneMetody.StringToMinulost(buttonHrac1Minulost.Text), new Inventar(1, 1), PomocneMetody.StringToMajitel(buttonHrac1Majitel.Text), int.Parse(buttonLevel.Text), Generator.DejJmeno(PomocneMetody.StringToPohlavi(buttonHrac1Pohlavi.Text)));
+            ZacarovanyLes.obrance = new Postava(PomocneMetody.StringToTrida(buttonHrac2Trida.Text), PomocneMetody.StringToPohlavi(buttonHrac2Pohlavi.Text), PomocneMetody.StringToMinulost(buttonHrac2Minulost.Text), new Inventar(1, 1), PomocneMetody.StringToMajitel(buttonHrac2Majitel.Text), int.Parse(buttonLevel.Text), Generator.DejJmeno(PomocneMetody.StringToPohlavi(buttonHrac2Pohlavi.Text)));
             ZacarovanyLes.gameState = new GameState(_game, _content);
             _game.ChangeState(ZacarovanyLes.gameState);
         }

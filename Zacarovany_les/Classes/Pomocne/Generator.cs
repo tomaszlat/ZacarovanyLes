@@ -32,18 +32,25 @@ namespace Zacarovany_les.Classes
             Pohlavi pohl = (Pohlavi)random;
             random = rand.Next(0, 3);
             Minulost min = (Minulost)random;
-            random = rand.Next(0, 15);
-            string[] namesMale = { "Ashwar", "Dyncheo", "Raknath", "Ornest", "Rynath", "Areck", "Achis", "Ightmir", "Caedric", "Yole", "Karel", "Václav", "Vladimír", "Bořivoj", "Boleslav" };
-            string[] namesFemale = { "Nadya", "Daithine", "Olena", "Eloria", "Kossia", "Raia", "Xirenia", "Galaka", "Madia", "Alada", "Anežka", "Vladimíra", "Alada", "Iowyn", "Lydia" };
+
             if (pohl == Pohlavi.Muz)
             {
-                return new Postava(trida, pohl, min, new Inventar(1, 1), maj, level, namesMale[random]);
+                return new Postava(trida, pohl, min, new Inventar(1, 1), maj, level, DejJmeno(Pohlavi.Muz));
             }
             else
             {
-                return new Postava(trida, pohl, min, new Inventar(1, 1), maj, level, namesFemale[random]);
+                return new Postava(trida, pohl, min, new Inventar(1, 1), maj, level, DejJmeno(Pohlavi.Zena));
             }
-            
+
+        }
+        public static string DejJmeno(Pohlavi pohlavi)
+        {
+            Random rand = new Random();
+            string[] namesMale = { "Ashwar", "Dyncheo", "Raknath", "Ornest", "Rynath", "Areck", "Achis", "Ightmir", "Caedric", "Yole",
+                "Karel", "Václav", "Vladimír", "Bořivoj", "Boleslav","Tomáš" };
+            string[] namesFemale = { "Nadya", "Daithine", "Olena", "Eloria", "Kossia", "Raia", "Xirenia", "Galaka", "Madia", "Alada",
+                "Anežka", "Vladimíra", "Alada", "Iowyn", "Lydia","Domka" };
+            return pohlavi == Pohlavi.Muz ? namesMale[rand.Next(namesMale.Length)] : namesFemale[rand.Next(namesFemale.Length)];
         }
     }
 }

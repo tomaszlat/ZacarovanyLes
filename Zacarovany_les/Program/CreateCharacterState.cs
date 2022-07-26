@@ -156,7 +156,7 @@ namespace Zacarovany_les
                     }
                     break;
                 case Otazky.CTVRTA:
-                    jmeno = "Hráč";
+                    jmeno = Generator.DejJmeno(pohlavi);
                     ZacarovanyLes.utocnik = new Postava(trida, pohlavi, minulost, new Inventar(1, 1), Majitel.Hrac, 1, jmeno);
                     ZacarovanyLes.mapState = new MapState(_game, _content);
                     _game.ChangeState(ZacarovanyLes.mapState);
