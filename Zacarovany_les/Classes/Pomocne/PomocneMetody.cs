@@ -167,6 +167,10 @@ namespace Zacarovany_les.Classes.Pomocne
             butt.FontColor = textCol;
             butt.Text = text;
             butt.Druh = sch.Druh;
+            butt.Height = height;
+            butt.Width = width;
+            butt.Font = font;
+
             if (sch.Cd > 0)
             {
                 butt.Text += " (" + sch.Cd + ")";

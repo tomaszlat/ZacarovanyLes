@@ -10,9 +10,11 @@ namespace Zacarovany_les.Classes.Interface
     public class Button : Component
     {
         private MouseState _currentState;
-        private SpriteFont _font;
+        
         private MouseState _previousState;
         public bool _isMouseOver;
+
+        public SpriteFont Font;
 
         public event EventHandler Click;
         public event EventHandler RightClick;
@@ -33,7 +35,7 @@ namespace Zacarovany_les.Classes.Interface
 
         public Button(SpriteFont font, Vector2 position, Texture2D texture, int width, int height)
         {
-            _font = font;
+            Font = font;
             Position = position;
             Texture = texture;
             Width = width;
@@ -41,7 +43,7 @@ namespace Zacarovany_les.Classes.Interface
         }
         public Button(SpriteFont font, Vector2 position, Texture2D texture, int width, int height, Color color1)
         {
-            _font = font;
+            Font = font;
             Position = position;
             Texture = texture;
             Width = width;
@@ -50,7 +52,7 @@ namespace Zacarovany_les.Classes.Interface
         }
         public Button(SpriteFont font, Vector2 position, Texture2D texture, int width, int height, Color color1, Color color2)
         {
-            _font = font;
+            Font = font;
             Position = position;
             Texture = texture;
             Width = width;
@@ -60,7 +62,7 @@ namespace Zacarovany_les.Classes.Interface
         }
         public Button(SpriteFont font,Vector2 position, Texture2D texture, int width, int height, Color color1,Color fontColor,string text)
         {
-            _font = font;
+            Font = font;
             Position = position;
             Texture = texture;
             Width = width;
@@ -71,7 +73,7 @@ namespace Zacarovany_les.Classes.Interface
         }
         public Button(SpriteFont font, Vector2 position, Texture2D texture, int width, int height, Color color1, Color color2, Color fontColor, string text)
         {
-            _font = font;
+            Font = font;
             Position = position;
             Texture = texture;
             Width = width;
@@ -83,7 +85,7 @@ namespace Zacarovany_les.Classes.Interface
         }
         public Button(SpriteFont font, Vector2 position, Texture2D texture, int width, int height, Color color1, Color color2, Color fontColor, string text,Druh druh)
         {
-            _font = font;
+            Font = font;
             Position = position;
             Texture = texture;
             Width = width;
@@ -112,9 +114,9 @@ namespace Zacarovany_les.Classes.Interface
 
                 if (!string.IsNullOrEmpty(Text))
                 {
-                    var x = (Position.X + (Width / 2)) - (_font.MeasureString(Text).X / 2);
-                    var y = (Position.Y + (Height / 2)) - (_font.MeasureString(Text).Y / 2);
-                    _spriteBatch.DrawString(_font, Text, new Vector2(x, y), barvaFontu);
+                    var x = (Position.X + (Width / 2)) - (Font.MeasureString(Text).X / 2);
+                    var y = (Position.Y + (Height / 2)) - (Font.MeasureString(Text).Y / 2);
+                    _spriteBatch.DrawString(Font, Text, new Vector2(x, y), barvaFontu);
 
                 }
             }
