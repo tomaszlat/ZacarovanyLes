@@ -4,7 +4,7 @@ Ovládání
 F5 - Uložení hry (funkční pouze při pohybu na mapě)
 F9 - Načtení hry (funkční v každé fázi hry)
 Kurzorové šipky - Pohyb po mapě
-Myš - LTM na tlačítka
+Myš - Klepnutí LTM nebo PTM na ovládací prvky
 
 Mapy
 Pro hru se dají vytvářet vlastní mapy, stačí vložit soubor do složky Maps ve tvaru mapa(x).csv (bez závorek, kde x je číslo mapy)
