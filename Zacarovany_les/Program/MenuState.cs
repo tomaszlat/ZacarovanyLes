@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Zacarovany_les.Classes;
 using Zacarovany_les.Classes.Interface;
 using Zacarovany_les.Classes.Mapy;
 using Zacarovany_les.Classes.Mapy.Objekty;
@@ -17,32 +18,11 @@ namespace Zacarovany_les
 {
     public class MenuState : State
     {
-        //Promenne ...
+        //spravce medii
+        public SpravceMedii SpravceMedii;
+        //promenne ...
         private bool isIntro = true;
-        //Zvuk
-        SoundEffect click;
-        //Fonty
-        private SpriteFont fontText;
-        //Textury
-        private Texture2D intro;
-        private Texture2D pozadi;
-        private Texture2D buttonNovaHra;
-        private Texture2D button1v1Texture;
-        private Texture2D buttonKonec;
-        private Texture2D dvere;
-        private Texture2D enemyLehky;
-        private Texture2D enemyStredni;
-        private Texture2D enemyTezky;
-        private Texture2D kamen;
-        private Texture2D lahvickaMana;
-        private Texture2D lahvickaZdravi;
-        private Texture2D postavaDolu;
-        private Texture2D postavaLevo;
-        private Texture2D postavaNahoru;
-        private Texture2D postavaPravo;
-        private Texture2D strom;
-        private Texture2D trava;
-        //Buttons
+        //tlacitka
         Button buttonNewGame;
         Button button1v1;
         Button buttonEndGame;
@@ -53,37 +33,17 @@ namespace Zacarovany_les
 
         public override void LoadContent()
         {
-            //Sound
-            click = _content.Load<SoundEffect>("Sound\\click");
-            //Fonts
-            fontText = _content.Load<SpriteFont>("Fonts\\Text");
-            //Textury
-            intro = _content.Load<Texture2D>("Sprites\\GUI\\intro");
-            pozadi = _content.Load<Texture2D>("Sprites\\GUI\\hlavni_menu");
-            buttonNovaHra = _content.Load<Texture2D>("Sprites\\GUI\\nova_hra");
-            button1v1Texture = _content.Load<Texture2D>("Sprites\\GUI\\1_v_1");
-            buttonKonec = _content.Load<Texture2D>("Sprites\\GUI\\konec");
-            dvere = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\dvere");
-            enemyLehky = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_lehky");
-            enemyStredni = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_stredni");
-            enemyTezky = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_tezky");
-            kamen = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\kamen");
-            lahvickaMana = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\lahvicka_mana");
-            lahvickaZdravi = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\lahvicka_zdravi");
-            postavaDolu = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_dolu");
-            postavaLevo = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_levo");
-            postavaNahoru = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_nahoru");
-            postavaPravo = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_pravo");
-            strom = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\strom");
-            trava = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\trava");
-            //Buttons
-            buttonNewGame = new Button(fontText, new Vector2(275, 200),buttonNovaHra,250,75,Color.White);
+            //spravce medii
+            SpravceMedii = ZacarovanyLes.spravceMedii;
+
+            //tlacitka
+            buttonNewGame = new Button(SpravceMedii.FontText, new Vector2(275, 200),SpravceMedii.ButtonNovaHra,250,75,Color.White);
             buttonNewGame.Animated = false;
             buttonNewGame.Click += ButtonNewGameClickedHandler;
-            button1v1 = new Button(fontText, new Vector2(275, 300), button1v1Texture, 250, 75, Color.White);
+            button1v1 = new Button(SpravceMedii.FontText, new Vector2(275, 300), SpravceMedii.Button1v1, 250, 75, Color.White);
             button1v1.Animated = false;
             button1v1.Click += Button1v1ClickedHandler;
-            buttonEndGame = new Button(fontText, new Vector2(275, 400), buttonKonec, 250, 75, Color.White);
+            buttonEndGame = new Button(SpravceMedii.FontText, new Vector2(275, 400), SpravceMedii.ButtonKonec, 250, 75, Color.White);
             buttonEndGame.Animated = false;
             buttonEndGame.Click += ButtonEndGameClickedHandler;
         }
@@ -134,11 +94,11 @@ namespace Zacarovany_les
             spriteBatch.Begin();
             if (isIntro)
             {
-                spriteBatch.Draw(intro, new Rectangle(0, 0, 800, 600), Color.White);
+                spriteBatch.Draw(SpravceMedii.Intro, new Rectangle(0, 0, 800, 600), Color.White);
             }
             else
             {
-                spriteBatch.Draw(pozadi, new Rectangle(0, 0, 800, 600), Color.White);
+                spriteBatch.Draw(SpravceMedii.HlavniMenu, new Rectangle(0, 0, 800, 600), Color.White);
                 buttonNewGame.Draw(gameTime,spriteBatch);
                 button1v1.Draw(gameTime, spriteBatch);
                 buttonEndGame.Draw(gameTime, spriteBatch);
@@ -148,7 +108,7 @@ namespace Zacarovany_les
         }
         private void ButtonNewGameClickedHandler(object sender, EventArgs args)
         {
-            click.Play();
+            SpravceMedii.Click.Play();
             ZacarovanyLes.gameState = null;
             ZacarovanyLes.mapState = null;
             int cislomapy = 1;
@@ -171,50 +131,50 @@ namespace Zacarovany_les
                         switch (s)
                         {
                             case "0":
-                                objekt = new Trava(pos,trava);
+                                objekt = new Trava(pos, SpravceMedii.Trava);
                                 break;
                             case "1":
-                                objekt = new Kamen(pos, kamen);
+                                objekt = new Kamen(pos, SpravceMedii.Kamen);
                                 break;
                             case "2":
-                                objekt = new Strom(pos, strom);
+                                objekt = new Strom(pos, SpravceMedii.Strom);
                                 break;
                             case "3":
                                 if (neniHrac)
                                 {
-                                    objekt = new Hrac(pos, postavaDolu);
+                                    objekt = new Hrac(pos, SpravceMedii.PostavaDolu);
                                     pozice = pos;
                                     neniHrac = false;
                                     break;
                                 }
-                                objekt = new Trava(pos, trava);
+                                objekt = new Trava(pos, SpravceMedii.Trava);
                                 break;
                             case "4":
-                                objekt = new DvereDalsi(pos, dvere);
+                                objekt = new DvereDalsi(pos, SpravceMedii.Dvere);
                                 break;
                             case "5":
-                                objekt = new DverePredchozi(pos, dvere);
+                                objekt = new DverePredchozi(pos, SpravceMedii.Dvere);
                                 break;
                             case "6":
-                                objekt = new SouperEasy(pos, enemyLehky);
+                                objekt = new SouperEasy(pos, SpravceMedii.EnemyLehky);
                                 break;
                             case "7":
-                                objekt = new SouperMedium(pos, enemyStredni);
+                                objekt = new SouperMedium(pos, SpravceMedii.EnemyStredni);
                                 break;
                             case "8":
-                                objekt = new SouperHard(pos, enemyTezky);
+                                objekt = new SouperHard(pos, SpravceMedii.EnemyTezky);
                                 break;
                             case "9":
-                                objekt = new LahvickaZdravi(pos, lahvickaZdravi);
+                                objekt = new LahvickaZdravi(pos, SpravceMedii.LahvickaZdravi);
                                 break;
                             case "10":
-                                objekt = new LahvickaMany(pos, lahvickaMana);
+                                objekt = new LahvickaMany(pos, SpravceMedii.LahvickaMana);
                                 break;
                             case "11":
-                                objekt = new DverePosledni(pos, dvere);
+                                objekt = new DverePosledni(pos, SpravceMedii.Dvere);
                                 break;
                             default:
-                                objekt = new Trava(pos, trava);
+                                objekt = new Trava(pos, SpravceMedii.Trava);
                                 break;
                         }
 
@@ -239,13 +199,13 @@ namespace Zacarovany_les
         }
         private void Button1v1ClickedHandler(object sender, EventArgs args)
         {
-            click.Play();
+            SpravceMedii.Click.Play();
             _game.ChangeState(new CreateCharactersState(_game, _content));
         }
 
         private void ButtonEndGameClickedHandler(object sender, EventArgs args)
         {
-            click.Play();
+            SpravceMedii.Click.Play();
             _game.Exit();
         }
     }

@@ -109,7 +109,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/GUI/1 v 1.png;Sprites/GUI/1_v_1.png
+/build:Sprites/GUI/1 v 1.png
 
 #begin Sprites/GUI/hlavni_menu.bmp
 /importer:TextureImporter

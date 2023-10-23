@@ -18,38 +18,16 @@ namespace Zacarovany_les
 {
     public class MapState : State
     {
-        //Monogame
-        //Promenne ...
+        //promenne ...
+        //spravce medii
+        public SpravceMedii SpravceMedii;
+        //pomocne
         private bool vyhra;
-        string textVyhra;
-        //Fonty
-        private SpriteFont fontText;
-        private SpriteFont fontNadpis;
+        private string textVyhra;
+        //fonty
         private Vector2 delkaU;
-        //Textury
-        private Texture2D panel;
-        private Texture2D plocha;
-        private Texture2D valecnik;
-        private Texture2D valecnice;
-        private Texture2D lucistnik;
-        private Texture2D lucistnice;
-        private Texture2D kouzelnik;
-        private Texture2D kouzelnice;
+        //textury
         private Texture2D utocnikPortret;
-        private Texture2D prazdnaTexturaBila;
-        private Texture2D dvere;
-        private Texture2D enemyLehky;
-        private Texture2D enemyStredni;
-        private Texture2D enemyTezky;
-        private Texture2D kamen;
-        private Texture2D lahvickaMana;
-        private Texture2D lahvickaZdravi;
-        private Texture2D postavaDolu;
-        private Texture2D postavaLevo;
-        private Texture2D postavaNahoru;
-        private Texture2D postavaPravo;
-        private Texture2D strom;
-        private Texture2D trava;
 
         public MapState(ZacarovanyLes game, ContentManager content) : base(game, content)
         {
@@ -59,33 +37,7 @@ namespace Zacarovany_les
         {
             textVyhra = "Vyhrál si!";
             vyhra = false;
-            //Fonty
-            fontNadpis = _content.Load<SpriteFont>("Fonts\\Nadpis");
-            fontText = _content.Load<SpriteFont>("Fonts\\Text");
-            //Textury
-            panel = _content.Load<Texture2D>("Sprites\\GUI\\menu");
-            plocha = _content.Load<Texture2D>("Sprites\\GUI\\plocha_boj");
-            valecnik = _content.Load<Texture2D>("Sprites\\Postavy\\valecnik");
-            valecnice = _content.Load<Texture2D>("Sprites\\Postavy\\valecnice");
-            lucistnik = _content.Load<Texture2D>("Sprites\\Postavy\\lucistnik");
-            lucistnice = _content.Load<Texture2D>("Sprites\\Postavy\\lucistnice");
-            kouzelnik = _content.Load<Texture2D>("Sprites\\Postavy\\kouzelnik");
-            kouzelnice = _content.Load<Texture2D>("Sprites\\Postavy\\kouzelnice");
-            dvere = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\dvere");
-            enemyLehky = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_lehky");
-            enemyStredni = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_stredni");
-            enemyTezky = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\enemy_tezky");
-            kamen = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\kamen");
-            lahvickaMana = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\lahvicka_mana");
-            lahvickaZdravi = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\lahvicka_zdravi");
-            postavaDolu = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_dolu");
-            postavaLevo = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_levo");
-            postavaNahoru = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_nahoru");
-            postavaPravo = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\postava_pravo");
-            strom = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\strom");
-            trava = _content.Load<Texture2D>("Sprites\\PrvkyMapy\\trava");
-            prazdnaTexturaBila = new Texture2D(_game.GraphicsDevice, 1, 1);
-            prazdnaTexturaBila.SetData(new Color[] { Color.White });
+            SpravceMedii = ZacarovanyLes.spravceMedii;
             
         }
 
@@ -99,34 +51,34 @@ namespace Zacarovany_les
                         case DverePosledni po:
                         case DvereDalsi da:
                         case DverePredchozi pr:
-                            obj.Textura = dvere;
+                            obj.Textura = SpravceMedii.Dvere;
                             break;
                         case Hrac h:
-                            obj.Textura = postavaDolu;
+                            obj.Textura = SpravceMedii.PostavaDolu;
                             break;
                         case Kamen k:
-                            obj.Textura = kamen;
+                            obj.Textura = SpravceMedii.Kamen;
                             break;
                         case LahvickaMany l:
-                            obj.Textura = lahvickaMana;
+                            obj.Textura = SpravceMedii.LahvickaMana;
                             break;
                         case LahvickaZdravi l:
-                            obj.Textura = lahvickaZdravi;
+                            obj.Textura = SpravceMedii.LahvickaZdravi;
                             break;
                         case SouperEasy s:
-                            obj.Textura = enemyLehky;
+                            obj.Textura = SpravceMedii.EnemyLehky;
                             break;
                         case SouperHard s:
-                            obj.Textura = enemyTezky;
+                            obj.Textura = SpravceMedii.EnemyTezky;
                             break;
                         case SouperMedium s:
-                            obj.Textura = enemyStredni;
+                            obj.Textura = SpravceMedii.EnemyStredni;
                             break;
                         case Strom s:
-                            obj.Textura = strom;
+                            obj.Textura = SpravceMedii.Strom;
                             break;
                         case Trava t:
-                            obj.Textura = trava;
+                            obj.Textura = SpravceMedii.Trava;
                             break;
                     }
                 }
@@ -153,8 +105,8 @@ namespace Zacarovany_les
                         switch (aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y])
                         {
                             case Trava t:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), postavaLevo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaLevo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y);
                                 break;
                             case DvereDalsi d:
@@ -169,36 +121,36 @@ namespace Zacarovany_les
                                 ZacarovanyLes.delayed = true;
                                 break;
                             case LahvickaMany l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), postavaLevo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaLevo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyMany++;
                                 break;
                             case LahvickaZdravi l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), postavaLevo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaLevo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyZdravi++;
                                 break;
                             case SouperEasy s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), postavaLevo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaLevo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.obrance = Generator.DejLehkehoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperMedium s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), postavaLevo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaLevo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.obrance = Generator.DejStrednihoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperHard s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), postavaLevo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X - 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaLevo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X - 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.obrance = Generator.DejTezkehoSoupere(ZacarovanyLes.utocnik);
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
@@ -221,8 +173,8 @@ namespace Zacarovany_les
                         switch (aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y])
                         {
                             case Trava t:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), postavaPravo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaPravo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y);
                                 break;
                             case DvereDalsi d:
@@ -237,36 +189,36 @@ namespace Zacarovany_les
                                 ZacarovanyLes.delayed = true;
                                 break;
                             case LahvickaMany l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), postavaPravo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaPravo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyMany++;
                                 break;
                             case LahvickaZdravi l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), postavaPravo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaPravo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyZdravi++;
                                 break;
                             case SouperEasy s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), postavaPravo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaPravo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.obrance = Generator.DejLehkehoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperMedium s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), postavaPravo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaPravo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.obrance = Generator.DejStrednihoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperHard s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), postavaPravo);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X + 1, (int)aktualni.PoziceHrace.Y] = new Hrac(new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y), SpravceMedii.PostavaPravo);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X + 1, aktualni.PoziceHrace.Y);
                                 ZacarovanyLes.obrance = Generator.DejTezkehoSoupere(ZacarovanyLes.utocnik);
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
@@ -289,8 +241,8 @@ namespace Zacarovany_les
                         switch (aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y-1])
                         {
                             case Trava t:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y-1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y-1), postavaNahoru);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y-1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y-1), SpravceMedii.PostavaNahoru);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y-1);
                                 break;
                             case DvereDalsi d:
@@ -305,36 +257,36 @@ namespace Zacarovany_les
                                 ZacarovanyLes.delayed = true;
                                 break;
                             case LahvickaMany l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), postavaNahoru);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), SpravceMedii.PostavaNahoru);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyMany++;
                                 break;
                             case LahvickaZdravi l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), postavaNahoru);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), SpravceMedii.PostavaNahoru);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyZdravi++;
                                 break;
                             case SouperEasy s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), postavaNahoru);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), SpravceMedii.PostavaNahoru);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1);
                                 ZacarovanyLes.obrance = Generator.DejLehkehoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperMedium s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), postavaNahoru);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), SpravceMedii.PostavaNahoru);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1);
                                 ZacarovanyLes.obrance = Generator.DejStrednihoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperHard s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), postavaNahoru);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y - 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1), SpravceMedii.PostavaNahoru);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y - 1);
                                 ZacarovanyLes.obrance = Generator.DejTezkehoSoupere(ZacarovanyLes.utocnik);
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
@@ -358,8 +310,8 @@ namespace Zacarovany_les
                         switch (aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1])
                         {
                             case Trava t:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), postavaDolu);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), SpravceMedii.PostavaDolu);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1);
                                 break;
                             case DvereDalsi d:
@@ -374,36 +326,36 @@ namespace Zacarovany_les
                                 ZacarovanyLes.delayed = true;
                                 break;
                             case LahvickaMany l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), postavaDolu);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), SpravceMedii.PostavaDolu);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyMany++;
                                 break;
                             case LahvickaZdravi l:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), postavaDolu);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), SpravceMedii.PostavaDolu);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1);
                                 ZacarovanyLes.utocnik.Inventar.LahvickyZdravi++;
                                 break;
                             case SouperEasy s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), postavaDolu);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), SpravceMedii.PostavaDolu);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1);
                                 ZacarovanyLes.obrance = Generator.DejLehkehoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperMedium s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), postavaDolu);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), SpravceMedii.PostavaDolu);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1);
                                 ZacarovanyLes.obrance = Generator.DejStrednihoSoupere();
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
                                 _game.ChangeState(ZacarovanyLes.gameState);
                                 break;
                             case SouperHard s:
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), trava);
-                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), postavaDolu);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y] = new Trava(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y), SpravceMedii.Trava);
+                                aktualni.Objekty[(int)aktualni.PoziceHrace.X, (int)aktualni.PoziceHrace.Y + 1] = new Hrac(new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1), SpravceMedii.PostavaDolu);
                                 aktualni.PoziceHrace = new Vector2(aktualni.PoziceHrace.X, aktualni.PoziceHrace.Y + 1);
                                 ZacarovanyLes.obrance = Generator.DejTezkehoSoupere(ZacarovanyLes.utocnik);
                                 ZacarovanyLes.gameState = new GameState(_game, _content);
@@ -444,36 +396,36 @@ namespace Zacarovany_les
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            utocnikPortret = DejPortret(ZacarovanyLes.utocnik.Pohlavi, ZacarovanyLes.utocnik.Trida);
+            utocnikPortret = SpravceMedii.DejPortret(ZacarovanyLes.utocnik.Pohlavi, ZacarovanyLes.utocnik.Trida);
             //sprites
-            spriteBatch.Draw(panel, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(SpravceMedii.Panel, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.White);
             //text
             //portret
-            delkaU = fontNadpis.MeasureString(ZacarovanyLes.utocnik.Name);
-            spriteBatch.DrawString(fontNadpis, ZacarovanyLes.utocnik.Name, new Vector2(100 - delkaU.X / 2, 20 - delkaU.Y / 2), Color.Black);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(ZacarovanyLes.utocnik.Name);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, ZacarovanyLes.utocnik.Name, new Vector2(100 - delkaU.X / 2, 20 - delkaU.Y / 2), Color.Black);
             //trida
-            delkaU = fontNadpis.MeasureString(PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi));
-            spriteBatch.DrawString(fontNadpis, PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 245 - delkaU.Y / 2), Color.Black);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 245 - delkaU.Y / 2), Color.Black);
             //Pohlavi                    
-            delkaU = fontNadpis.MeasureString(PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi));
-            spriteBatch.DrawString(fontNadpis, PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 280 - delkaU.Y / 2), Color.Black);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 280 - delkaU.Y / 2), Color.Black);
             //Level
-            spriteBatch.DrawString(fontText, "Level: " + ZacarovanyLes.utocnik.Level, new Vector2(20, 300), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + ZacarovanyLes.utocnik.Level, new Vector2(20, 300), Color.Black);
             //Zkusenosti
-            spriteBatch.DrawString(fontText, "Zkušenosti: " + ZacarovanyLes.utocnik.Zkusenosti + "/" + ZacarovanyLes.utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + ZacarovanyLes.utocnik.Zkusenosti + "/" + ZacarovanyLes.utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
             //Zivoty
-            spriteBatch.DrawString(fontText, "Životy: " + ZacarovanyLes.utocnik.Zivoty + "/" + ZacarovanyLes.utocnik.ZivotyMax, new Vector2(20, 350), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + ZacarovanyLes.utocnik.Zivoty + "/" + ZacarovanyLes.utocnik.ZivotyMax, new Vector2(20, 350), Color.Black);
             //Mana
-            spriteBatch.DrawString(fontText, "Mana: " + ZacarovanyLes.utocnik.Mana + "/" + ZacarovanyLes.utocnik.ManaMax, new Vector2(20, 370), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + ZacarovanyLes.utocnik.Mana + "/" + ZacarovanyLes.utocnik.ManaMax, new Vector2(20, 370), Color.Black);
             //Sila
-            spriteBatch.DrawString(fontText, "Síla: " + ZacarovanyLes.utocnik.Sila, new Vector2(20, 400), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + ZacarovanyLes.utocnik.Sila, new Vector2(20, 400), Color.Black);
             //Obratnost
-            spriteBatch.DrawString(fontText, "Obratnost: " + ZacarovanyLes.utocnik.Obratnost, new Vector2(20, 420), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + ZacarovanyLes.utocnik.Obratnost, new Vector2(20, 420), Color.Black);
             //Inteligence
-            spriteBatch.DrawString(fontText, "Inteligence: " + ZacarovanyLes.utocnik.Inteligence, new Vector2(20, 440), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + ZacarovanyLes.utocnik.Inteligence, new Vector2(20, 440), Color.Black);
             //Brneni
-            spriteBatch.DrawString(fontText, "Brnění: " + ZacarovanyLes.utocnik.Brneni, new Vector2(20, 460), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + ZacarovanyLes.utocnik.Brneni, new Vector2(20, 460), Color.Black);
             
             foreach(Objekt obj in ZacarovanyLes.maps.Aktualni.Objekty)
             {
@@ -481,35 +433,10 @@ namespace Zacarovany_les
             }
             if (vyhra)
             {
-                delkaU = fontNadpis.MeasureString(textVyhra);
-                spriteBatch.DrawString(fontNadpis, textVyhra, new Vector2(400 - delkaU.X / 2, 300 - delkaU.Y / 2), Color.White);
+                delkaU = SpravceMedii.FontNadpis.MeasureString(textVyhra);
+                spriteBatch.DrawString(SpravceMedii.FontNadpis, textVyhra, new Vector2(400 - delkaU.X / 2, 300 - delkaU.Y / 2), Color.White);
             }
             spriteBatch.End();
-        }
-
-        protected Texture2D DejPortret(Pohlavi pohlavi, Trida trida)
-        {
-            switch (pohlavi)
-            {
-                case Pohlavi.Muz:
-                    switch (trida)
-                    {
-                        case Trida.Bojovnik: return valecnik;
-                        case Trida.Lucistnik: return lucistnik;
-                        case Trida.Kouzelnik: return kouzelnik;
-
-                    }
-                    break;
-                case Pohlavi.Zena:
-                    switch (trida)
-                    {
-                        case Trida.Bojovnik: return valecnice;
-                        case Trida.Lucistnik: return lucistnice;
-                        case Trida.Kouzelnik: return kouzelnice;
-                    }
-                    break;
-            }
-            return null;
         }
     }
 }

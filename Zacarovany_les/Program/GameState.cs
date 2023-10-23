@@ -15,7 +15,9 @@ namespace Zacarovany_les
 {
     public class GameState : State
     {
-        //Promenne, konstanty ...
+        //spravce medii
+        public SpravceMedii SpravceMedii;
+        //promenne, konstanty ...
         private Souboj souboj;
         private Faze faze;
         private Postava hrajici;
@@ -27,33 +29,13 @@ namespace Zacarovany_les
         private string messageDruhy = "";
         private bool zacatek = true;
         private bool oznaceniUtocnik = true;
-        //Zvuky
-        SoundEffect fireball;
-        SoundEffect frostbolt;
-        SoundEffect bowPull;
-        SoundEffect bowMiss;
-        SoundEffect hit;
-        SoundEffect regen;
-        SoundEffect battlecry;
-        //Textury
-        private Texture2D panel;
-        private Texture2D plocha;
-        private Texture2D valecnik;
-        private Texture2D valecnice;
-        private Texture2D lucistnik;
-        private Texture2D lucistnice;
-        private Texture2D kouzelnik;
-        private Texture2D kouzelnice;
-        private Texture2D utocnikPortret;
-        private Texture2D obrancePortret;
-        private Texture2D prazdnaTexturaBila;
-        private Texture2D prazdnaTexturaCerna;
-        //Fonty
-        private SpriteFont fontNadpis;
-        private SpriteFont fontText;
+        //fonty
         private Vector2 delkaU;
         private Vector2 delkaO;
-        //Buttons
+        //Textury
+        private Texture2D obrancePortret;
+        private Texture2D utocnikPortret;
+        //Tlacitka
         private Button buttonUtokMecem;
         private Button buttonObranaStitem;
         private Button buttonRegenerace;
@@ -87,81 +69,59 @@ namespace Zacarovany_les
 
         public override void LoadContent()
         {
+            //spravce medii
+            SpravceMedii = ZacarovanyLes.spravceMedii;
+            //novy souboj
             souboj = new Souboj(ZacarovanyLes.utocnik, ZacarovanyLes.obrance);
             faze = Faze.Kolo;
-            //Hudba
-            //Zvuky
-            fireball = _content.Load<SoundEffect>("Sound\\fireball");
-            frostbolt = _content.Load<SoundEffect>("Sound\\ledove_kopi");
-            bowPull = _content.Load<SoundEffect>("Sound\\luk_natah");
-            bowMiss = _content.Load<SoundEffect>("Sound\\netrefil_sip");
-            hit = _content.Load<SoundEffect>("Sound\\zasah");
-            regen = _content.Load<SoundEffect>("Sound\\regen");
-            battlecry = _content.Load<SoundEffect>("Sound\\battlecry");
-            //Textury
-            panel = _content.Load<Texture2D>("Sprites\\GUI\\menu");
-            plocha = _content.Load<Texture2D>("Sprites\\GUI\\plocha_boj");
-            valecnik = _content.Load<Texture2D>("Sprites\\Postavy\\valecnik");
-            valecnice = _content.Load<Texture2D>("Sprites\\Postavy\\valecnice");
-            lucistnik = _content.Load<Texture2D>("Sprites\\Postavy\\lucistnik");
-            lucistnice = _content.Load<Texture2D>("Sprites\\Postavy\\lucistnice");
-            kouzelnik = _content.Load<Texture2D>("Sprites\\Postavy\\kouzelnik");
-            kouzelnice = _content.Load<Texture2D>("Sprites\\Postavy\\kouzelnice");
-            prazdnaTexturaBila = new Texture2D(_game.GraphicsDevice, 1, 1);
-            prazdnaTexturaBila.SetData(new Color[] { Color.White });
-            prazdnaTexturaCerna = new Texture2D(_game.GraphicsDevice, 1, 1);
-            prazdnaTexturaCerna.SetData(new Color[] { Color.Black });
-            //Fonty
-            fontNadpis = _content.Load<SpriteFont>("Fonts\\Nadpis");
-            fontText = _content.Load<SpriteFont>("Fonts\\Text");
             //Buttons
-            buttonUtokMecem = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonUtokMecem = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonUtokMecem.Click += ButtonUtokMecemClickedHandler;
-            buttonObranaStitem = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonObranaStitem = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonObranaStitem.Click += ButtonObranaStitemClickedHandler;
-            buttonRegenerace = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonRegenerace = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonRegenerace.Click += ButtonRegeneraceClickedHandler;
-            buttonBojovyPokrik = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonBojovyPokrik = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonBojovyPokrik.Click += ButtonBojovyPokrikClickedHandler;
-            buttonUderStitem = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonUderStitem = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonUderStitem.Click += ButtonUderStitemClickedHandler;
-            buttonVrhSekerou = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonVrhSekerou = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonVrhSekerou.Click += ButtonVrhSekerouClickedHandler;
-            buttonBerserk = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonBerserk = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonBerserk.Click += ButtonBerserkClickedHandler;
-            buttonBodnutiDykou = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonBodnutiDykou = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonBodnutiDykou.Click += ButtonBodnutiDykouClickedHandler;
-            buttonStrelbaLukem = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonStrelbaLukem = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonStrelbaLukem.Click += ButtonStrelbaLukemClickedHandler;
-            buttonMagickySip = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonMagickySip = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonMagickySip.Click += ButtonMagickySipClickedHandler;
-            buttonUskok = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonUskok = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonUskok.Click += ButtonUskokClickedHandler;
-            buttonRychlost = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonRychlost = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonRychlost.Click += ButtonRychlostClickedHandler;
-            buttonLesniBobule = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonLesniBobule = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonLesniBobule.Click += ButtonLesniBobuleClickedHandler;
-            buttonJedovaSipka = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonJedovaSipka = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonJedovaSipka.Click += ButtonJedovaSipkaClickedHandler;
-            buttonUderHoli = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonUderHoli = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonUderHoli.Click += ButtonUderHoliClickedHandler;
-            buttonOhnivaKoule = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonOhnivaKoule = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonOhnivaKoule.Click += ButtonOhnivaKouleClickedHandler;
-            buttonLedoveKopi = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonLedoveKopi = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonLedoveKopi.Click += ButtonLedoveKopiClickedHandler;
-            buttonVysatiZivota = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonVysatiZivota = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonVysatiZivota.Click += ButtonVysatiZivotaClickedHandler;
-            buttonVysatiMany = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonVysatiMany = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonVysatiMany.Click += ButtonVysatiManyClickedHandler;
-            buttonMagickeSoustredeni = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonMagickeSoustredeni = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonMagickeSoustredeni.Click += ButtonMagickeSoustredeniClickedHandler;
-            buttonMagickyStit = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonMagickyStit = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonMagickyStit.Click += ButtonMagickyStitClickedHandler;
-            buttonUtek = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonUtek = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonUtek.Click += ButtonUtekClickedHandler;
-            buttonLahvickaZdravi = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonLahvickaZdravi = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonLahvickaZdravi.Click += ButtonLahvickaZdraviClickedHandler;
-            buttonLahvickaMany = new Button(fontText, new Vector2(0, 0), prazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
+            buttonLahvickaMany = new Button(SpravceMedii.FontText, new Vector2(0, 0), SpravceMedii.PrazdnaTexturaBila, 160, 20, Color.White, Color.Black, "");
             buttonLahvickaMany.Click += ButtonLahvickaManyClickedHandler;
 
             buttons = new List<Button>()
@@ -295,7 +255,7 @@ namespace Zacarovany_les
                             {
                                 int poskozeni = souboj.ZautocNaObrance((int)Math.Round(souper.Inteligence / 3.0), true);
                                 messagePrvni = hrajici.Name + " hoří za " + poskozeni + " poškození";
-                                fireball.Play();
+                                SpravceMedii.Fireball.Play();
                                 efekt = true;
                             }
                             if (souboj.EfektyObrance.Krvaceni > 0)
@@ -317,7 +277,7 @@ namespace Zacarovany_les
                             {
                                 int poskozeni = souboj.ZautocNaUtocnika((int)Math.Round(souper.Inteligence / 3.0), true);
                                 messagePrvni = hrajici.Name + " hoří za " + poskozeni + " poškození";
-                                fireball.Play();
+                                SpravceMedii.Fireball.Play();
                                 efekt = true;
                             }
                             if (souboj.EfektyUtocnika.Krvaceni > 0)
@@ -354,7 +314,7 @@ namespace Zacarovany_les
                             {
                                 int poskozeni = souboj.ZautocNaObrance((int)Math.Round(hrajici.Inteligence / 3.0), true);
                                 messageDruhy = souper.Name + " hoří za " + poskozeni + " poškození";
-                                fireball.Play();
+                                SpravceMedii.Fireball.Play();
                                 efekt = true;
                             }
                             if (souboj.EfektyObrance.Krvaceni > 0)
@@ -376,7 +336,7 @@ namespace Zacarovany_les
                             {
                                 int poskozeni = souboj.ZautocNaUtocnika((int)Math.Round(hrajici.Inteligence / 3.0), true);
                                 messageDruhy = souper.Name + " hoří za " + poskozeni + " poškození";
-                                fireball.Play();
+                                SpravceMedii.Fireball.Play();
                                 efekt = true;
                             }
                             if (souboj.EfektyUtocnika.Krvaceni > 0)
@@ -530,19 +490,19 @@ namespace Zacarovany_les
                                 switch (vybranaHrajici.Druh)
                                 {
                                     case Druh.Ohniva_Koule:
-                                        fireball.Play();
+                                        SpravceMedii.Fireball.Play();
                                         break;
                                     case Druh.Ledove_Kopi:
-                                        frostbolt.Play();
+                                        SpravceMedii.Frostbolt.Play();
                                         break;
                                     case Druh.Vysati_zivota:
-                                        fireball.Play();
+                                        SpravceMedii.Fireball.Play();
                                         break;
                                     case Druh.Vysati_many:
-                                        frostbolt.Play();
+                                        SpravceMedii.Frostbolt.Play();
                                         break;
                                     default:
-                                        hit.Play();
+                                        SpravceMedii.Hit.Play();
                                         break;
                                 }
                                 int skPosk;
@@ -573,7 +533,7 @@ namespace Zacarovany_les
                             }
                             else if (vybranaHrajici.Druh == Druh.Regenerace)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 if (efektyHrajici.Pokrik > 0)
                                 {
                                     poskozeni = poskozeni * 2;
@@ -583,69 +543,69 @@ namespace Zacarovany_les
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 hrajici.PridejNeboUberZdravi(poskozeni);
-                                messagePrvni = hrajici.Name + " regeneruje zdraví za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                                messagePrvni = hrajici.Name + " SpravceMedii.Regeneruje zdraví za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
                             else if (vybranaHrajici.Druh == Druh.Lahvicka_Zdravi)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 hrajici.Inventar.LahvickyZdravi--;
                                 if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
                                 {
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 hrajici.PridejNeboUberZdravi(poskozeni);
-                                messagePrvni = hrajici.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                                messagePrvni = hrajici.Name + " SpravceMedii.Regeneruje zdravi za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
                             else if (vybranaHrajici.Druh == Druh.Lesni_bobule)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
                                 {
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 hrajici.PridejNeboUberZdravi(poskozeni);
-                                messagePrvni = hrajici.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                                messagePrvni = hrajici.Name + " SpravceMedii.Regeneruje zdravi za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
                             else if (vybranaHrajici.Druh == Druh.Lahvicka_Many)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
                                 {
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 hrajici.PridejNeboUberManu(poskozeni);
                                 hrajici.Inventar.LahvickyMany--;
-                                messagePrvni = hrajici.Name + " regeneruje manu za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                                messagePrvni = hrajici.Name + " SpravceMedii.Regeneruje manu za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
                             else if (vybranaHrajici.Druh == Druh.Bojovy_Pokrik)
                             {
-                                battlecry.Play();
+                                SpravceMedii.Battlecry.Play();
                                 efektyHrajici.Pokrik += 2;
                                 messagePrvni = hrajici.Name + " zařval " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
 
                             else if (vybranaHrajici.Druh == Druh.Magicke_soustredeni)
                             {
-                                battlecry.Play();
+                                SpravceMedii.Battlecry.Play();
                                 efektyHrajici.Soustredeni += 4;
                                 messagePrvni = hrajici.Name + " se soustředí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
                             else if (vybranaHrajici.Druh == Druh.Rychlost)
                             {
-                                battlecry.Play();
+                                SpravceMedii.Battlecry.Play();
                                 efektyHrajici.Rychlost += 4;
                                 messagePrvni = hrajici.Name + " použil schopnost " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                             }
                             else if (vybranaHrajici.Druh == Druh.Strelba_Lukem && vybranaHrajici.Faze == 1 || vybranaHrajici.Druh == Druh.Magicky_sip && vybranaHrajici.Faze == 1)
                             {
                                 messagePrvni = hrajici.Name + " natahuje luk, aby použil schopnost " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
-                                bowPull.Play();
+                                SpravceMedii.BowPull.Play();
                             }
                             else if ((vybranaSouper.Druh == Druh.Magicky_Stit || vybranaSouper.Druh == Druh.Obrana_Stitem || vybranaSouper.Druh == Druh.Uskok) &&
                                 (vybranaHrajici.Druh == Druh.Strelba_Lukem))
                             {
                                 messagePrvni = hrajici.Name + " se pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " netrefil";
-                                bowMiss.Play();
+                                SpravceMedii.BowMiss.Play();
                             }
                             else if (rychlost || vybranaSouper.Druh == Druh.Magicky_Stit || vybranaSouper.Druh == Druh.Obrana_Stitem || vybranaSouper.Druh == Druh.Uskok)
                             {
@@ -656,42 +616,42 @@ namespace Zacarovany_les
 
                                 if (vybranaHrajici.Druh == Druh.Ohniva_Koule)
                                 {
-                                    fireball.Play();
+                                    SpravceMedii.Fireball.Play();
                                     efektySouper.Horeni += 2;
                                 }
                                 else if (vybranaHrajici.Druh == Druh.Ledove_Kopi)
                                 {
-                                    frostbolt.Play();
+                                    SpravceMedii.Frostbolt.Play();
                                     efektySouper.Mraz += 2;
                                     efektySouper.AktivujMraz();
                                 }
                                 else if (vybranaHrajici.Druh == Druh.Vrh_sekerou)
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                     efektySouper.Krvaceni += 2;
                                     if (efektyHrajici.Pokrik > 0)
                                         efektySouper.Krvaceni += 1;
                                 }
                                 else if (vybranaHrajici.Druh == Druh.Uder_stitem)
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                     efektySouper.Omraceni += 1;
                                     if (efektyHrajici.Pokrik > 0)
                                         efektySouper.Omraceni += 1;
                                 }
                                 else if (vybranaHrajici.Druh == Druh.Jedova_sipka)
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                     efektySouper.Jed += 3;
                                 }
                                 else if (vybranaHrajici.Druh == Druh.Berserk)
                                 {
-                                    battlecry.Play();
-                                    hit.Play();
+                                    SpravceMedii.Battlecry.Play();
+                                    SpravceMedii.Hit.Play();
                                 }
                                 else
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                 }
 
 
@@ -796,19 +756,19 @@ namespace Zacarovany_les
                                 switch (vybranaSouper.Druh)
                                 {
                                     case Druh.Ohniva_Koule:
-                                        fireball.Play();
+                                        SpravceMedii.Fireball.Play();
                                         break;
                                     case Druh.Ledove_Kopi:
-                                        frostbolt.Play();
+                                        SpravceMedii.Frostbolt.Play();
                                         break;
                                     case Druh.Vysati_zivota:
-                                        fireball.Play();
+                                        SpravceMedii.Fireball.Play();
                                         break;
                                     case Druh.Vysati_many:
-                                        frostbolt.Play();
+                                        SpravceMedii.Frostbolt.Play();
                                         break;
                                     default:
-                                        hit.Play();
+                                        SpravceMedii.Hit.Play();
                                         break;
                                 }
 
@@ -841,7 +801,7 @@ namespace Zacarovany_les
                             }
                             else if (vybranaSouper.Druh == Druh.Regenerace)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 if (efektySouper.Pokrik > 0)
                                 {
                                     poskozeni = poskozeni * 2;
@@ -851,69 +811,69 @@ namespace Zacarovany_les
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 souper.PridejNeboUberZdravi(poskozeni);
-                                messageDruhy = souper.Name + " regeneruje zdraví za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
+                                messageDruhy = souper.Name + " SpravceMedii.Regeneruje zdraví za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Lahvicka_Zdravi)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 souper.Inventar.LahvickyZdravi--;
                                 if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
                                 {
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 souper.PridejNeboUberZdravi(poskozeni);
-                                messageDruhy = souper.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
+                                messageDruhy = souper.Name + " SpravceMedii.Regeneruje zdravi za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Lesni_bobule)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
                                 {
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 souper.PridejNeboUberZdravi(poskozeni);
-                                messageDruhy = souper.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
+                                messageDruhy = souper.Name + " SpravceMedii.Regeneruje zdravi za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Lahvicka_Many)
                             {
-                                regen.Play();
+                                SpravceMedii.Regen.Play();
                                 souper.Inventar.LahvickyMany--;
                                 if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
                                 {
                                     poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                                 }
                                 souper.PridejNeboUberManu(poskozeni);
-                                messageDruhy = souper.Name + " regeneruje manu za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
+                                messageDruhy = souper.Name + " SpravceMedii.Regeneruje manu za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Magicke_soustredeni)
                             {
-                                battlecry.Play();
+                                SpravceMedii.Battlecry.Play();
                                 efektySouper.Soustredeni += 4;
 
                                 messageDruhy = souper.Name + " se soustředí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Rychlost)
                             {
-                                battlecry.Play();
+                                SpravceMedii.Battlecry.Play();
                                 efektySouper.Rychlost += 4;
                                 messageDruhy = souper.Name + " použil schopnost " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Bojovy_Pokrik)
                             {
-                                battlecry.Play();
+                                SpravceMedii.Battlecry.Play();
                                 efektySouper.Pokrik += 2;
                                 messageDruhy = souper.Name + " zařval " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                             }
                             else if (vybranaSouper.Druh == Druh.Strelba_Lukem && vybranaSouper.Faze == 1 || vybranaSouper.Druh == Druh.Magicky_sip && vybranaSouper.Faze == 1)
                             {
                                 messageDruhy = souper.Name + " natahuje luk, aby použil schopnost " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
-                                bowPull.Play();
+                                SpravceMedii.BowPull.Play();
                             }
                             else if ((vybranaHrajici.Druh == Druh.Magicky_Stit || vybranaHrajici.Druh == Druh.Obrana_Stitem || vybranaHrajici.Druh == Druh.Uskok) &&
                                 (vybranaSouper.Druh == Druh.Strelba_Lukem))
                             {
                                 messageDruhy = souper.Name + " se pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " netrefil";
-                                bowMiss.Play();
+                                SpravceMedii.BowMiss.Play();
                             }
                             else if (rychlost || vybranaHrajici.Druh == Druh.Magicky_Stit || vybranaHrajici.Druh == Druh.Obrana_Stitem || vybranaHrajici.Druh == Druh.Uskok)
                             {
@@ -923,42 +883,42 @@ namespace Zacarovany_les
                             {
                                 if (vybranaSouper.Druh == Druh.Ohniva_Koule)
                                 {
-                                    fireball.Play();
+                                    SpravceMedii.Fireball.Play();
                                     efektyHrajici.Horeni += 2;
                                 }
                                 else if (vybranaSouper.Druh == Druh.Ledove_Kopi)
                                 {
-                                    frostbolt.Play();
+                                    SpravceMedii.Frostbolt.Play();
                                     efektyHrajici.Mraz += 2;
                                     efektyHrajici.AktivujMraz();
                                 }
                                 else if (vybranaSouper.Druh == Druh.Vrh_sekerou)
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                     efektyHrajici.Krvaceni += 2;
                                     if (efektySouper.Pokrik > 0)
                                         efektyHrajici.Krvaceni += 1;
                                 }
                                 else if (vybranaSouper.Druh == Druh.Uder_stitem)
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                     efektyHrajici.Omraceni += 1;
                                     if (efektySouper.Pokrik > 0)
                                         efektyHrajici.Omraceni += 1;
                                 }
                                 else if (vybranaSouper.Druh == Druh.Jedova_sipka)
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                     efektyHrajici.Jed += 3;
                                 }
                                 else if (vybranaSouper.Druh == Druh.Berserk)
                                 {
-                                    battlecry.Play();
-                                    hit.Play();
+                                    SpravceMedii.Battlecry.Play();
+                                    SpravceMedii.Hit.Play();
                                 }
                                 else
                                 {
-                                    hit.Play();
+                                    SpravceMedii.Hit.Play();
                                 }
 
 
@@ -1105,99 +1065,99 @@ namespace Zacarovany_les
                     switch (schop.Druh)
                     {
                         case Druh.Utok_Mecem:
-                            PomocneMetody.NastavButton(efekty, buttonUtokMecem, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonUtokMecem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonUtokMecem.Visible = true;
                             break;
                         case Druh.Obrana_Stitem:
-                            PomocneMetody.NastavButton(efekty, buttonObranaStitem, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonObranaStitem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonObranaStitem.Visible = true;
                             break;
                         case Druh.Regenerace:
-                            PomocneMetody.NastavButton(efekty, buttonRegenerace, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonRegenerace, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonRegenerace.Visible = true;
                             break;
                         case Druh.Bojovy_Pokrik:
-                            PomocneMetody.NastavButton(efekty, buttonBojovyPokrik, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonBojovyPokrik, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonBojovyPokrik.Visible = true;
                             break;
                         case Druh.Uder_stitem:
-                            PomocneMetody.NastavButton(efekty, buttonUderStitem, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonUderStitem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonUderStitem.Visible = true;
                             break;
                         case Druh.Vrh_sekerou:
-                            PomocneMetody.NastavButton(efekty, buttonVrhSekerou, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonVrhSekerou, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonVrhSekerou.Visible = true;
                             break;
                         case Druh.Berserk:
-                            PomocneMetody.NastavButton(efekty, buttonBerserk, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonBerserk, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonBerserk.Visible = true;
                             break;
                         case Druh.Bodnuti_Dykou:
-                            PomocneMetody.NastavButton(efekty, buttonBodnutiDykou, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonBodnutiDykou, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonBodnutiDykou.Visible = true;
                             break;
                         case Druh.Strelba_Lukem:
-                            PomocneMetody.NastavButton(efekty, buttonStrelbaLukem, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonStrelbaLukem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonStrelbaLukem.Visible = true;
                             break;
                         case Druh.Magicky_sip:
-                            PomocneMetody.NastavButton(efekty, buttonMagickySip, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonMagickySip, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonMagickySip.Visible = true;
                             break;
                         case Druh.Uskok:
-                            PomocneMetody.NastavButton(efekty, buttonUskok, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonUskok, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonUskok.Visible = true;
                             break;
                         case Druh.Rychlost:
-                            PomocneMetody.NastavButton(efekty, buttonRychlost, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonRychlost, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonRychlost.Visible = true;
                             break;
                         case Druh.Lesni_bobule:
-                            PomocneMetody.NastavButton(efekty, buttonLesniBobule, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonLesniBobule, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonLesniBobule.Visible = true;
                             break;
                         case Druh.Jedova_sipka:
-                            PomocneMetody.NastavButton(efekty, buttonJedovaSipka, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonJedovaSipka, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonJedovaSipka.Visible = true;
                             break;
                         case Druh.Uder_Holi:
-                            PomocneMetody.NastavButton(efekty, buttonUderHoli, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonUderHoli, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonUderHoli.Visible = true;
                             break;
                         case Druh.Ohniva_Koule:
-                            PomocneMetody.NastavButton(efekty, buttonOhnivaKoule, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonOhnivaKoule, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonOhnivaKoule.Visible = true;
                             break;
                         case Druh.Ledove_Kopi:
-                            PomocneMetody.NastavButton(efekty, buttonLedoveKopi, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonLedoveKopi, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonLedoveKopi.Visible = true;
                             break;
                         case Druh.Magicky_Stit:
-                            PomocneMetody.NastavButton(efekty, buttonMagickyStit, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonMagickyStit, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonMagickyStit.Visible = true;
                             break;
                         case Druh.Vysati_zivota:
-                            PomocneMetody.NastavButton(efekty, buttonVysatiZivota, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonVysatiZivota, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonVysatiZivota.Visible = true;
                             break;
                         case Druh.Vysati_many:
-                            PomocneMetody.NastavButton(efekty, buttonVysatiMany, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonVysatiMany, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonVysatiMany.Visible = true;
                             break;
                         case Druh.Magicke_soustredeni:
-                            PomocneMetody.NastavButton(efekty, buttonMagickeSoustredeni, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonMagickeSoustredeni, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonMagickeSoustredeni.Visible = true;
                             break;
                         case Druh.Utek:
-                            PomocneMetody.NastavButton(efekty, buttonUtek, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonUtek, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonUtek.Visible = true;
                             break;
                         case Druh.Lahvicka_Many:
-                            PomocneMetody.NastavButton(efekty, buttonLahvickaMany, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonLahvickaMany, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonLahvickaMany.Visible = true;
                             break;
                         case Druh.Lahvicka_Zdravi:
-                            PomocneMetody.NastavButton(efekty, buttonLahvickaZdravi, schop, naRade, 325, y + i * 30, 150, 20, fontText, prazdnaTexturaBila, Color.White, Color.Black);
+                            PomocneMetody.NastavButton(efekty, buttonLahvickaZdravi, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                             buttonLahvickaZdravi.Visible = true;
                             break;
                     }
@@ -1205,122 +1165,122 @@ namespace Zacarovany_les
                 }
             }
 
-            utocnikPortret = DejPortret(souboj.Utocnik.Pohlavi, souboj.Utocnik.Trida);
-            obrancePortret = DejPortret(souboj.Obrance.Pohlavi, souboj.Obrance.Trida);
+            utocnikPortret = SpravceMedii.DejPortret(souboj.Utocnik.Pohlavi, souboj.Utocnik.Trida);
+            obrancePortret = SpravceMedii.DejPortret(souboj.Obrance.Pohlavi, souboj.Obrance.Trida);
             spriteBatch.Begin();
             //sprites
-            spriteBatch.Draw(plocha, new Vector2(200, 0), Color.White);
+            spriteBatch.Draw(SpravceMedii.Plocha, new Vector2(200, 0), Color.White);
             if (oznaceniUtocnik)
             {
-                spriteBatch.Draw(panel, new Vector2(0, 0), Color.White);
-                spriteBatch.Draw(panel, new Vector2(600, 0), Color.LightGray);
+                spriteBatch.Draw(SpravceMedii.Panel, new Vector2(0, 0), Color.White);
+                spriteBatch.Draw(SpravceMedii.Panel, new Vector2(600, 0), Color.LightGray);
                 spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.White);
                 spriteBatch.Draw(obrancePortret, new Rectangle(605, 37, 190, 190), Color.LightGray);
             }
             else
             {
-                spriteBatch.Draw(panel, new Vector2(0, 0), Color.LightGray);
-                spriteBatch.Draw(panel, new Vector2(600, 0), Color.White);
+                spriteBatch.Draw(SpravceMedii.Panel, new Vector2(0, 0), Color.LightGray);
+                spriteBatch.Draw(SpravceMedii.Panel, new Vector2(600, 0), Color.White);
                 spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.LightGray);
                 spriteBatch.Draw(obrancePortret, new Rectangle(605, 37, 190, 190), Color.White);
             }
             //text
             //portret
-            delkaU = fontNadpis.MeasureString(souboj.Utocnik.Name);
-            spriteBatch.DrawString(fontNadpis, souboj.Utocnik.Name, new Vector2(100 - delkaU.X / 2, 20 - delkaU.Y / 2), Color.Black);
-            delkaO = fontNadpis.MeasureString(souboj.Obrance.Name);
-            spriteBatch.DrawString(fontNadpis, souboj.Obrance.Name, new Vector2(700 - delkaO.X / 2, 20 - delkaO.Y / 2), Color.Black);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(souboj.Utocnik.Name);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, souboj.Utocnik.Name, new Vector2(100 - delkaU.X / 2, 20 - delkaU.Y / 2), Color.Black);
+            delkaO = SpravceMedii.FontNadpis.MeasureString(souboj.Obrance.Name);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, souboj.Obrance.Name, new Vector2(700 - delkaO.X / 2, 20 - delkaO.Y / 2), Color.Black);
             //trida
-            delkaU = fontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi));
-            spriteBatch.DrawString(fontNadpis, PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 245 - delkaU.Y / 2), Color.Black);
-            delkaO = fontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi));
-            spriteBatch.DrawString(fontNadpis, PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi), new Vector2(700 - delkaO.X / 2, 245 - delkaO.Y / 2), Color.Black);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 245 - delkaU.Y / 2), Color.Black);
+            delkaO = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi), new Vector2(700 - delkaO.X / 2, 245 - delkaO.Y / 2), Color.Black);
             //Pohlavi                    
-            delkaU = fontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi));
-            spriteBatch.DrawString(fontNadpis, PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 280 - delkaU.Y / 2), Color.Black);
-            delkaO = fontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi));
-            spriteBatch.DrawString(fontNadpis, PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi), new Vector2(700 - delkaO.X / 2, 280 - delkaO.Y / 2), Color.Black);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 280 - delkaU.Y / 2), Color.Black);
+            delkaO = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi), new Vector2(700 - delkaO.X / 2, 280 - delkaO.Y / 2), Color.Black);
             //Level
-            spriteBatch.DrawString(fontText, "Level: " + souboj.Utocnik.Level, new Vector2(20, 300), Color.Black);
-            spriteBatch.DrawString(fontText, "Level: " + souboj.Obrance.Level, new Vector2(620, 300), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + souboj.Utocnik.Level, new Vector2(20, 300), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + souboj.Obrance.Level, new Vector2(620, 300), Color.Black);
             //Zkusenosti
-            spriteBatch.DrawString(fontText, "Zkušenosti: " + souboj.Utocnik.Zkusenosti + "/" + souboj.Utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Utocnik.Zkusenosti + "/" + souboj.Utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
             if (souboj.Obrance.Majitel == Majitel.Hrac)
-                spriteBatch.DrawString(fontText, "Zkušenosti: " + souboj.Obrance.Zkusenosti + "/" + souboj.Obrance.ZkusenostiNext, new Vector2(620, 320), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Obrance.Zkusenosti + "/" + souboj.Obrance.ZkusenostiNext, new Vector2(620, 320), Color.Black);
             //Zivoty
-            spriteBatch.DrawString(fontText, "Životy: " + souboj.Utocnik.Zivoty + "/" + souboj.Utocnik.ZivotyMax, new Vector2(20, 350), Color.Black);
-            spriteBatch.DrawString(fontText, "Životy: " + souboj.Obrance.Zivoty + "/" + souboj.Obrance.ZivotyMax, new Vector2(620, 350), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + souboj.Utocnik.Zivoty + "/" + souboj.Utocnik.ZivotyMax, new Vector2(20, 350), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + souboj.Obrance.Zivoty + "/" + souboj.Obrance.ZivotyMax, new Vector2(620, 350), Color.Black);
             //Mana
-            spriteBatch.DrawString(fontText, "Mana: " + souboj.Utocnik.Mana + "/" + souboj.Utocnik.ManaMax, new Vector2(20, 370), Color.Black);
-            spriteBatch.DrawString(fontText, "Mana: " + souboj.Obrance.Mana + "/" + souboj.Obrance.ManaMax, new Vector2(620, 370), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + souboj.Utocnik.Mana + "/" + souboj.Utocnik.ManaMax, new Vector2(20, 370), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + souboj.Obrance.Mana + "/" + souboj.Obrance.ManaMax, new Vector2(620, 370), Color.Black);
             //Sila
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 400), Color.Red);
-            else spriteBatch.DrawString(fontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 400), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 400), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 400), Color.Black);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 400), Color.Red);
-            else spriteBatch.DrawString(fontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 400), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 400), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 400), Color.Black);
             //Obratnost
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 420), Color.Red);
-            else spriteBatch.DrawString(fontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 420), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 420), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 420), Color.Black);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 420), Color.Red);
-            else spriteBatch.DrawString(fontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 420), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 420), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 420), Color.Black);
             //Inteligence
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 440), Color.Red);
-            else spriteBatch.DrawString(fontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 440), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 440), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 440), Color.Black);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 440), Color.Red);
-            else spriteBatch.DrawString(fontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 440), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 440), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 440), Color.Black);
             //Brneni
-            spriteBatch.DrawString(fontText, "Brnění: " + souboj.Utocnik.Brneni, new Vector2(20, 460), Color.Black);
-            spriteBatch.DrawString(fontText, "Brnění: " + souboj.Obrance.Brneni, new Vector2(620, 460), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + souboj.Utocnik.Brneni, new Vector2(20, 460), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + souboj.Obrance.Brneni, new Vector2(620, 460), Color.Black);
             //Efekty
             //Pokřik, Rychlost, Magické soustředění
             if (souboj.EfektyUtocnika.Pokrik > 0)
-                spriteBatch.DrawString(fontText, "Pokřik [" + souboj.EfektyUtocnika.Pokrik + "]", new Vector2(20, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Pokřik [" + souboj.EfektyUtocnika.Pokrik + "]", new Vector2(20, 490), Color.Red);
             if (souboj.EfektyObrance.Pokrik > 0)
-                spriteBatch.DrawString(fontText, "Pokřik [" + souboj.EfektyObrance.Pokrik + "]", new Vector2(620, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Pokřik [" + souboj.EfektyObrance.Pokrik + "]", new Vector2(620, 490), Color.Red);
             if (souboj.EfektyUtocnika.Rychlost > 0)
-                spriteBatch.DrawString(fontText, "Rychlost [" + souboj.EfektyUtocnika.Rychlost + "]", new Vector2(20, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Rychlost [" + souboj.EfektyUtocnika.Rychlost + "]", new Vector2(20, 490), Color.Red);
             if (souboj.EfektyObrance.Rychlost > 0)
-                spriteBatch.DrawString(fontText, "Rychlost [" + souboj.EfektyObrance.Rychlost + "]", new Vector2(620, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Rychlost [" + souboj.EfektyObrance.Rychlost + "]", new Vector2(620, 490), Color.Red);
             if (souboj.EfektyUtocnika.Soustredeni > 0)
-                spriteBatch.DrawString(fontText, "Soustředění [" + souboj.EfektyUtocnika.Soustredeni + "]", new Vector2(20, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Soustředění [" + souboj.EfektyUtocnika.Soustredeni + "]", new Vector2(20, 490), Color.Red);
             if (souboj.EfektyObrance.Soustredeni > 0)
-                spriteBatch.DrawString(fontText, "Soustředění [" + souboj.EfektyObrance.Soustredeni + "]", new Vector2(620, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Soustředění [" + souboj.EfektyObrance.Soustredeni + "]", new Vector2(620, 490), Color.Red);
             //Hoří, krvácí, jed
             if (souboj.EfektyUtocnika.Horeni > 0)
-                spriteBatch.DrawString(fontText, "Hoří [" + souboj.EfektyUtocnika.Horeni + "]", new Vector2(20, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Hoří [" + souboj.EfektyUtocnika.Horeni + "]", new Vector2(20, 510), Color.Red);
             if (souboj.EfektyObrance.Horeni > 0)
-                spriteBatch.DrawString(fontText, "Hoří [" + souboj.EfektyObrance.Horeni + "]", new Vector2(620, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Hoří [" + souboj.EfektyObrance.Horeni + "]", new Vector2(620, 510), Color.Red);
             if (souboj.EfektyUtocnika.Krvaceni > 0)
-                spriteBatch.DrawString(fontText, "Krvácí [" + souboj.EfektyUtocnika.Krvaceni + "]", new Vector2(20, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Krvácí [" + souboj.EfektyUtocnika.Krvaceni + "]", new Vector2(20, 510), Color.Red);
             if (souboj.EfektyObrance.Krvaceni > 0)
-                spriteBatch.DrawString(fontText, "Krvácí [" + souboj.EfektyObrance.Krvaceni + "]", new Vector2(620, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Krvácí [" + souboj.EfektyObrance.Krvaceni + "]", new Vector2(620, 510), Color.Red);
             if (souboj.EfektyUtocnika.Jed > 0)
-                spriteBatch.DrawString(fontText, "Jed [" + souboj.EfektyUtocnika.Jed + "]", new Vector2(20, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Jed [" + souboj.EfektyUtocnika.Jed + "]", new Vector2(20, 510), Color.Red);
             if (souboj.EfektyObrance.Jed > 0)
-                spriteBatch.DrawString(fontText, "Jed [" + souboj.EfektyObrance.Jed + "]", new Vector2(620, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Jed [" + souboj.EfektyObrance.Jed + "]", new Vector2(620, 510), Color.Red);
             //Mrzne, omráčený
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Mrzne [" + souboj.EfektyUtocnika.Mraz + "]", new Vector2(20, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Mrzne [" + souboj.EfektyUtocnika.Mraz + "]", new Vector2(20, 530), Color.Red);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(fontText, "Mrzne [" + souboj.EfektyObrance.Mraz + "]", new Vector2(620, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Mrzne [" + souboj.EfektyObrance.Mraz + "]", new Vector2(620, 530), Color.Red);
             if (souboj.EfektyUtocnika.Omraceni > 0)
-                spriteBatch.DrawString(fontText, "Omráčený [" + souboj.EfektyUtocnika.Omraceni + "]", new Vector2(20, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Omráčený [" + souboj.EfektyUtocnika.Omraceni + "]", new Vector2(20, 530), Color.Red);
             if (souboj.EfektyObrance.Omraceni > 0)
-                spriteBatch.DrawString(fontText, "Omráčený [" + souboj.EfektyObrance.Omraceni + "]", new Vector2(620, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Omráčený [" + souboj.EfektyObrance.Omraceni + "]", new Vector2(620, 530), Color.Red);
             //MessageBox
-            spriteBatch.Draw(prazdnaTexturaCerna, new Rectangle(0, 550, 800, 50), Color.Black);
-            delkaU = fontText.MeasureString(messagePrvni);
-            spriteBatch.DrawString(fontText, messagePrvni, new Vector2(400 - delkaU.X / 2, 563 - delkaU.Y / 2), Color.White);
-            delkaO = fontText.MeasureString(messageDruhy);
-            spriteBatch.DrawString(fontText, messageDruhy, new Vector2(400 - delkaO.X / 2, 588 - delkaO.Y / 2), Color.White);
-            delkaU = fontNadpis.MeasureString(messageKolo);
-            spriteBatch.DrawString(fontNadpis, messageKolo, new Vector2(400 - delkaU.X / 2, 100 - delkaU.Y / 2), Color.White);
+            spriteBatch.Draw(SpravceMedii.PrazdnaTexturaCerna, new Rectangle(0, 550, 800, 50), Color.Black);
+            delkaU = SpravceMedii.FontText.MeasureString(messagePrvni);
+            spriteBatch.DrawString(SpravceMedii.FontText, messagePrvni, new Vector2(400 - delkaU.X / 2, 563 - delkaU.Y / 2), Color.White);
+            delkaO = SpravceMedii.FontText.MeasureString(messageDruhy);
+            spriteBatch.DrawString(SpravceMedii.FontText, messageDruhy, new Vector2(400 - delkaO.X / 2, 588 - delkaO.Y / 2), Color.White);
+            delkaU = SpravceMedii.FontNadpis.MeasureString(messageKolo);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, messageKolo, new Vector2(400 - delkaU.X / 2, 100 - delkaU.Y / 2), Color.White);
             //Buttons
             if (faze == Faze.VyberPrvni || faze == Faze.VyberDruhy)
             {
@@ -1330,32 +1290,8 @@ namespace Zacarovany_les
                 }
             }
             //Test
-            //spriteBatch.DrawString(fontText, souboj.EfektyUtocnika.Postava.Inteligence.ToString()+" "+souboj.EfektyUtocnika.PuvodniIntelekt.ToString(), new Vector2(400, 300), Color.White);
+            //spriteBatch.DrawString(SpravceMedii.FontText, souboj.EfektyUtocnika.Postava.Inteligence.ToString()+" "+souboj.EfektyUtocnika.PuvodniIntelekt.ToString(), new Vector2(400, 300), Color.White);
             spriteBatch.End();
-        }
-        protected Texture2D DejPortret(Pohlavi pohlavi, Trida trida)
-        {
-            switch (pohlavi)
-            {
-                case Pohlavi.Muz:
-                    switch (trida)
-                    {
-                        case Trida.Bojovnik: return valecnik;
-                        case Trida.Lucistnik: return lucistnik;
-                        case Trida.Kouzelnik: return kouzelnik;
-
-                    }
-                    break;
-                case Pohlavi.Zena:
-                    switch (trida)
-                    {
-                        case Trida.Bojovnik: return valecnice;
-                        case Trida.Lucistnik: return lucistnice;
-                        case Trida.Kouzelnik: return kouzelnice;
-                    }
-                    break;
-            }
-            return null;
         }
 
         protected Schopnost VyberSchopnostAI(Postava pocitac, Schopnost souperSch, Postava souper)

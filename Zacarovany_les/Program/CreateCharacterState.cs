@@ -15,10 +15,8 @@ namespace Zacarovany_les
     enum Otazky { PRVNI, DRUHA, TRETI, CTVRTA }
     public class CreateCharacterState : State
     {
-        //Hudba
-        Song createMusic;
-        //Zvuk
-        SoundEffect click;
+        //spravce medii
+        public SpravceMedii SpravceMedii;
         //promenne
         Pohlavi pohlavi;
         Minulost minulost;
@@ -30,11 +28,6 @@ namespace Zacarovany_les
         string text2;
         string text3;
         string text4;
-        //Fonty
-        SpriteFont fontNadpis;
-        SpriteFont fontText;
-        //Textures
-        Texture2D prazdnaTextura;
         //Buttons
         Button option1;
         Button option2;
@@ -49,27 +42,22 @@ namespace Zacarovany_les
 
         public override void LoadContent()
         {
-            //Music
-            createMusic = _content.Load<Song>("Music\\createmusic");
+            //spravce medii
+            SpravceMedii = ZacarovanyLes.spravceMedii;
             //Promenne
             otazky = Otazky.PRVNI;
-            //Sound
-            click = _content.Load<SoundEffect>("Sound\\click");
-            //Fonty
-            fontNadpis = _content.Load<SpriteFont>("Fonts\\Nadpis");
-            fontText = _content.Load<SpriteFont>("Fonts\\Text");
             //Textury
-            prazdnaTextura = new Texture2D(_game.GraphicsDevice, 1, 1);
-            prazdnaTextura.SetData(new Color[] { Color.White });
+            SpravceMedii.PrazdnaTexturaBila = new Texture2D(_game.GraphicsDevice, 1, 1);
+            SpravceMedii.PrazdnaTexturaBila.SetData(new Color[] { Color.White });
 
             //Buttons
-            option1 = new Button(fontNadpis, new Vector2(100, 300), prazdnaTextura, 150, 40);
+            option1 = new Button(SpravceMedii.FontNadpis, new Vector2(100, 300), SpravceMedii.PrazdnaTexturaBila, 150, 40);
             option1.Click += option1Handler;
-            option2 = new Button(fontNadpis, new Vector2(325, 300), prazdnaTextura, 150, 40);
+            option2 = new Button(SpravceMedii.FontNadpis, new Vector2(325, 300), SpravceMedii.PrazdnaTexturaBila, 150, 40);
             option2.Click += option2Handler;
-            option3 = new Button(fontNadpis, new Vector2(550, 300), prazdnaTextura, 150, 40);
+            option3 = new Button(SpravceMedii.FontNadpis, new Vector2(550, 300), SpravceMedii.PrazdnaTexturaBila, 150, 40);
             option3.Click += option3Handler;
-            MediaPlayer.Play(createMusic);
+            MediaPlayer.Play(SpravceMedii.CreateMusic);
             MediaPlayer.IsRepeating = true;
         }
 
@@ -175,27 +163,27 @@ namespace Zacarovany_les
         {
 
             _game.GraphicsDevice.Clear(Color.Black);
-            Vector2 velikost = fontNadpis.MeasureString(message);
+            Vector2 velikost = SpravceMedii.FontNadpis.MeasureString(message);
             spriteBatch.Begin();
-            spriteBatch.DrawString(fontNadpis, message, new Vector2(400 - velikost.X / 2, 200 - velikost.Y / 2), Color.White);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, message, new Vector2(400 - velikost.X / 2, 200 - velikost.Y / 2), Color.White);
             option1.Draw(gameTime, spriteBatch);
             option2.Draw(gameTime, spriteBatch);
             option3.Draw(gameTime, spriteBatch);
-            velikost = fontNadpis.MeasureString(text1);
-            spriteBatch.DrawString(fontNadpis, text1, new Vector2(400 - velikost.X / 2, 400 - velikost.Y / 2), Color.Green);
-            velikost = fontNadpis.MeasureString(text2);
-            spriteBatch.DrawString(fontNadpis, text2, new Vector2(400 - velikost.X / 2, 450 - velikost.Y / 2), Color.Green);
-            velikost = fontNadpis.MeasureString(text3);
-            spriteBatch.DrawString(fontNadpis, text3, new Vector2(400 - velikost.X / 2, 500 - velikost.Y / 2), Color.Red);
-            velikost = fontNadpis.MeasureString(text4);
-            spriteBatch.DrawString(fontNadpis, text4, new Vector2(400 - velikost.X / 2, 550 - velikost.Y / 2), Color.Red);
+            velikost = SpravceMedii.FontNadpis.MeasureString(text1);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, text1, new Vector2(400 - velikost.X / 2, 400 - velikost.Y / 2), Color.Green);
+            velikost = SpravceMedii.FontNadpis.MeasureString(text2);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, text2, new Vector2(400 - velikost.X / 2, 450 - velikost.Y / 2), Color.Green);
+            velikost = SpravceMedii.FontNadpis.MeasureString(text3);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, text3, new Vector2(400 - velikost.X / 2, 500 - velikost.Y / 2), Color.Red);
+            velikost = SpravceMedii.FontNadpis.MeasureString(text4);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, text4, new Vector2(400 - velikost.X / 2, 550 - velikost.Y / 2), Color.Red);
 
             spriteBatch.End();
         }
 
         private void option1Handler(object sender, EventArgs args)
         {
-            click.Play();
+            SpravceMedii.Click.Play();
             switch (otazky)
             {
                 case Otazky.PRVNI:
@@ -216,7 +204,7 @@ namespace Zacarovany_les
         }
         private void option2Handler(object sender, EventArgs args)
         {
-            click.Play();
+            SpravceMedii.Click.Play();
             switch (otazky)
             {
                 case Otazky.PRVNI:
@@ -236,7 +224,7 @@ namespace Zacarovany_les
         }
         private void option3Handler(object sender, EventArgs args)
         {
-            click.Play();
+            SpravceMedii.Click.Play();
             switch (otazky)
             {
                 case Otazky.PRVNI:

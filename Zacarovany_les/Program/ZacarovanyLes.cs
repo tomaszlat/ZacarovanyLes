@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Linq;
-using System.Collections.Generic;
 using Zacarovany_les.Classes;
-using Zacarovany_les.Classes.Interface;
 using Zacarovany_les.Classes.Pomocne;
 using System;
-using System.Diagnostics;
 using Zacarovany_les.Classes.Mapy;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
 namespace Zacarovany_les
@@ -21,8 +16,8 @@ namespace Zacarovany_les
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         //States
-        private State _currentState;
-        private State _nextState;
+        public State CurrentState;
+        public State NextState;
         //States-
         public static ZacarovanyLes game;
         public static ContentManager content; 
@@ -41,10 +36,9 @@ namespace Zacarovany_les
         public static bool keyDelayed = false;
         public static KeyboardState oldState;
         public static KeyboardState newState;
-        //Music
-        Song menuMusic;
-        Song mapMusic;
-        Song battleMusic;
+
+        //Spravce Medii
+        public static SpravceMedii spravceMedii;
 
 
 
@@ -58,14 +52,11 @@ namespace Zacarovany_les
             TargetElapsedTime = TimeSpan.FromMilliseconds(20);
             game = this;
             content = Content;
-            //gameState = new GameState(this, Content);
-            //mapState = new MenuState(this, Content);
             menuState = new MenuState(this, Content);
 
         }
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             _graphics.IsFullScreen = false;
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 600;
@@ -75,21 +66,17 @@ namespace Zacarovany_les
 
         protected override void LoadContent()
         {
+            spravceMedii = new SpravceMedii(this, Content);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _currentState = menuState;
-            _currentState.LoadContent();
-            _nextState = null;
-            menuMusic = Content.Load<Song>("Music\\intromusic");
-            mapMusic = Content.Load<Song>("Music\\mapmusic");
-            battleMusic = Content.Load<Song>("Music\\battlemusic");
-            MediaPlayer.Volume = 0.2f;
-            MediaPlayer.IsRepeating = true;
+            CurrentState = menuState;
+            CurrentState.LoadContent();
+            NextState = null;
             //button.Visible = false;
         }
 
         protected override void Update(GameTime gameTime)
         {
-            MusicPlayer(gameTime);
+            spravceMedii.MusicPlayer();
             newState = Keyboard.GetState();
             if (delay > 0)
                 delay -= gameTime.ElapsedGameTime.TotalSeconds;
@@ -98,15 +85,15 @@ namespace Zacarovany_les
                 keyDelay -= gameTime.ElapsedGameTime.TotalSeconds;
             else keyDelayed = false;
 
-            if (_nextState != null)
+            if (NextState != null)
             {
-                _currentState = _nextState;
-                _currentState.LoadContent();
-                _nextState = null;
+                CurrentState = NextState;
+                CurrentState.LoadContent();
+                NextState = null;
                 MediaPlayer.Stop();
             }
-            _currentState.Update(gameTime);
-            _currentState.PostUpdate(gameTime);
+            CurrentState.Update(gameTime);
+            CurrentState.PostUpdate(gameTime);
             oldState = newState;
 
             if (newState.IsKeyDown(Keys.F9) && (!keyDelayed || oldState.IsKeyUp(Keys.F9)))
@@ -122,35 +109,18 @@ namespace Zacarovany_les
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSeaGreen);
-            _currentState.Draw(gameTime, _spriteBatch);
+            CurrentState.Draw(gameTime, _spriteBatch);
             base.Draw(gameTime);
         }
         public void ChangeState(State state)
         {
-            _nextState = state;
+            NextState = state;
         }
         public void ChangeCurrentState(State state)
         {
 
-            _currentState = state;
+            CurrentState = state;
             MediaPlayer.Stop();
-        }
-        private void MusicPlayer(GameTime update)
-        {
-            if (_currentState == menuState && MediaPlayer.State != MediaState.Playing)
-            {
-                MediaPlayer.Play(menuMusic);
-
-            }
-            if (_currentState == mapState && MediaPlayer.State != MediaState.Playing)
-            {
-                MediaPlayer.Play(mapMusic);
-
-            }
-            if (_currentState == gameState && MediaPlayer.State!=MediaState.Playing)
-            {
-                MediaPlayer.Play(battleMusic);
-            }
         }
     }
 }
