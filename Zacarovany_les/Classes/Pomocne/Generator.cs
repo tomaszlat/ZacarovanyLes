@@ -20,8 +20,12 @@ namespace Zacarovany_les.Classes
 
         public static Postava DejTezkehoSoupere(Postava hrac)
         {
+            Random random = new Random();
             int level = hrac.Level < 5 ? 5 : hrac.Level;
-            return DejSoupere(level, Majitel.Pocitac_Tezky);
+            Postava postava = DejSoupere(level, Majitel.Pocitac_Tezky);
+            postava.Inventar.LahvickyZdravi = random.Next(random.Next(2));
+            postava.Inventar.LahvickyMany = random.Next(random.Next(2));
+            return postava;
         }
         public static Postava DejSoupere(int level, Majitel maj)
         {
@@ -33,14 +37,7 @@ namespace Zacarovany_les.Classes
             random = rand.Next(0, 3);
             Minulost min = (Minulost)random;
 
-            if (pohl == Pohlavi.Muz)
-            {
-                return new Postava(trida, pohl, min, new Inventar(1, 1), maj, level, DejJmeno(Pohlavi.Muz));
-            }
-            else
-            {
-                return new Postava(trida, pohl, min, new Inventar(1, 1), maj, level, DejJmeno(Pohlavi.Zena));
-            }
+            return new Postava(trida, pohl, min, new Inventar(0, 0), maj, level, DejJmeno(pohl));
 
         }
         public static string DejJmeno(Pohlavi pohlavi)

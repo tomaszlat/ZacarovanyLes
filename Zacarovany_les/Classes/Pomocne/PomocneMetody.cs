@@ -143,7 +143,7 @@ namespace Zacarovany_les.Classes.Pomocne
             }
         }
 
-        public static void NastavButton(Efekty efekty, Button butt, Schopnost sch, Postava pos, int x, int y, int width, int height, SpriteFont font, Texture2D texture, Color buttonCol, Color textCol)
+        public static void NastavButtonSchopnosti(Efekty efekty, Button butt, Schopnost sch, Postava pos, int x, int y, int width, int height, SpriteFont font, Texture2D texture, Color buttonCol, Color textCol)
         {
             string text = SchopnostToString(sch.Druh);
             switch (sch.Druh)
