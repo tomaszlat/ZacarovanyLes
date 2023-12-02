@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Zacarovany_les.Classes.Pomocne
 {
-    internal class PoskozeniArg : EventArgs
+    public class PoskozeniArg : EventArgs
     {
         public int Poskozeni { get; }
 

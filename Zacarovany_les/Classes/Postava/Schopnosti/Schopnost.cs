@@ -100,5 +100,13 @@ namespace Zacarovany_les.Classes
             CenaMany = cenaMany;
             Magicka = magicka;
         }
+
+        public void ZhodnotSchopnost()
+        {
+            if (Cd > 0)
+            {
+                Cd--;
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace Zacarovany_les
         Button buttonEndGame;
         public MenuState(ZacarovanyLes game, ContentManager content) : base(game, content)
         {
-            
+
         }
 
         public override void LoadContent()
@@ -37,25 +37,32 @@ namespace Zacarovany_les
             SpravceMedii = ZacarovanyLes.spravceMedii;
 
             //tlacitka
-            buttonNewGame = new Button(SpravceMedii.FontText, new Vector2(275, 200),SpravceMedii.ButtonNovaHra,250,75,Color.White);
-            buttonNewGame.Animated = false;
+            buttonNewGame = new Button(SpravceMedii.FontText, new Vector2(275, 200), SpravceMedii.ButtonNovaHra, 250, 75, Color.White)
+            {
+                Animated = false
+            };
             buttonNewGame.Click += ButtonNewGameClickedHandler;
-            button1v1 = new Button(SpravceMedii.FontText, new Vector2(275, 300), SpravceMedii.Button1v1, 250, 75, Color.White);
-            button1v1.Animated = false;
+            button1v1 = new Button(SpravceMedii.FontText, new Vector2(275, 300), SpravceMedii.Button1v1, 250, 75, Color.White)
+            {
+                Animated = false
+            };
             button1v1.Click += Button1v1ClickedHandler;
-            buttonEndGame = new Button(SpravceMedii.FontText, new Vector2(275, 400), SpravceMedii.ButtonKonec, 250, 75, Color.White);
-            buttonEndGame.Animated = false;
+            buttonEndGame = new Button(SpravceMedii.FontText, new Vector2(275, 400), SpravceMedii.ButtonKonec, 250, 75, Color.White)
+            {
+                Animated = false
+            };
             buttonEndGame.Click += ButtonEndGameClickedHandler;
         }
 
 
 
-        public override void Update(GameTime gameTime) {
+        public override void Update(GameTime gameTime)
+        {
             if (gameTime.TotalGameTime.TotalSeconds > 5)
             {
                 isIntro = false;
             }
-            if(!isIntro)
+            if (!isIntro)
             {
                 buttonNewGame.Update(gameTime);
                 button1v1.Update(gameTime);
@@ -70,19 +77,19 @@ namespace Zacarovany_les
                 if (ZacarovanyLes.gameState != null)
                 {
                     _game.ChangeCurrentState(ZacarovanyLes.gameState);
-                } 
+                }
                 else if (ZacarovanyLes.mapState != null)
                 {
                     _game.ChangeState(ZacarovanyLes.mapState);
-                    
+
                 }
                 else
                 {
                     _game.Exit();
                 }
-                
+
             }
-                
+
         }
         public override void PostUpdate(GameTime gameTime)
         {
@@ -99,7 +106,7 @@ namespace Zacarovany_les
             else
             {
                 spriteBatch.Draw(SpravceMedii.HlavniMenu, new Rectangle(0, 0, 800, 600), Color.White);
-                buttonNewGame.Draw(gameTime,spriteBatch);
+                buttonNewGame.Draw(gameTime, spriteBatch);
                 button1v1.Draw(gameTime, spriteBatch);
                 buttonEndGame.Draw(gameTime, spriteBatch);
 
@@ -114,21 +121,53 @@ namespace Zacarovany_les
             int cislomapy = 1;
             string mapa = "Maps\\mapa";
             List<Map> maps = new List<Map>();
+            int vyskytHracu = 0;
             while (File.Exists(mapa + cislomapy + ".csv"))
             {
-                string[] lines = File.ReadAllLines(mapa + cislomapy + ".csv");
-                Objekt[,] objekty = new Objekt[12, 12];
-                int i = 0, j = 0;
-                Vector2 pozice = new Vector2();
-                bool neniHrac = true;
-                foreach (string line in lines)
+                string[] radky = new string[12];
+                try
                 {
-                    string[] col = line.Split(';');
-                    Objekt objekt;
-                    foreach (string s in col)
+                    string[] radkyZeSouboru = File.ReadAllLines(mapa + cislomapy + ".csv");
+                    for (int i = 0; i < radky.Length; i++)
                     {
-                        Vector2 pos = new Vector2(i, j);
-                        switch (s)
+                        if (i <= radkyZeSouboru.Length - 1)
+                            radky[i] = radkyZeSouboru[i];
+                        else
+                            radky[i] = "0";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("RadkyMapy" + ex.Message);
+                }
+
+                Objekt[,] objekty = new Objekt[12, 12];
+                Vector2 pozice = new Vector2();
+                bool jeHrac = false;
+
+                for (int i = 0; i < 12; i++)
+                {
+                    string[] sloupce = new string[12];
+
+                    try
+                    {
+                        string[] sloupceZeSouboru = radky[i].Split(';');
+                        for (int k = 0; k < sloupce.Length; k++)
+                        {
+                            if (k <= sloupceZeSouboru.Length - 1)
+                                sloupce[k] = sloupceZeSouboru[k];
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("SloupceMapy: " + ex.Message);
+                    }
+
+                    for (int j = 0; j < 12; j++)
+                    {
+                        Objekt objekt;
+                        Vector2 pos = new Vector2(j, i);
+                        switch (sloupce[j])
                         {
                             case "0":
                                 objekt = new Trava(pos, SpravceMedii.Trava);
@@ -140,11 +179,12 @@ namespace Zacarovany_les
                                 objekt = new Strom(pos, SpravceMedii.Strom);
                                 break;
                             case "3":
-                                if (neniHrac)
+                                if (!jeHrac)
                                 {
-                                    objekt = new Hrac(pos, SpravceMedii.PostavaDolu);
+                                    objekt = new Hrac(pos,SpravceMedii.Trava,pos, SpravceMedii.PostavaDolu);
                                     pozice = pos;
-                                    neniHrac = false;
+                                    jeHrac = true;
+                                    vyskytHracu++;
                                     break;
                                 }
                                 objekt = new Trava(pos, SpravceMedii.Trava);
@@ -178,24 +218,20 @@ namespace Zacarovany_les
                                 break;
                         }
 
-                        objekty[i, j] = objekt;
-                        i++;
-                        if (i > 11)
-                        {
-                            i = 0;
-                            j++;
-                        }
-                        if (j == 12)
-                            break;
+                        objekty[j, i] = objekt;
                     }
                 }
+
                 Map map = new Map(objekty, pozice);
                 maps.Add(map);
                 cislomapy++;
             }
-            ZacarovanyLes.maps = new MapManager(maps);
+            if (maps.Count > 0 && vyskytHracu == maps.Count)
+            {
+                ZacarovanyLes.maps = new MapManager(maps);
+                _game.ChangeState(new CreateCharacterState(_game, _content));
+            }
 
-            _game.ChangeState(new CreateCharacterState(_game, _content));
         }
         private void Button1v1ClickedHandler(object sender, EventArgs args)
         {

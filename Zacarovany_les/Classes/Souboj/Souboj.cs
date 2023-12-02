@@ -33,8 +33,8 @@ namespace Zacarovany_les.Classes
             {
                 ZacinaUtocnik = false;
             }
-            EfektyUtocnika = new Efekty(utocnik);
-            EfektyObrance = new Efekty(obrance);
+            EfektyUtocnika = utocnik.Efekty;
+            EfektyObrance = obrance.Efekty;
         }
         public string EfektyPrvni(ref bool efekt, SpravceMedii spravceMedii)
         {
@@ -172,13 +172,13 @@ namespace Zacarovany_les.Classes
         }
         public string UtokPrvniSchopnosti(Schopnost vybranaSouper, ref Schopnost vybranaHrajici, SpravceMedii spravceMedii)
         {
-            string messagePrvni = "";
             Efekty efektyHrajici = Hrajici == Utocnik ? EfektyUtocnika : EfektyObrance;
+            string messagePrvni;
             if (efektyHrajici.Omraceni == 0)
             {
                 Efekty efektySouper = Souper == Utocnik ? EfektyUtocnika : EfektyObrance;
 
-                bool rychlost = ((efektySouper.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektySouper.Rychlost * 6.0 / 4.0))) ? true : false;
+                bool rychlost = ((efektySouper.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektySouper.Rychlost * 6.0 / 4.0)));
                 int poskozeni = Hrajici.PouzijSchopnost(vybranaHrajici.Druh);
                 int mana = 0;
 
@@ -244,7 +244,7 @@ namespace Zacarovany_les.Classes
                     spravceMedii.Regen.Play();
                     if (efektyHrajici.Pokrik > 0)
                     {
-                        poskozeni = poskozeni * 2;
+                        poskozeni *= 2;
                     }
                     if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
                     {
@@ -331,7 +331,6 @@ namespace Zacarovany_les.Classes
                     {
                         spravceMedii.Frostbolt.Play();
                         efektySouper.Mraz += 2;
-                        efektySouper.AktivujMraz();
                     }
                     else if (vybranaHrajici.Druh == Druh.Vrh_sekerou)
                     {
@@ -366,7 +365,7 @@ namespace Zacarovany_les.Classes
 
                     if (efektyHrajici.Pokrik > 0)
                     {
-                        poskozeni = poskozeni * 2;
+                        poskozeni *= 2;
                     }
                     int skPosk;
                     if (Hrajici == Utocnik)
@@ -434,12 +433,12 @@ namespace Zacarovany_les.Classes
         }
         public string UtokDruheSchopnosti(ref Schopnost vybranaSouper, Schopnost vybranaHrajici, SpravceMedii spravceMedii)
         {
-            string messageDruhy = "";
             Efekty efektySouper = Souper == Utocnik ? EfektyUtocnika : EfektyObrance;
+            string messageDruhy;
             if (efektySouper.Omraceni == 0)
             {
                 Efekty efektyHrajici = Hrajici == Utocnik ? EfektyUtocnika : EfektyObrance;
-                bool rychlost = ((efektyHrajici.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektyHrajici.Rychlost * 6.0 / 4.0))) ? true : false;
+                bool rychlost = ((efektyHrajici.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektyHrajici.Rychlost * 6.0 / 4.0)));
                 int poskozeni = Souper.PouzijSchopnost(vybranaSouper.Druh);
                 int mana = 0;
 
@@ -507,7 +506,7 @@ namespace Zacarovany_les.Classes
                     spravceMedii.Regen.Play();
                     if (efektySouper.Pokrik > 0)
                     {
-                        poskozeni = poskozeni * 2;
+                        poskozeni *= 2;
                     }
                     if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
                     {
@@ -593,7 +592,6 @@ namespace Zacarovany_les.Classes
                     {
                         spravceMedii.Frostbolt.Play();
                         efektyHrajici.Mraz += 2;
-                        efektyHrajici.AktivujMraz();
                     }
                     else if (vybranaSouper.Druh == Druh.Vrh_sekerou)
                     {
@@ -627,7 +625,7 @@ namespace Zacarovany_les.Classes
 
                     if (efektySouper.Pokrik > 0)
                     {
-                        poskozeni = poskozeni * 2;
+                        poskozeni *= 2;
                     }
                     int skPosk;
                     if (Souper == Utocnik)

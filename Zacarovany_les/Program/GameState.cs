@@ -243,7 +243,7 @@ namespace Zacarovany_les
                 case Faze.EfektyPrvni:
                     if (!ZacarovanyLes.delayed)
                     {
-                        oznaceniUtocnik = hrajici == souboj.Utocnik ? true : false;
+                        oznaceniUtocnik = hrajici == souboj.Utocnik;
                         messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + hrajici.Name;
                         //Efekty efektyHrajici = hrajici == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
@@ -261,7 +261,7 @@ namespace Zacarovany_les
                 case Faze.EfektyDruhy:
                     if (!ZacarovanyLes.delayed)
                     {
-                        oznaceniUtocnik = souper == souboj.Utocnik ? true : false;
+                        oznaceniUtocnik = souper == souboj.Utocnik;
                         messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + souper.Name;
                         //Efekty efektySouper = souper == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
@@ -310,7 +310,7 @@ namespace Zacarovany_les
                         messagePrvni = "";
                         messageDruhy = "";
                         messageKolo = souboj.PocetKol + ". kolo, začíná ho " + hrajici.Name;
-                        oznaceniUtocnik = hrajici == souboj.Utocnik ? true : false;
+                        oznaceniUtocnik = hrajici == souboj.Utocnik;
                         faze = Faze.Zacatek;
                     }
                     break;
@@ -339,7 +339,7 @@ namespace Zacarovany_les
                 case Faze.VyberDruhy:
                     messageDruhy = souper.Name + " vybírá schopnost";
                     messageKolo = souboj.PocetKol + ". kolo, nyní hraje " + souper.Name;
-                    oznaceniUtocnik = souper == souboj.Utocnik ? true : false;
+                    oznaceniUtocnik = souper == souboj.Utocnik;
                     if (!ZacarovanyLes.delayed)
                     {
                         string message = souboj.VyberDruheSchopnosti(ref vybranaSouper, ref vybranaHrajici);
@@ -353,7 +353,7 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.UtokPrvni:
-                    oznaceniUtocnik = hrajici == souboj.Utocnik ? true : false;
+                    oznaceniUtocnik = hrajici == souboj.Utocnik;
                     messageKolo = souboj.PocetKol + ". kolo, " + hrajici.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
@@ -365,7 +365,7 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.UtokDruhy:
-                    oznaceniUtocnik = souper == souboj.Utocnik ? true : false;
+                    oznaceniUtocnik = souper == souboj.Utocnik;
                     messageKolo = souboj.PocetKol + ". kolo, " + souper.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {

@@ -17,7 +17,7 @@ namespace Zacarovany_les.Classes.Mapy.Objekty
             Textura = textura;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Color barva= Color.White;
             if (this.GetType() == typeof(DverePosledni))

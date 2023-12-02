@@ -22,7 +22,6 @@ namespace Zacarovany_les
         Minulost minulost;
         Trida trida;
         Otazky otazky;
-        string jmeno;
         string message;
         string text1;
         string text2;
@@ -52,11 +51,11 @@ namespace Zacarovany_les
 
             //Buttons
             option1 = new Button(SpravceMedii.FontNadpis, new Vector2(100, 300), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            option1.Click += option1Handler;
+            option1.Click += Option1Handler;
             option2 = new Button(SpravceMedii.FontNadpis, new Vector2(325, 300), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            option2.Click += option2Handler;
+            option2.Click += Option2Handler;
             option3 = new Button(SpravceMedii.FontNadpis, new Vector2(550, 300), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            option3.Click += option3Handler;
+            option3.Click += Option3Handler;
             MediaPlayer.Play(SpravceMedii.CreateMusic);
             MediaPlayer.IsRepeating = true;
         }
@@ -102,17 +101,17 @@ namespace Zacarovany_les
                     if (option1._isMouseOver)
                     {
                         text1 = "Síla +1";
-                        text2 = "Brneni +1";
+                        text2 = "Brneni +2";
                     }
                     if (option2._isMouseOver)
                     {
                         text1 = "Obratnost +1";
-                        text2 = "Zivoty +10";
+                        text2 = "Zivoty +20";
                     }
                     if (option3._isMouseOver)
                     {
                         text1 = "Inteligence +1";
-                        text2 = "Mana +10";
+                        text2 = "Mana +20";
                     }
                     break;
                 case Otazky.TRETI:
@@ -138,14 +137,13 @@ namespace Zacarovany_les
                     if (option3._isMouseOver)
                     {
                         text1 = "Inteligence +3";
-                        text2 = "Mana +80";
+                        text2 = "Mana +70";
                         text3 = "Obratnost -1";
                         text4 = "Síla -2";
                     }
                     break;
                 case Otazky.CTVRTA:
-                    jmeno = Generator.DejJmeno(pohlavi);
-                    ZacarovanyLes.utocnik = new Postava(trida, pohlavi, minulost, new Inventar(1, 1), Majitel.Hrac, 1, jmeno);
+                    ZacarovanyLes.utocnik = new Postava(trida, pohlavi, minulost, new Inventar(1, 1), Majitel.Hrac, 1, Generator.DejJmeno(pohlavi));
                     ZacarovanyLes.mapState = new MapState(_game, _content);
                     _game.ChangeState(ZacarovanyLes.mapState);
                     break;
@@ -181,7 +179,7 @@ namespace Zacarovany_les
             spriteBatch.End();
         }
 
-        private void option1Handler(object sender, EventArgs args)
+        private void Option1Handler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (otazky)
@@ -202,7 +200,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void option2Handler(object sender, EventArgs args)
+        private void Option2Handler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (otazky)
@@ -222,7 +220,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void option3Handler(object sender, EventArgs args)
+        private void Option3Handler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (otazky)

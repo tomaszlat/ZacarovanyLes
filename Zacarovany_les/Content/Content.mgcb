@@ -351,7 +351,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/PrvkyMapy/lahvicka_zdravi.bmp
 
-#begin Sprites/PrvkyMapy/postava_dolu.bmp
+#begin Sprites/PrvkyMapy/postava_dolu.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -361,9 +361,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/PrvkyMapy/postava_dolu.bmp
+/build:Sprites/PrvkyMapy/postava_dolu.png
 
-#begin Sprites/PrvkyMapy/postava_levo.bmp
+#begin Sprites/PrvkyMapy/postava_levo.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -373,9 +373,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/PrvkyMapy/postava_levo.bmp
+/build:Sprites/PrvkyMapy/postava_levo.png
 
-#begin Sprites/PrvkyMapy/postava_nahoru.bmp
+#begin Sprites/PrvkyMapy/postava_nahoru.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -385,9 +385,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/PrvkyMapy/postava_nahoru.bmp
+/build:Sprites/PrvkyMapy/postava_nahoru.png
 
-#begin Sprites/PrvkyMapy/postava_pravo.bmp
+#begin Sprites/PrvkyMapy/postava_pravo.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -397,7 +397,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/PrvkyMapy/postava_pravo.bmp
+/build:Sprites/PrvkyMapy/postava_pravo.png
 
 #begin Sprites/PrvkyMapy/strom.bmp
 /importer:TextureImporter

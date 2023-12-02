@@ -53,45 +53,70 @@ namespace Zacarovany_les
             textTrida = "Třída";
 
             //Buttons
-            buttonLevel = new Button(SpravceMedii.FontNadpis, new Vector2(325, 80), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonLevel.Text = "5";
-            buttonLevel.Click += buttonLevelleftHandler;
-            buttonLevel.RightClick += buttonLevelrightHandler;
-            buttonHrac1Majitel = new Button(SpravceMedii.FontNadpis, new Vector2(25, 80), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac1Majitel.Click += buttonHrac1MajitelHandler;
-            buttonHrac1Majitel.RightClick += buttonHrac1MajitelHandler;
-            buttonHrac1Majitel.Text = "Hráč";
-            buttonHrac1Pohlavi = new Button(SpravceMedii.FontNadpis, new Vector2(25, 180), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac1Pohlavi.Click += buttonHrac1PohlaviHandler;
-            buttonHrac1Pohlavi.RightClick += buttonHrac1PohlaviHandler;
-            buttonHrac1Pohlavi.Text = "Muž";
-            buttonHrac1Minulost = new Button(SpravceMedii.FontNadpis, new Vector2(25, 280), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac1Minulost.Click += buttonHrac1MinulostHandler;
-            buttonHrac1Minulost.RightClick += buttonHrac1MinulostHandlerRight;
-            buttonHrac1Minulost.Text = "Rytíř";
-            buttonHrac1Trida = new Button(SpravceMedii.FontNadpis, new Vector2(25, 380), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac1Trida.Text = "Válečník";
-            buttonHrac1Trida.Click += buttonHrac1TridaHandler;
-            buttonHrac1Trida.RightClick += buttonHrac1TridaHandlerRight;
-            buttonHrac2Majitel = new Button(SpravceMedii.FontNadpis, new Vector2(625, 80), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac2Majitel.Click += buttonHrac2MajitelHandler;
-            buttonHrac2Majitel.RightClick += buttonHrac2MajitelHandler;
-            buttonHrac2Majitel.Text = "Hráč";
-            buttonHrac2Pohlavi = new Button(SpravceMedii.FontNadpis, new Vector2(625, 180), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac2Pohlavi.Text = "Muž";
-            buttonHrac2Pohlavi.Click += buttonHrac2PohlaviHandler;
-            buttonHrac2Pohlavi.RightClick += buttonHrac2PohlaviHandler;
-            buttonHrac2Minulost = new Button(SpravceMedii.FontNadpis, new Vector2(625, 280), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac2Minulost.Text = "Rytíř";
-            buttonHrac2Minulost.Click += buttonHrac2MinulostHandler;
-            buttonHrac2Minulost.RightClick += buttonHrac2MinulostHandlerRight;
-            buttonHrac2Trida = new Button(SpravceMedii.FontNadpis, new Vector2(625, 380), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonHrac2Trida.Text = "Válečník";
-            buttonHrac2Trida.Click += buttonHrac2TridaHandler;
-            buttonHrac2Trida.RightClick += buttonHrac2TridaHandlerRight;
-            buttonBoj = new Button(SpravceMedii.FontNadpis, new Vector2(325, 480), SpravceMedii.PrazdnaTexturaBila, 150, 40);
-            buttonBoj.Click += buttonBojHandler;
-            buttonBoj.Text = "Boj!";
+            buttonLevel = new Button(SpravceMedii.FontNadpis, new Vector2(325, 80), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "5"
+            };
+            buttonLevel.Click += ButtonLevelleftHandler;
+            buttonLevel.RightClick += ButtonLevelrightHandler;
+            buttonHrac1Majitel = new Button(SpravceMedii.FontNadpis, new Vector2(25, 80), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Hráč"
+            };
+            buttonHrac1Majitel.Click += ButtonHrac1MajitelHandler;
+            buttonHrac1Majitel.RightClick += ButtonHrac1MajitelHandler;
+
+            buttonHrac1Pohlavi = new Button(SpravceMedii.FontNadpis, new Vector2(25, 180), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Muž"
+            };
+            buttonHrac1Pohlavi.Click += ButtonHrac1PohlaviHandler;
+            buttonHrac1Pohlavi.RightClick += ButtonHrac1PohlaviHandler;
+
+            buttonHrac1Minulost = new Button(SpravceMedii.FontNadpis, new Vector2(25, 280), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Rytíř"
+            };
+            buttonHrac1Minulost.Click += ButtonHrac1MinulostHandler;
+            buttonHrac1Minulost.RightClick += ButtonHrac1MinulostHandlerRight;
+            
+            buttonHrac1Trida = new Button(SpravceMedii.FontNadpis, new Vector2(25, 380), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Válečník"
+            };
+            buttonHrac1Trida.Click += ButtonHrac1TridaHandler;
+            buttonHrac1Trida.RightClick += ButtonHrac1TridaHandlerRight;
+            buttonHrac2Majitel = new Button(SpravceMedii.FontNadpis, new Vector2(625, 80), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Hráč"
+            };
+            buttonHrac2Majitel.Click += ButtonHrac2MajitelHandler;
+            buttonHrac2Majitel.RightClick += ButtonHrac2MajitelHandler;
+            
+            buttonHrac2Pohlavi = new Button(SpravceMedii.FontNadpis, new Vector2(625, 180), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Muž"
+            };
+            buttonHrac2Pohlavi.Click += ButtonHrac2PohlaviHandler;
+            buttonHrac2Pohlavi.RightClick += ButtonHrac2PohlaviHandler;
+            buttonHrac2Minulost = new Button(SpravceMedii.FontNadpis, new Vector2(625, 280), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Rytíř"
+            };
+            buttonHrac2Minulost.Click += ButtonHrac2MinulostHandler;
+            buttonHrac2Minulost.RightClick += ButtonHrac2MinulostHandlerRight;
+            buttonHrac2Trida = new Button(SpravceMedii.FontNadpis, new Vector2(625, 380), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Válečník"
+            };
+            buttonHrac2Trida.Click += ButtonHrac2TridaHandler;
+            buttonHrac2Trida.RightClick += ButtonHrac2TridaHandlerRight;
+            buttonBoj = new Button(SpravceMedii.FontNadpis, new Vector2(325, 480), SpravceMedii.PrazdnaTexturaBila, 150, 40)
+            {
+                Text = "Boj!"
+            };
+            buttonBoj.Click += ButtonBojHandler;
+            
             MediaPlayer.Play(SpravceMedii.CreateMusic);
             MediaPlayer.IsRepeating = true;
         }
@@ -156,15 +181,18 @@ namespace Zacarovany_les
 
             spriteBatch.End();
         }
-        private void buttonLevelleftHandler(object sender, EventArgs args)
+        private void ButtonLevelleftHandler(object sender, EventArgs args)
         {
-            SpravceMedii.Click.Play();
             int level = int.Parse(buttonLevel.Text);
-            level++;
-            buttonLevel.Text = level.ToString();
+            if (level < 20)
+            {
+                SpravceMedii.Click.Play();
+                level++;
+                buttonLevel.Text = level.ToString();
+            }
             
         }
-        private void buttonLevelrightHandler(object sender, EventArgs args)
+        private void ButtonLevelrightHandler(object sender, EventArgs args)
         {
             int level = int.Parse(buttonLevel.Text);
             if (level > 1)
@@ -174,7 +202,7 @@ namespace Zacarovany_les
                 buttonLevel.Text = level.ToString();
             }
         }
-        private void buttonHrac1MajitelHandler(object sender, EventArgs args)
+        private void ButtonHrac1MajitelHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac1Majitel.Text)
@@ -187,7 +215,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac1PohlaviHandler(object sender, EventArgs args)
+        private void ButtonHrac1PohlaviHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac1Pohlavi.Text)
@@ -200,7 +228,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac1MinulostHandler(object sender, EventArgs args)
+        private void ButtonHrac1MinulostHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac1Minulost.Text)
@@ -216,7 +244,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac1MinulostHandlerRight(object sender, EventArgs args)
+        private void ButtonHrac1MinulostHandlerRight(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac1Minulost.Text)
@@ -232,7 +260,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac1TridaHandler(object sender, EventArgs args)
+        private void ButtonHrac1TridaHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac1Trida.Text)
@@ -249,7 +277,7 @@ namespace Zacarovany_les
             }
         }
 
-        private void buttonHrac1TridaHandlerRight(object sender, EventArgs args)
+        private void ButtonHrac1TridaHandlerRight(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac1Trida.Text)
@@ -265,7 +293,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac2MajitelHandler(object sender, EventArgs args)
+        private void ButtonHrac2MajitelHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac2Majitel.Text)
@@ -278,7 +306,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac2PohlaviHandler(object sender, EventArgs args)
+        private void ButtonHrac2PohlaviHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac2Pohlavi.Text)
@@ -291,7 +319,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac2MinulostHandler(object sender, EventArgs args)
+        private void ButtonHrac2MinulostHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac2Minulost.Text)
@@ -307,7 +335,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac2MinulostHandlerRight(object sender, EventArgs args)
+        private void ButtonHrac2MinulostHandlerRight(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac2Minulost.Text)
@@ -323,7 +351,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac2TridaHandler(object sender, EventArgs args)
+        private void ButtonHrac2TridaHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac2Trida.Text)
@@ -339,7 +367,7 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonHrac2TridaHandlerRight(object sender, EventArgs args)
+        private void ButtonHrac2TridaHandlerRight(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             switch (buttonHrac2Trida.Text)
@@ -355,12 +383,13 @@ namespace Zacarovany_les
                     break;
             }
         }
-        private void buttonBojHandler(object sender, EventArgs args)
+        private void ButtonBojHandler(object sender, EventArgs args)
         {
             SpravceMedii.Click.Play();
             ZacarovanyLes.utocnik = new Postava(PomocneMetody.StringToTrida(buttonHrac1Trida.Text), PomocneMetody.StringToPohlavi(buttonHrac1Pohlavi.Text), PomocneMetody.StringToMinulost(buttonHrac1Minulost.Text), new Inventar(1, 1), PomocneMetody.StringToMajitel(buttonHrac1Majitel.Text), int.Parse(buttonLevel.Text), Generator.DejJmeno(PomocneMetody.StringToPohlavi(buttonHrac1Pohlavi.Text)));
             ZacarovanyLes.obrance = new Postava(PomocneMetody.StringToTrida(buttonHrac2Trida.Text), PomocneMetody.StringToPohlavi(buttonHrac2Pohlavi.Text), PomocneMetody.StringToMinulost(buttonHrac2Minulost.Text), new Inventar(1, 1), PomocneMetody.StringToMajitel(buttonHrac2Majitel.Text), int.Parse(buttonLevel.Text), Generator.DejJmeno(PomocneMetody.StringToPohlavi(buttonHrac2Pohlavi.Text)));
             ZacarovanyLes.gameState = new GameState(_game, _content);
+
             _game.ChangeState(ZacarovanyLes.gameState);
         }
     }

@@ -13,14 +13,14 @@ namespace Zacarovany_les
     public class ZacarovanyLes : Game
     {
         //Monogame
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         //States
         public State CurrentState;
         public State NextState;
         //States-
         public static ZacarovanyLes game;
-        public static ContentManager content; 
+        public static ContentManager content;
         public static State gameState;
         public static State mapState;
         public static State menuState;
@@ -29,7 +29,7 @@ namespace Zacarovany_les
         public static Postava obrance;
         public static MapManager maps;
 
-        public const double DELAY_TIME = 0.5; 
+        public const double DELAY_TIME = 0.5;
         public static double delay = 0;
         public static bool delayed = false;
         public static double keyDelay = 0;
@@ -79,10 +79,15 @@ namespace Zacarovany_les
             spravceMedii.MusicPlayer();
             newState = Keyboard.GetState();
             if (delay > 0)
+            {
                 delay -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
             else delayed = false;
+
             if (keyDelay > 0)
+            {
                 keyDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
             else keyDelayed = false;
 
             if (NextState != null)

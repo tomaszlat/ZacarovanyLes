@@ -7,8 +7,8 @@ namespace Zacarovany_les
         [STAThread]
         static void Main()
         {
-            using (var game = new ZacarovanyLes())
-                game.Run();
+            using var game = new ZacarovanyLes();
+            game.Run();
         }
     }
 }

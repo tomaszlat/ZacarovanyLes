@@ -59,46 +59,21 @@ namespace Zacarovany_les.Classes.Mapy
                         string typ = br.ReadString();
                         int posx = br.ReadInt32();
                         int posy = br.ReadInt32();
-                        switch (typ)
+                        obj[j, k] = typ switch
                         {
-                            case "DvereDalsi":
-                                obj[j, k] = new DvereDalsi(new Vector2(posx, posy), null);
-                                break;
-                            case "DverePosledni":
-                                obj[j, k] = new DverePosledni(new Vector2(posx, posy), null);
-                                break;
-                            case "DverePredchozi":
-                                obj[j, k] = new DverePredchozi(new Vector2(posx, posy), null);
-                                break;
-                            case "Hrac":
-                                obj[j, k] = new Hrac(new Vector2(posx, posy), null);
-                                break;
-                            case "Kamen":
-                                obj[j, k] = new Kamen(new Vector2(posx, posy), null);
-                                break;
-                            case "LahvickaMany":
-                                obj[j, k] = new LahvickaMany(new Vector2(posx, posy), null);
-                                break;
-                            case "LahvickaZdravi":
-                                obj[j, k] = new LahvickaZdravi(new Vector2(posx, posy), null);
-                                break;
-                            case "SouperEasy":
-                                obj[j, k] = new SouperEasy(new Vector2(posx, posy), null);
-                                break;
-                            case "SouperHard":
-                                obj[j, k] = new SouperHard(new Vector2(posx, posy), null);
-                                break;
-                            case "SouperMedium":
-                                obj[j, k] = new SouperMedium(new Vector2(posx, posy), null);
-                                break;
-                            case "Strom":
-                                obj[j, k] = new Strom(new Vector2(posx, posy), null);
-                                break;
-                            default:
-                                obj[j, k] = new Trava(new Vector2(posx, posy), null);
-                                break;
-
-                        }
+                            "DvereDalsi" => new DvereDalsi(new Vector2(posx, posy), null),
+                            "DverePosledni" => new DverePosledni(new Vector2(posx, posy), null),
+                            "DverePredchozi" => new DverePredchozi(new Vector2(posx, posy), null),
+                            "Hrac" => new Hrac(new Vector2(posx, posy),null,new Vector2(posx, posy), null),
+                            "Kamen" => new Kamen(new Vector2(posx, posy), null),
+                            "LahvickaMany" => new LahvickaMany(new Vector2(posx, posy), null),
+                            "LahvickaZdravi" => new LahvickaZdravi(new Vector2(posx, posy), null),
+                            "SouperEasy" => new SouperEasy(new Vector2(posx, posy), null),
+                            "SouperHard" => new SouperHard(new Vector2(posx, posy), null),
+                            "SouperMedium" => new SouperMedium(new Vector2(posx, posy), null),
+                            "Strom" => new Strom(new Vector2(posx, posy), null),
+                            _ => new Trava(new Vector2(posx, posy), null),
+                        };
                     }
                 }
                 int hracX = br.ReadInt32();
@@ -117,7 +92,7 @@ namespace Zacarovany_les.Classes.Mapy
                 Aktualni = maps[0];
         }
 
-        public void dalsiMapa() {
+        public void DalsiMapa() {
             int index = Maps.IndexOf(Aktualni) + 1;
             if (index < Maps.Count && index >= 0)
             {
@@ -125,7 +100,7 @@ namespace Zacarovany_les.Classes.Mapy
             }
         }
 
-        public void predchoziMapa()
+        public void PredchoziMapa()
         {
             int index = Maps.IndexOf(Aktualni) - 1;
             if (index < Maps.Count && index >= 0)

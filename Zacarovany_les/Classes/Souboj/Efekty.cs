@@ -5,7 +5,7 @@ using Zacarovany_les.Classes.Pomocne;
 
 namespace Zacarovany_les.Classes
 {
-    internal class Efekty
+    public class Efekty
     {
         
         public delegate void HracHoriEventHandler(object sender, PoskozeniArg arg);
@@ -23,27 +23,12 @@ namespace Zacarovany_les.Classes
         public int PuvodniObratnost { get; set; }
         public int PuvodniSila { get; set; }
 
-        public Efekty(Postava postava)
+        public Efekty()
         {
-            Postava = postava;
-            PuvodniIntelekt = postava.Inteligence;
-            PuvodniObratnost = postava.Obratnost;
-            PuvodniSila = postava.Sila;
         }
         public void ResetEfekty()
         {
-                if (Postava.Inteligence != PuvodniIntelekt)
-                {
-                    Postava.Inteligence = PuvodniIntelekt;
-                }
-                if (Postava.Obratnost != PuvodniObratnost)
-                {
-                    Postava.Obratnost = PuvodniObratnost;
-                }
-                if (Postava.Sila != PuvodniSila)
-                {
-                    Postava.Sila = PuvodniSila;
-                }
+                //}
             Horeni = 0;
             Mraz = 0;
             Pokrik = 0;
@@ -53,43 +38,9 @@ namespace Zacarovany_les.Classes
             Omraceni = 0;
             Jed = 0;
         }
-        public void AktivujMraz()
-        {
-            if (Mraz > 0)
-            {
-                if (Postava.Inteligence == PuvodniIntelekt)
-                {
-                    Postava.Inteligence =(int)Math.Round(Postava.Inteligence - Postava.Inteligence / 5.0);
-                }
-                if (Postava.Obratnost == PuvodniObratnost)
-                {
-                    Postava.Obratnost = (int)Math.Round(Postava.Obratnost - Postava.Obratnost / 5.0);
-                }
-                if (Postava.Sila == PuvodniSila)
-                {
-                    Postava.Sila = (int)Math.Round(Postava.Sila - Postava.Sila / 5.0);
-                }
-            }
-        }
 
         public void ZhodnotEfekty()
         {
-            if (Mraz == 1)
-            {
-                if (Postava.Inteligence != PuvodniIntelekt)
-                {
-                    Postava.Inteligence = PuvodniIntelekt;
-                }
-                if (Postava.Obratnost != PuvodniObratnost)
-                {
-                    Postava.Obratnost = PuvodniObratnost;
-                }
-                if (Postava.Sila != PuvodniSila)
-                {
-                    Postava.Sila = PuvodniSila;
-                }
-                Mraz--;
-            }
             if (Pokrik > 0)
             {
                 Pokrik--;
@@ -118,7 +69,7 @@ namespace Zacarovany_les.Classes
             {
                 Jed--;
             }
-            if (Mraz > 1)
+            if (Mraz > 0)
             {
                 Mraz--;
             }
