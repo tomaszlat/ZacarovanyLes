@@ -50,13 +50,13 @@ namespace Zacarovany_les.Classes
                 }
                 if (EfektyObrance.Krvaceni > 0)
                 {
-                    int poskozeni = ZautocNaObrance((int)Math.Round(Souper.Sila / 3.0), false);
+                    int poskozeni = ZautocNaObrance((int)Math.Round(Souper.Sila / 3.0), true);
                     messagePrvni = Hrajici.Name + " krvácí za " + poskozeni + " poškození";
                     efekt = true;
                 }
                 if (EfektyObrance.Jed > 0)
                 {
-                    int poskozeni = ZautocNaObrance((int)Math.Round(Souper.Obratnost / 3.0), false);
+                    int poskozeni = ZautocNaObrance((int)Math.Round(Souper.Obratnost / 3.0), true);
                     messagePrvni = Hrajici.Name + " je otrávený za " + poskozeni + " poškození";
                     efekt = true;
                 }
@@ -425,7 +425,8 @@ namespace Zacarovany_les.Classes
             }
             else
             {
-                vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
+                if (vybranaHrajici != null)
+                    vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
                 vybranaHrajici = new Schopnost(Druh.Zadna, 0, 0, 0, false);
                 messagePrvni = Hrajici.Name + " je omráčený ";
             }
@@ -683,7 +684,8 @@ namespace Zacarovany_les.Classes
             }
             else
             {
-                vybranaSouper.Faze = vybranaSouper.FazeVychozi;
+                if (vybranaSouper != null)
+                    vybranaSouper.Faze = vybranaSouper.FazeVychozi;
                 vybranaSouper = new Schopnost(Druh.Zadna, 0, 0, 0, false);
                 messageDruhy = Souper.Name + " je omráčený";
             }

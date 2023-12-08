@@ -18,23 +18,23 @@ namespace Zacarovany_les
 {
     public class MapState : State
     {
-        //promenne ...
-        //spravce medii
+        // promenne ...
+        // spravce medii
         public SpravceMedii SpravceMedii;
-        //pomocne
-        //vyhra hry
-        private bool vyhra;
-        private string textVyhra;
-        //animace
-        private double casAnimaceAktualni = 0;
-        private bool animace = false;
-        private const double DOBA_ANIMACE = 0.5;
-        private Vector2 novaPozice = new Vector2();
-        private Hrac animovanaPostava;
-        //fonty
-        private Vector2 delkaU;
-        //textury
-        private Texture2D utocnikPortret;
+        // pomocne
+        // vyhra hry
+        private bool vyhra; // určí konec souboje
+        private string textVyhra; // Co se vypíše při dohrání hry
+        // animace hráče při pohybu na mapě
+        private double casAnimaceAktualni = 0; // aktuální čas, který zbývá do dokončení animace
+        private bool aktivniAnimace = false; // udává zda se animace právě přehrává, nebo ne
+        private const double DOBA_ANIMACE = 0.5; // doba po kterou je každá animace pohybu přehrávána
+        private Vector2 novaPozice = new Vector2(); // souřadnice pozice na kterou se hráč přesunuje
+        private Hrac animovanaPostava;  // třída Hráče jako postavy na mapě, která je animována
+        // fonty
+        private Vector2 velikostTextuUtocnik; // velikost textu, je využívána především pro zarovnání textu na střed
+        // textury
+        private Texture2D utocnikPortret;   // portrét útočníka na levé straně mapy
 
         public MapState(ZacarovanyLes game, ContentManager content) : base(game, content)
         {
@@ -100,10 +100,10 @@ namespace Zacarovany_les
         }
         public void NastavAnimaci(int X, int Y, ref Map aktualni)
         {
-            animace = true;
+            aktivniAnimace = true;
             casAnimaceAktualni = 0;
             novaPozice = new Vector2(X, Y);
-            Texture2D novaTextura=null;
+            Texture2D novaTextura = null;
             if (X == 1)
             {
                 novaTextura = SpravceMedii.PostavaPravo;
@@ -130,11 +130,10 @@ namespace Zacarovany_les
             if (casAnimaceAktualni < DOBA_ANIMACE)
             {
                 casAnimaceAktualni += gameTime.ElapsedGameTime.TotalSeconds;
-                System.Diagnostics.Debug.WriteLine(casAnimaceAktualni);
             }
             else
             {
-                animace = false;
+                aktivniAnimace = false;
                 casAnimaceAktualni = 0;
             }
             double aktualniX = aktualni.PoziceHrace.X + novaPozice.X * casAnimaceAktualni / 0.5;
@@ -154,7 +153,7 @@ namespace Zacarovany_les
 
 
             Map aktualni = ZacarovanyLes.maps.Aktualni;
-            if (!animace)
+            if (!aktivniAnimace)
             {
                 if (ZacarovanyLes.newState.IsKeyDown(Keys.Left) && (!ZacarovanyLes.keyDelayed || ZacarovanyLes.oldState.IsKeyUp(Keys.Left)) && !vyhra)
                 {
@@ -388,7 +387,7 @@ namespace Zacarovany_les
             else
             {
                 AnimujPresun(gameTime, ref aktualni, novaPozice);
-                if (!animace)
+                if (!aktivniAnimace)
                 {
                     if ((int)novaPozice.X == 1)
                         JdiVeSmeru(aktualni, (int)novaPozice.X, (int)novaPozice.Y, SpravceMedii.PostavaPravo);
@@ -435,30 +434,30 @@ namespace Zacarovany_les
             spriteBatch.Draw(utocnikPortret, new Rectangle(5, 37, 190, 190), Color.White);
             //text
             //portret
-            delkaU = SpravceMedii.FontNadpis.MeasureString(ZacarovanyLes.utocnik.Name);
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, ZacarovanyLes.utocnik.Name, new Vector2(100 - delkaU.X / 2, 20 - delkaU.Y / 2), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(ZacarovanyLes.utocnik.Name);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, ZacarovanyLes.utocnik.Name, new Vector2(100 - velikostTextuUtocnik.X / 2, 20 - velikostTextuUtocnik.Y / 2), Color.Black);
             //trida
-            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi));
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 245 - delkaU.Y / 2), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(ZacarovanyLes.utocnik.Trida, ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - velikostTextuUtocnik.X / 2, 245 - velikostTextuUtocnik.Y / 2), Color.Black);
             //Pohlavi                    
-            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi));
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 280 - delkaU.Y / 2), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(ZacarovanyLes.utocnik.Pohlavi), new Vector2(100 - velikostTextuUtocnik.X / 2, 280 - velikostTextuUtocnik.Y / 2), Color.Black);
             //Level
             spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + ZacarovanyLes.utocnik.Level, new Vector2(20, 300), Color.Black);
             //Zkusenosti
             spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + ZacarovanyLes.utocnik.Zkusenosti + "/" + ZacarovanyLes.utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
             //Zivoty
-            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + ZacarovanyLes.utocnik.Zivoty + "/" + ZacarovanyLes.utocnik.ZivotyMax, new Vector2(20, 350), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + ZacarovanyLes.utocnik.Zivoty + "/" + ZacarovanyLes.utocnik.ZivotyMax, new Vector2(20, 340), Color.Black);
             //Mana
-            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + ZacarovanyLes.utocnik.Mana + "/" + ZacarovanyLes.utocnik.ManaMax, new Vector2(20, 370), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + ZacarovanyLes.utocnik.Mana + "/" + ZacarovanyLes.utocnik.ManaMax, new Vector2(20, 360), Color.Black);
             //Sila
-            spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + ZacarovanyLes.utocnik.Sila, new Vector2(20, 400), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + ZacarovanyLes.utocnik.Sila, new Vector2(20, 390), Color.Black);
             //Obratnost
-            spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + ZacarovanyLes.utocnik.Obratnost, new Vector2(20, 420), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + ZacarovanyLes.utocnik.Obratnost, new Vector2(20, 410), Color.Black);
             //Inteligence
-            spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + ZacarovanyLes.utocnik.Inteligence, new Vector2(20, 440), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + ZacarovanyLes.utocnik.Inteligence, new Vector2(20, 430), Color.Black);
             //Brneni
-            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + ZacarovanyLes.utocnik.Brneni, new Vector2(20, 460), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + ZacarovanyLes.utocnik.Brneni, new Vector2(20, 450), Color.Black);
             Hrac hracNahore = null;
             foreach (Objekt obj in ZacarovanyLes.maps.Aktualni.Objekty)
             {
@@ -472,8 +471,8 @@ namespace Zacarovany_les
                 hracNahore.Draw(gameTime, spriteBatch);
             if (vyhra)
             {
-                delkaU = SpravceMedii.FontNadpis.MeasureString(textVyhra);
-                spriteBatch.DrawString(SpravceMedii.FontNadpis, textVyhra, new Vector2(400 - delkaU.X / 2, 300 - delkaU.Y / 2), Color.White);
+                velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(textVyhra);
+                spriteBatch.DrawString(SpravceMedii.FontNadpis, textVyhra, new Vector2(400 - velikostTextuUtocnik.X / 2, 300 - velikostTextuUtocnik.Y / 2), Color.White);
             }
             spriteBatch.End();
         }

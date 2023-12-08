@@ -15,12 +15,12 @@ namespace Zacarovany_les
         //Monogame
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        public static ContentManager content;
+        public static ZacarovanyLes game;
         //States
         public State CurrentState;
         public State NextState;
-        //States-
-        public static ZacarovanyLes game;
-        public static ContentManager content;
+        //States - druhy
         public static State gameState;
         public static State mapState;
         public static State menuState;
@@ -28,12 +28,13 @@ namespace Zacarovany_les
         public static Postava utocnik;
         public static Postava obrance;
         public static MapManager maps;
-
+        // Delay herní a klávesnice
         public const double DELAY_TIME = 0.5;
         public static double delay = 0;
         public static bool delayed = false;
         public static double keyDelay = 0;
         public static bool keyDelayed = false;
+        // stavy kláves po a při stisknutí
         public static KeyboardState oldState;
         public static KeyboardState newState;
 

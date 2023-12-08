@@ -213,18 +213,18 @@ namespace Zacarovany_les.Classes
             Name = name;
             Zkusenosti = 0;
             ZkusenostiNext = 25 + Level * 25;
-            ZivotyMax = 90 + Level * 10;
+            ZivotyMax = 70 + Level * 10;
             ManaMax = 20 + Level * 1;
             Brneni = 1;
+            Sila = 5;
+            Obratnost = 5;
+            Inteligence = 5;
             switch (trida)
             {
                 case Trida.Bojovnik:
-                    Sila = 5 + (Level - 1) * 2;
-                    Obratnost = 5 + (Level - 1) * 1;
-                    Inteligence = 5 + (Level - 1) * 1;
-                    Sila += 3;
-                    Obratnost -= 1;
-                    Inteligence -= 2;
+                    Sila += 3 + (Level - 1) * 2;
+                    Obratnost += -1 + (Level - 1) * 1;
+                    Inteligence += -2 + (Level - 1) * 1;
                     Brneni += 2;
                     Schopnosti.Add(new Schopnost(Druh.Utok_Mecem, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Obrana_Stitem, 3, 0, 0, false));
@@ -235,12 +235,9 @@ namespace Zacarovany_les.Classes
                     Schopnosti.Add(new Schopnost(Druh.Berserk, 2, 0, 0, false));
                     break;
                 case Trida.Lucistnik:
-                    Sila = 5 + (Level - 1) * 1;
-                    Obratnost = 5 + (Level - 1) * 2;
-                    Inteligence = 5 + (Level - 1) * 1;
-                    Obratnost += 3;
-                    Sila -= 1;
-                    Inteligence -= 1;
+                    Sila += -1 + (Level - 1) * 1;
+                    Obratnost += 3 + (Level - 1) * 2;
+                    Inteligence += -1 + (Level - 1) * 1;
                     Brneni += 1;
                     Schopnosti.Add(new Schopnost(Druh.Bodnuti_Dykou, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Uskok, 3, 0, 0, false));
@@ -251,14 +248,10 @@ namespace Zacarovany_les.Classes
                     Schopnosti.Add(new Schopnost(Druh.Jedova_sipka, 3, 0, 0, false));
                     break;
                 case Trida.Kouzelnik:
-                    Sila = 5 + (Level - 1) * 1;
-                    Obratnost = 5 + (Level - 1) * 1;
-                    Inteligence = 5 + (Level - 1) * 2;
-                    Inteligence += 3;
+                    Sila += -2 + (Level - 1) * 1;
+                    Obratnost += -1 + (Level - 1) * 1;
+                    Inteligence += 3 + (Level - 1) * 2;
                     ManaMax += 70;
-                    Sila -= 2;
-                    Obratnost -= 1;
-                    Brneni = 0;
                     Schopnosti.Add(new Schopnost(Druh.Uder_Holi, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Magicky_Stit, 3, 0, 10, true));
                     Schopnosti.Add(new Schopnost(Druh.Ohniva_Koule, 0, 0, 20, true));

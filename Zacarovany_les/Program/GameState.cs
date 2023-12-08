@@ -18,6 +18,7 @@ namespace Zacarovany_les
         //spravce medii
         public SpravceMedii SpravceMedii;
         //promenne, konstanty ...
+        public bool Duel = false;
         private Souboj souboj;
         private Faze faze;
         private Postava hrajici;
@@ -30,8 +31,8 @@ namespace Zacarovany_les
         private bool zacatek = true;
         private bool oznaceniUtocnik = true;
         //fonty
-        private Vector2 delkaU;
-        private Vector2 delkaO;
+        private Vector2 velikostTextuUtocnik;
+        private Vector2 velikostTextuObrance;
         //Textury
         private Texture2D obrancePortret;
         private Texture2D utocnikPortret;
@@ -214,7 +215,7 @@ namespace Zacarovany_les
                                     ZacarovanyLes.utocnik.PridejZkusenosti(50);
                                     break;
                                 case Majitel.Pocitac_Tezky:
-                                    ZacarovanyLes.utocnik.PridejZkusenosti(75);
+                                    ZacarovanyLes.utocnik.PridejZkusenosti(100);
                                     break;
                             }
                             _game.ChangeCurrentState(ZacarovanyLes.mapState);
@@ -323,33 +324,53 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.VyberPrvni:
-                    messagePrvni = hrajici.Name + " vybírá schopnost";
-                    if (!ZacarovanyLes.delayed)
+                    if (hrajici.Efekty.Omraceni == 0)
                     {
-                        string message = souboj.VyberPrvniSchopnosti(ref vybranaSouper, ref vybranaHrajici);
-                        if (message != "")
+                        messagePrvni = hrajici.Name + " vybírá schopnost";
+                        if (!ZacarovanyLes.delayed)
                         {
-                            messagePrvni = message;
-                            ZacarovanyLes.delay = 3;
-                            ZacarovanyLes.delayed = true;
-                            faze = Faze.VyberDruhy;
+                            string message = souboj.VyberPrvniSchopnosti(ref vybranaSouper, ref vybranaHrajici);
+                            if (message != "")
+                            {
+                                messagePrvni = message;
+                                ZacarovanyLes.delay = 3;
+                                ZacarovanyLes.delayed = true;
+                                faze = Faze.VyberDruhy;
+                            }
                         }
+                    }
+                    else
+                    {
+                        messagePrvni = hrajici.Name + " je omráčený";
+                        ZacarovanyLes.delay = 3;
+                        ZacarovanyLes.delayed = true;
+                        faze = Faze.VyberDruhy;
                     }
                     break;
                 case Faze.VyberDruhy:
-                    messageDruhy = souper.Name + " vybírá schopnost";
-                    messageKolo = souboj.PocetKol + ". kolo, nyní hraje " + souper.Name;
-                    oznaceniUtocnik = souper == souboj.Utocnik;
-                    if (!ZacarovanyLes.delayed)
+                    if (souper.Efekty.Omraceni == 0)
                     {
-                        string message = souboj.VyberDruheSchopnosti(ref vybranaSouper, ref vybranaHrajici);
-                        if (message != "")
+                        messageDruhy = souper.Name + " vybírá schopnost";
+                        messageKolo = souboj.PocetKol + ". kolo, nyní hraje " + souper.Name;
+                        oznaceniUtocnik = souper == souboj.Utocnik;
+                        if (!ZacarovanyLes.delayed)
                         {
-                            messageDruhy = message;
-                            ZacarovanyLes.delay = 3;
-                            ZacarovanyLes.delayed = true;
-                            faze = Faze.UtokPrvni;
+                            string message = souboj.VyberDruheSchopnosti(ref vybranaSouper, ref vybranaHrajici);
+                            if (message != "")
+                            {
+                                messageDruhy = message;
+                                ZacarovanyLes.delay = 3;
+                                ZacarovanyLes.delayed = true;
+                                faze = Faze.UtokPrvni;
+                            }
                         }
+                    }
+                    else
+                    {
+                        messagePrvni = souper.Name + " je omráčený";
+                        ZacarovanyLes.delay = 3;
+                        ZacarovanyLes.delayed = true;
+                        faze = Faze.UtokPrvni;
                     }
                     break;
                 case Faze.UtokPrvni:
@@ -378,8 +399,17 @@ namespace Zacarovany_les
                     Schopnost pom2 = null;
                     if (vybranaHrajici.Faze > 0)
                     {
-                        vybranaHrajici.Faze--;
-                        pom1 = vybranaHrajici;
+
+                        if (hrajici.Efekty.Omraceni == 0)
+                        {
+                            pom1 = vybranaHrajici;
+                            vybranaHrajici.Faze--;
+                        }
+                        else
+                        {
+                            vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
+                        }
+
                     }
                     else
                     {
@@ -387,8 +417,17 @@ namespace Zacarovany_les
                     }
                     if (vybranaSouper.Faze > 0)
                     {
-                        vybranaSouper.Faze--;
-                        pom2 = vybranaSouper;
+
+                        if (souper.Efekty.Omraceni == 0)
+                        {
+                            pom2 = vybranaSouper;
+                            vybranaSouper.Faze--;
+                        }
+                        else
+                        {
+                            vybranaSouper.Faze = vybranaSouper.FazeVychozi;
+                        }
+
                     }
                     else
                     {
@@ -570,101 +609,102 @@ namespace Zacarovany_les
             }
             //text
             //portret
-            delkaU = SpravceMedii.FontNadpis.MeasureString(souboj.Utocnik.Name);
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, souboj.Utocnik.Name, new Vector2(100 - delkaU.X / 2, 20 - delkaU.Y / 2), Color.Black);
-            delkaO = SpravceMedii.FontNadpis.MeasureString(souboj.Obrance.Name);
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, souboj.Obrance.Name, new Vector2(700 - delkaO.X / 2, 20 - delkaO.Y / 2), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(souboj.Utocnik.Name);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, souboj.Utocnik.Name, new Vector2(100 - velikostTextuUtocnik.X / 2, 20 - velikostTextuUtocnik.Y / 2), Color.Black);
+            velikostTextuObrance = SpravceMedii.FontNadpis.MeasureString(souboj.Obrance.Name);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, souboj.Obrance.Name, new Vector2(700 - velikostTextuObrance.X / 2, 20 - velikostTextuObrance.Y / 2), Color.Black);
             //trida
-            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi));
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 245 - delkaU.Y / 2), Color.Black);
-            delkaO = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi));
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi), new Vector2(700 - delkaO.X / 2, 245 - delkaO.Y / 2), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(souboj.Utocnik.Trida, souboj.Utocnik.Pohlavi), new Vector2(100 - velikostTextuUtocnik.X / 2, 245 - velikostTextuUtocnik.Y / 2), Color.Black);
+            velikostTextuObrance = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.TridaToString(souboj.Obrance.Trida, souboj.Obrance.Pohlavi), new Vector2(700 - velikostTextuObrance.X / 2, 245 - velikostTextuObrance.Y / 2), Color.Black);
             //Pohlavi                    
-            delkaU = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi));
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi), new Vector2(100 - delkaU.X / 2, 280 - delkaU.Y / 2), Color.Black);
-            delkaO = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi));
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi), new Vector2(700 - delkaO.X / 2, 280 - delkaO.Y / 2), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(souboj.Utocnik.Pohlavi), new Vector2(100 - velikostTextuUtocnik.X / 2, 280 - velikostTextuUtocnik.Y / 2), Color.Black);
+            velikostTextuObrance = SpravceMedii.FontNadpis.MeasureString(PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi));
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, PomocneMetody.PohlaviToString(souboj.Obrance.Pohlavi), new Vector2(700 - velikostTextuObrance.X / 2, 280 - velikostTextuObrance.Y / 2), Color.Black);
             //Level
             spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + souboj.Utocnik.Level, new Vector2(20, 300), Color.Black);
             spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + souboj.Obrance.Level, new Vector2(620, 300), Color.Black);
             //Zkusenosti
+            if(!Duel)
             spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Utocnik.Zkusenosti + "/" + souboj.Utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
-            if (souboj.Obrance.Majitel == Majitel.Hrac)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Obrance.Zkusenosti + "/" + souboj.Obrance.ZkusenostiNext, new Vector2(620, 320), Color.Black);
+            //spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Obrance.Zkusenosti + "/" + souboj.Obrance.ZkusenostiNext, new Vector2(620, 320), Color.Black);
+
             //Zivoty
-            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + souboj.Utocnik.Zivoty + "/" + souboj.Utocnik.ZivotyMax, new Vector2(20, 350), Color.Black);
-            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + souboj.Obrance.Zivoty + "/" + souboj.Obrance.ZivotyMax, new Vector2(620, 350), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + souboj.Utocnik.Zivoty + "/" + souboj.Utocnik.ZivotyMax, new Vector2(20, 340), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Životy: " + souboj.Obrance.Zivoty + "/" + souboj.Obrance.ZivotyMax, new Vector2(620, 340), Color.Black);
             //Mana
-            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + souboj.Utocnik.Mana + "/" + souboj.Utocnik.ManaMax, new Vector2(20, 370), Color.Black);
-            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + souboj.Obrance.Mana + "/" + souboj.Obrance.ManaMax, new Vector2(620, 370), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + souboj.Utocnik.Mana + "/" + souboj.Utocnik.ManaMax, new Vector2(20, 360), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Mana: " + souboj.Obrance.Mana + "/" + souboj.Obrance.ManaMax, new Vector2(620, 360), Color.Black);
             //Sila
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 400), Color.Red);
-            else spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 400), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 390), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Utocnik.Sila, new Vector2(20, 390), Color.Black);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 400), Color.Red);
-            else spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 400), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 390), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Síla: " + souboj.Obrance.Sila, new Vector2(620, 390), Color.Black);
             //Obratnost
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 420), Color.Red);
-            else spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 420), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 410), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Utocnik.Obratnost, new Vector2(20, 410), Color.Black);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 420), Color.Red);
-            else spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 420), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 410), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Obratnost: " + souboj.Obrance.Obratnost, new Vector2(620, 410), Color.Black);
             //Inteligence
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 440), Color.Red);
-            else spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 440), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 430), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Utocnik.Inteligence, new Vector2(20, 430), Color.Black);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 440), Color.Red);
-            else spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 440), Color.Black);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 430), Color.Red);
+            else spriteBatch.DrawString(SpravceMedii.FontText, "Inteligence: " + souboj.Obrance.Inteligence, new Vector2(620, 430), Color.Black);
             //Brneni
-            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + souboj.Utocnik.Brneni, new Vector2(20, 460), Color.Black);
-            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + souboj.Obrance.Brneni, new Vector2(620, 460), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + souboj.Utocnik.Brneni, new Vector2(20, 450), Color.Black);
+            spriteBatch.DrawString(SpravceMedii.FontText, "Brnění: " + souboj.Obrance.Brneni, new Vector2(620, 450), Color.Black);
             //Efekty
             //Pokřik, Rychlost, Magické soustředění
             if (souboj.EfektyUtocnika.Pokrik > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Pokřik [" + souboj.EfektyUtocnika.Pokrik + "]", new Vector2(20, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Pokřik [" + souboj.EfektyUtocnika.Pokrik + "]", new Vector2(20, 480), Color.Red);
             if (souboj.EfektyObrance.Pokrik > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Pokřik [" + souboj.EfektyObrance.Pokrik + "]", new Vector2(620, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Pokřik [" + souboj.EfektyObrance.Pokrik + "]", new Vector2(620, 480), Color.Red);
             if (souboj.EfektyUtocnika.Rychlost > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Rychlost [" + souboj.EfektyUtocnika.Rychlost + "]", new Vector2(20, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Rychlost [" + souboj.EfektyUtocnika.Rychlost + "]", new Vector2(20, 480), Color.Red);
             if (souboj.EfektyObrance.Rychlost > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Rychlost [" + souboj.EfektyObrance.Rychlost + "]", new Vector2(620, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Rychlost [" + souboj.EfektyObrance.Rychlost + "]", new Vector2(620, 480), Color.Red);
             if (souboj.EfektyUtocnika.Soustredeni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Soustředění [" + souboj.EfektyUtocnika.Soustredeni + "]", new Vector2(20, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Soustředění [" + souboj.EfektyUtocnika.Soustredeni + "]", new Vector2(20, 480), Color.Red);
             if (souboj.EfektyObrance.Soustredeni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Soustředění [" + souboj.EfektyObrance.Soustredeni + "]", new Vector2(620, 490), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Soustředění [" + souboj.EfektyObrance.Soustredeni + "]", new Vector2(620, 480), Color.Red);
             //Hoří, krvácí, jed
             if (souboj.EfektyUtocnika.Horeni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Hoří [" + souboj.EfektyUtocnika.Horeni + "]", new Vector2(20, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Hoří [" + souboj.EfektyUtocnika.Horeni + "]", new Vector2(20, 500), Color.Red);
             if (souboj.EfektyObrance.Horeni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Hoří [" + souboj.EfektyObrance.Horeni + "]", new Vector2(620, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Hoří [" + souboj.EfektyObrance.Horeni + "]", new Vector2(620, 500), Color.Red);
             if (souboj.EfektyUtocnika.Krvaceni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Krvácí [" + souboj.EfektyUtocnika.Krvaceni + "]", new Vector2(20, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Krvácí [" + souboj.EfektyUtocnika.Krvaceni + "]", new Vector2(20, 500), Color.Red);
             if (souboj.EfektyObrance.Krvaceni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Krvácí [" + souboj.EfektyObrance.Krvaceni + "]", new Vector2(620, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Krvácí [" + souboj.EfektyObrance.Krvaceni + "]", new Vector2(620, 500), Color.Red);
             if (souboj.EfektyUtocnika.Jed > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Jed [" + souboj.EfektyUtocnika.Jed + "]", new Vector2(20, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Jed [" + souboj.EfektyUtocnika.Jed + "]", new Vector2(20, 500), Color.Red);
             if (souboj.EfektyObrance.Jed > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Jed [" + souboj.EfektyObrance.Jed + "]", new Vector2(620, 510), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Jed [" + souboj.EfektyObrance.Jed + "]", new Vector2(620, 500), Color.Red);
             //Mrzne, omráčený
             if (souboj.EfektyUtocnika.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Mrzne [" + souboj.EfektyUtocnika.Mraz + "]", new Vector2(20, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Mrzne [" + souboj.EfektyUtocnika.Mraz + "]", new Vector2(20, 520), Color.Red);
             if (souboj.EfektyObrance.Mraz > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Mrzne [" + souboj.EfektyObrance.Mraz + "]", new Vector2(620, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Mrzne [" + souboj.EfektyObrance.Mraz + "]", new Vector2(620, 520), Color.Red);
             if (souboj.EfektyUtocnika.Omraceni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Omráčený [" + souboj.EfektyUtocnika.Omraceni + "]", new Vector2(20, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Omráčený [" + souboj.EfektyUtocnika.Omraceni + "]", new Vector2(20, 520), Color.Red);
             if (souboj.EfektyObrance.Omraceni > 0)
-                spriteBatch.DrawString(SpravceMedii.FontText, "Omráčený [" + souboj.EfektyObrance.Omraceni + "]", new Vector2(620, 530), Color.Red);
+                spriteBatch.DrawString(SpravceMedii.FontText, "Omráčený [" + souboj.EfektyObrance.Omraceni + "]", new Vector2(620, 520), Color.Red);
             //MessageBox
-            spriteBatch.Draw(SpravceMedii.PrazdnaTexturaCerna, new Rectangle(0, 550, 800, 50), Color.Black);
-            delkaU = SpravceMedii.FontText.MeasureString(messagePrvni);
-            spriteBatch.DrawString(SpravceMedii.FontText, messagePrvni, new Vector2(400 - delkaU.X / 2, 563 - delkaU.Y / 2), Color.White);
-            delkaO = SpravceMedii.FontText.MeasureString(messageDruhy);
-            spriteBatch.DrawString(SpravceMedii.FontText, messageDruhy, new Vector2(400 - delkaO.X / 2, 588 - delkaO.Y / 2), Color.White);
-            delkaU = SpravceMedii.FontNadpis.MeasureString(messageKolo);
-            spriteBatch.DrawString(SpravceMedii.FontNadpis, messageKolo, new Vector2(400 - delkaU.X / 2, 100 - delkaU.Y / 2), Color.White);
+            spriteBatch.Draw(SpravceMedii.PrazdnaTexturaCerna, new Rectangle(0, 540, 800, 60), Color.Black);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(messagePrvni);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, messagePrvni, new Vector2(400 - velikostTextuUtocnik.X / 2, 555 - velikostTextuUtocnik.Y / 2), Color.White);
+            velikostTextuObrance = SpravceMedii.FontNadpis.MeasureString(messageDruhy);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, messageDruhy, new Vector2(400 - velikostTextuObrance.X / 2, 585 - velikostTextuObrance.Y / 2), Color.White);
+            velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(messageKolo);
+            spriteBatch.DrawString(SpravceMedii.FontNadpis, messageKolo, new Vector2(400 - velikostTextuUtocnik.X / 2, 100 - velikostTextuUtocnik.Y / 2), Color.White);
             //Buttons
             if (faze == Faze.VyberPrvni || faze == Faze.VyberDruhy)
             {
