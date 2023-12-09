@@ -8,7 +8,7 @@ Myš - Klepnutí LTM nebo PTM na ovládací prvky
 
 Mapy
 Pro hru se dají vytvářet vlastní mapy, stačí vložit soubor do složky Maps ve tvaru mapa(x).csv (bez závorek, kde x je číslo mapy)
-Při spuštění nové hry si hra automaticky projde mapy od mapa1 po mapax. Při ukládání hry se data mapy ukládají takže i když mapy ve složce změníme hra bude vycházet z načtených dat.
+Při spuštění nové hry si hra automaticky projde mapy od mapa1.csv po mapax.csv. Při ukládání hry se data mapy ukládají takže i když mapy ve složce změníme hra bude vycházet z načtených dat.
 
 Herní mapy mají velikost 12x12 políček.
 jednotlivá políčka oddělíme středníkem a nebo novým řádkem pokud už jsme u 12. políčka řádku
