@@ -29,7 +29,7 @@ namespace Zacarovany_les.Classes
                 case Majitel.Pocitac_Stredni:
                     switch (pocitac.Trida)
                     {
-                        case Trida.Bojovnik:
+                        case Trida.Valecnik:
                         start10:
                             sch = pocitac.Schopnosti[souboj.Kostka.Next(0, pocitac.Schopnosti.Count)];
                             if (sch.Cd > 0 || (efektyPocitac.Soustredeni == 0 && sch.CenaMany > pocitac.Mana) || (efektyPocitac.Soustredeni > 0 && (sch.CenaMany / 2) > pocitac.Mana) || sch.Druh == Druh.Obrana_Stitem)
@@ -133,7 +133,7 @@ namespace Zacarovany_les.Classes
                 case Majitel.Pocitac_Tezky:
                     switch (pocitac.Trida)
                     {
-                        case Trida.Bojovnik:
+                        case Trida.Valecnik:
                             sch = null;
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {

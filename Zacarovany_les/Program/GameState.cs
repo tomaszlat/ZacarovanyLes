@@ -269,7 +269,6 @@ namespace Zacarovany_les
                         messagePrvni = souboj.EfektyDruhy(ref efekt, SpravceMedii);
 
                         souboj.ZhodnotEfekty();
-                        souboj.ZhodnotSchopnosti();
                         faze = Faze.Kolo;
                         if (efekt)
                         {
@@ -395,46 +394,7 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.Zhodnoceni:
-                    Schopnost pom1 = null;
-                    Schopnost pom2 = null;
-                    if (vybranaHrajici.Faze > 0)
-                    {
-
-                        if (hrajici.Efekty.Omraceni == 0)
-                        {
-                            pom1 = vybranaHrajici;
-                            vybranaHrajici.Faze--;
-                        }
-                        else
-                        {
-                            vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
-                        }
-
-                    }
-                    else
-                    {
-                        vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
-                    }
-                    if (vybranaSouper.Faze > 0)
-                    {
-
-                        if (souper.Efekty.Omraceni == 0)
-                        {
-                            pom2 = vybranaSouper;
-                            vybranaSouper.Faze--;
-                        }
-                        else
-                        {
-                            vybranaSouper.Faze = vybranaSouper.FazeVychozi;
-                        }
-
-                    }
-                    else
-                    {
-                        vybranaSouper.Faze = vybranaSouper.FazeVychozi;
-                    }
-                    vybranaHrajici = pom2;
-                    vybranaSouper = pom1;
+                    souboj.ZhodnotSchopnosti(ref vybranaHrajici,ref vybranaSouper);
                     ZacarovanyLes.delay = 3;
                     ZacarovanyLes.delayed = true;
                     faze = Faze.EfektyPrvni;
@@ -485,105 +445,36 @@ namespace Zacarovany_les
                 Efekty efekty = naRade == souboj.Obrance ? souboj.EfektyObrance : souboj.EfektyUtocnika;
                 foreach (Schopnost schop in naRade.Schopnosti)
                 {
-                    switch (schop.Druh)
+                    Button button = schop.Druh switch
                     {
-                        case Druh.Utok_Mecem:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonUtokMecem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonUtokMecem.Visible = true;
-                            break;
-                        case Druh.Obrana_Stitem:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonObranaStitem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonObranaStitem.Visible = true;
-                            break;
-                        case Druh.Regenerace:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonRegenerace, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonRegenerace.Visible = true;
-                            break;
-                        case Druh.Bojovy_Pokrik:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonBojovyPokrik, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonBojovyPokrik.Visible = true;
-                            break;
-                        case Druh.Uder_stitem:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonUderStitem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonUderStitem.Visible = true;
-                            break;
-                        case Druh.Vrh_sekerou:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonVrhSekerou, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonVrhSekerou.Visible = true;
-                            break;
-                        case Druh.Berserk:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonBerserk, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonBerserk.Visible = true;
-                            break;
-                        case Druh.Bodnuti_Dykou:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonBodnutiDykou, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonBodnutiDykou.Visible = true;
-                            break;
-                        case Druh.Strelba_Lukem:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonStrelbaLukem, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonStrelbaLukem.Visible = true;
-                            break;
-                        case Druh.Magicky_sip:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonMagickySip, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonMagickySip.Visible = true;
-                            break;
-                        case Druh.Uskok:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonUskok, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonUskok.Visible = true;
-                            break;
-                        case Druh.Rychlost:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonRychlost, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonRychlost.Visible = true;
-                            break;
-                        case Druh.Lesni_bobule:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonLesniBobule, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonLesniBobule.Visible = true;
-                            break;
-                        case Druh.Jedova_sipka:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonJedovaSipka, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonJedovaSipka.Visible = true;
-                            break;
-                        case Druh.Uder_Holi:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonUderHoli, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonUderHoli.Visible = true;
-                            break;
-                        case Druh.Ohniva_Koule:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonOhnivaKoule, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonOhnivaKoule.Visible = true;
-                            break;
-                        case Druh.Ledove_Kopi:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonLedoveKopi, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonLedoveKopi.Visible = true;
-                            break;
-                        case Druh.Magicky_Stit:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonMagickyStit, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonMagickyStit.Visible = true;
-                            break;
-                        case Druh.Vysati_zivota:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonVysatiZivota, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonVysatiZivota.Visible = true;
-                            break;
-                        case Druh.Vysati_many:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonVysatiMany, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonVysatiMany.Visible = true;
-                            break;
-                        case Druh.Magicke_soustredeni:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonMagickeSoustredeni, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonMagickeSoustredeni.Visible = true;
-                            break;
-                        case Druh.Utek:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonUtek, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonUtek.Visible = true;
-                            break;
-                        case Druh.Lahvicka_Many:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonLahvickaMany, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonLahvickaMany.Visible = true;
-                            break;
-                        case Druh.Lahvicka_Zdravi:
-                            PomocneMetody.NastavButtonSchopnosti(efekty, buttonLahvickaZdravi, schop, naRade, 325, y + i * 30, 150, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
-                            buttonLahvickaZdravi.Visible = true;
-                            break;
-                    }
+                        Druh.Utok_Mecem => buttonUtokMecem,
+                        Druh.Obrana_Stitem => buttonObranaStitem,
+                        Druh.Regenerace => buttonRegenerace,
+                        Druh.Bojovy_Pokrik => buttonBojovyPokrik,
+                        Druh.Uder_stitem => buttonUderStitem,
+                        Druh.Vrh_sekerou => buttonVrhSekerou,
+                        Druh.Berserk => buttonBerserk,
+                        Druh.Bodnuti_Dykou => buttonBodnutiDykou,
+                        Druh.Strelba_Lukem => buttonStrelbaLukem,
+                        Druh.Magicky_sip => buttonMagickySip,
+                        Druh.Uskok => buttonUskok,
+                        Druh.Rychlost => buttonRychlost,
+                        Druh.Lesni_bobule => buttonLesniBobule,
+                        Druh.Jedova_sipka => buttonJedovaSipka,
+                        Druh.Uder_Holi => buttonUderHoli,
+                        Druh.Ohniva_Koule => buttonOhnivaKoule,
+                        Druh.Ledove_Kopi => buttonLedoveKopi,
+                        Druh.Magicky_Stit => buttonMagickyStit,
+                        Druh.Vysati_zivota => buttonVysatiZivota,
+                        Druh.Vysati_many => buttonVysatiMany,
+                        Druh.Magicke_soustredeni => buttonMagickeSoustredeni,
+                        Druh.Utek => buttonUtek,
+                        Druh.Lahvicka_Many => buttonLahvickaMany,
+                        Druh.Lahvicka_Zdravi => buttonLahvickaZdravi,
+                        _ => new Button(SpravceMedii.FontText, new Vector2(), SpravceMedii.PrazdnaTexturaBila, 160, 20),
+                    };
+                    button.Visible = true;
+                    PomocneMetody.NastavButtonSchopnosti(efekty, button, schop, naRade, 325, y + i * 30, 160, 20, SpravceMedii.FontText, SpravceMedii.PrazdnaTexturaBila, Color.White, Color.Black);
                     i++;
                 }
             }

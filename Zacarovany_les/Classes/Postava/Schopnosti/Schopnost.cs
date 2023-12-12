@@ -14,59 +14,61 @@ namespace Zacarovany_les.Classes
         public int Faze { get; set; }
         public int CenaMany { get; set; }
 
-        public int Pouzij(Postava postava,bool boj)
+        public int Pouzij(Postava postava, bool boj)
         {
             Random kostka = new Random();
-            if(boj)
-            Cd = CdVychozi;
+            if (boj)
+                Cd = CdVychozi;
+            double rozptyl = -postava.Level/2.0 + kostka.Next(postava.Level + 1);
             switch (Druh)
             {
                 // Valecnik
                 case Druh.Utok_Mecem:
-                    return (int)Math.Round(postava.Sila + postava.Obratnost / 2.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Sila + postava.Obratnost / 2.0 + rozptyl);
                 case Druh.Regenerace:
-                    return (int)Math.Round(postava.Inteligence + postava.Sila - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Inteligence + postava.Sila + rozptyl);
                 case Druh.Bojovy_Pokrik:
                     return 0;
                 case Druh.Obrana_Stitem:
                     return 0;
                 case Druh.Uder_stitem:
-                    return (int)Math.Round(postava.Sila / 2.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Sila / 2.0 + rozptyl);
                 case Druh.Vrh_sekerou:
-                    return (int)Math.Round(postava.Sila / 2.0 + postava.Obratnost / 2.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Sila / 2.0 + postava.Obratnost / 2.0 + rozptyl);
                 case Druh.Berserk:
-                    return (int)Math.Round(Math.Max(1 - postava.Zivoty / (double)postava.ZivotyMax, 0.01) * postava.Sila + postava.Sila / 2.0 + postava.Obratnost / 3.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    double procenta = Math.Max(1 - postava.Zivoty / (double)postava.ZivotyMax, 0.1);
+                    return (int)Math.Round(procenta * postava.Sila + postava.Sila / 2.0 + postava.Obratnost / 2.0 + rozptyl);
 
 
                 // Lucistnik
                 case Druh.Bodnuti_Dykou:
-                    return (int)Math.Round(postava.Sila / 2.0 + postava.Obratnost - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Sila / 2.0 + postava.Obratnost + rozptyl);
                 case Druh.Strelba_Lukem:
-                    return (int)Math.Round(2 * (postava.Sila + postava.Obratnost - postava.Level / 2.0 + kostka.Next(postava.Level + 1)));
+                    return (int)Math.Round(2 * (postava.Sila + postava.Obratnost + rozptyl));
                 case Druh.Uskok:
                     return 0;
                 case Druh.Magicky_sip:
-                    return (int)Math.Round(2 * (postava.Sila + postava.Obratnost + postava.Inteligence / 2.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1)));
+                    return (int)Math.Round(2 * (postava.Sila + postava.Obratnost + postava.Inteligence / 2.0 + rozptyl));
                 case Druh.Rychlost:
                     return 0;
                 case Druh.Lesni_bobule:
-                    return (int)Math.Round(postava.Obratnost + postava.Inteligence / 2.0 + postava.Sila / 2.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Obratnost + postava.Inteligence / 2.0 + postava.Sila / 2.0 + rozptyl);
                 case Druh.Jedova_sipka:
-                    return (int)Math.Round(postava.Obratnost / 2.0 + postava.Inteligence / 2.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Obratnost / 2.0 + postava.Inteligence / 2.0 + rozptyl);
 
                 // Kouzelnik
                 case Druh.Uder_Holi:
-                    return (int)Math.Round(postava.Sila / 4.0 + postava.Obratnost / 4.0 + postava.Inteligence - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Sila / 4.0 + postava.Obratnost / 4.0 + postava.Inteligence + rozptyl);
                 case Druh.Ohniva_Koule:
-                    return (int)Math.Round(postava.Inteligence + postava.Sila - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Inteligence + postava.Sila + rozptyl);
                 case Druh.Ledove_Kopi:
-                    return (int)Math.Round(postava.Inteligence + postava.Obratnost - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Inteligence + postava.Obratnost + rozptyl);
                 case Druh.Magicky_Stit:
                     return 0;
                 case Druh.Vysati_zivota:
-                    return (int)Math.Round(postava.Inteligence + postava.Sila / 3.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1));
+                    return (int)Math.Round(postava.Inteligence + postava.Sila / 3.0 + rozptyl);
                 case Druh.Vysati_many:
-                    return (int)Math.Round((postava.Inteligence + postava.Obratnost / 3.0 - postava.Level / 2.0 + kostka.Next(postava.Level + 1)) / 2.0);
+                    return (int)Math.Round((5.0 + postava.Inteligence + postava.Obratnost / 3.0) / 3.0 + rozptyl);
                 case Druh.Magicke_soustredeni:
                     return 0;
 

@@ -173,7 +173,7 @@ namespace Zacarovany_les.Classes
                     Mana = ManaMax;
                     switch (Trida)
                     {
-                        case Trida.Bojovnik:
+                        case Trida.Valecnik:
                             Sila += 2;
                             Obratnost++;
                             Inteligence++;
@@ -211,17 +211,19 @@ namespace Zacarovany_les.Classes
             Majitel = majitel;
             Level = level <= MaxLevel ? (level > 0 ? level : 1) : MaxLevel;
             Name = name;
+            
             Zkusenosti = 0;
             ZkusenostiNext = 25 + Level * 25;
             ZivotyMax = 70 + Level * 10;
-            ManaMax = 20 + Level * 1;
+            ManaMax = 30 + Level;
             Brneni = 1;
             Sila = 5;
             Obratnost = 5;
             Inteligence = 5;
+
             switch (trida)
             {
-                case Trida.Bojovnik:
+                case Trida.Valecnik:
                     Sila += 3 + (Level - 1) * 2;
                     Obratnost += -1 + (Level - 1) * 1;
                     Inteligence += -2 + (Level - 1) * 1;
@@ -251,7 +253,7 @@ namespace Zacarovany_les.Classes
                     Sila += -2 + (Level - 1) * 1;
                     Obratnost += -1 + (Level - 1) * 1;
                     Inteligence += 3 + (Level - 1) * 2;
-                    ManaMax += 70;
+                    ManaMax += 60;
                     Schopnosti.Add(new Schopnost(Druh.Uder_Holi, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Magicky_Stit, 3, 0, 10, true));
                     Schopnosti.Add(new Schopnost(Druh.Ohniva_Koule, 0, 0, 20, true));

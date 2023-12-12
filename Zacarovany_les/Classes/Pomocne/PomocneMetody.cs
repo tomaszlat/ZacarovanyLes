@@ -16,7 +16,7 @@ namespace Zacarovany_les.Classes.Pomocne
                 case Pohlavi.Muz:
                     switch (trida)
                     {
-                        case Trida.Bojovnik: return "Bojovník";
+                        case Trida.Valecnik: return "Válečník";
                         case Trida.Lucistnik: return "Lučištník";
                         case Trida.Kouzelnik: return "Kouzelník";
                     }
@@ -24,7 +24,7 @@ namespace Zacarovany_les.Classes.Pomocne
                 case Pohlavi.Zena:
                     switch (trida)
                     {
-                        case Trida.Bojovnik: return "Bojovnice";
+                        case Trida.Valecnik: return "Válečnice";
                         case Trida.Lucistnik: return "Lučištnice";
                         case Trida.Kouzelnik: return "Kouzelnice";
                     }
@@ -36,111 +36,85 @@ namespace Zacarovany_les.Classes.Pomocne
 
         public static string SchopnostToString(Druh druh)
         {
-            switch (druh)
+            return druh switch
             {
-                case Druh.Utok_Mecem:
-                    return "Útok mečem";
-                case Druh.Obrana_Stitem:
-                    return "Obrana štítem";
-                case Druh.Bojovy_Pokrik:
-                    return "Bojový pokřik";
-                case Druh.Regenerace:
-                    return "Regenerace";
-                case Druh.Uder_stitem:
-                    return "Úder štítem";
-                case Druh.Vrh_sekerou:
-                    return "Vrh sekerou";
-                case Druh.Berserk:
-                    return "Berserk";
-                case Druh.Bodnuti_Dykou:
-                    return "Bodnutí dýkou";
-                case Druh.Strelba_Lukem:
-                    return "Střelba lukem";
-                case Druh.Magicky_sip:
-                    return "Magický šíp";
-                case Druh.Uskok:
-                    return "Úskok";
-                case Druh.Rychlost:
-                    return "Rychlost";
-                case Druh.Lesni_bobule:
-                    return "Lesní bobule";
-                case Druh.Jedova_sipka:
-                    return "Jedová šipka";
-                case Druh.Uder_Holi:
-                    return "Úder Holí";
-                case Druh.Ledove_Kopi:
-                    return "Ledové kopí";
-                case Druh.Magicky_Stit:
-                    return "Magický šťít";
-                case Druh.Ohniva_Koule:
-                    return "Ohnivá koule";
-                case Druh.Vysati_zivota:
-                    return "Vysátí života";
-                case Druh.Vysati_many:
-                    return "Vysátí many";
-                case Druh.Magicke_soustredeni:
-                    return "Magické soustředění";
-                case Druh.Lahvicka_Many:
-                    return "Lahvička many";
-                case Druh.Lahvicka_Zdravi:
-                    return "Lahvička zdraví";
-                case Druh.Utek:
-                    return "Útěk";
-                case Druh.Zadna:
-                default:
-                    return "";
-            }
+                Druh.Utok_Mecem => "Útok mečem",
+                Druh.Obrana_Stitem => "Obrana štítem",
+                Druh.Bojovy_Pokrik => "Bojový pokřik",
+                Druh.Regenerace => "Regenerace",
+                Druh.Uder_stitem => "Úder štítem",
+                Druh.Vrh_sekerou => "Vrh sekerou",
+                Druh.Berserk => "Berserk",
+                Druh.Bodnuti_Dykou => "Bodnutí dýkou",
+                Druh.Strelba_Lukem => "Střelba lukem",
+                Druh.Magicky_sip => "Magický šíp",
+                Druh.Uskok => "Úskok",
+                Druh.Rychlost => "Rychlost",
+                Druh.Lesni_bobule => "Lesní bobule",
+                Druh.Jedova_sipka => "Jedová šipka",
+                Druh.Uder_Holi => "Úder Holí",
+                Druh.Ledove_Kopi => "Ledové kopí",
+                Druh.Magicky_Stit => "Magický šťít",
+                Druh.Ohniva_Koule => "Ohnivá koule",
+                Druh.Vysati_zivota => "Vysátí života",
+                Druh.Vysati_many => "Vysátí many",
+                Druh.Magicke_soustredeni => "Magické soustředění",
+                Druh.Lahvicka_Many => "Lahvička many",
+                Druh.Lahvicka_Zdravi => "Lahvička zdraví",
+                Druh.Utek => "Útěk",
+                _ => "",
+            };
         }
 
         public static string PohlaviToString(Pohlavi pohlavi)
         {
-            switch (pohlavi)
+            return pohlavi switch
             {
-                case Pohlavi.Muz: return "Muž";
-                case Pohlavi.Zena: return "Žena";
-            }
-            return "";
+                Pohlavi.Muz => "Muž",
+                Pohlavi.Zena => "Žena",
+                _ => "",
+            };
         }
 
         public static Pohlavi StringToPohlavi(string pohlavi)
         {
-            switch (pohlavi)
+            return pohlavi switch
             {
-                case "Muž": return Pohlavi.Muz;
-                case "Žena": return Pohlavi.Zena;
-                default: return Pohlavi.Muz;
-            }
+                "Muž" => Pohlavi.Muz,
+                "Žena" => Pohlavi.Zena,
+                _ => Pohlavi.Muz,
+            };
         }
 
         public static Majitel StringToMajitel(string majitel)
         {
-            switch (majitel)
+            return majitel switch
             {
-                case "Hráč": return Majitel.Hrac;
-                case "AI": return Majitel.Pocitac_Tezky;
-                default: return Majitel.Hrac;
-            }
+                "Hráč" => Majitel.Hrac,
+                "AI" => Majitel.Pocitac_Tezky,
+                _ => Majitel.Hrac,
+            };
         }
         public static Minulost StringToMinulost(string minulost)
         {
-            switch (minulost)
+            return minulost switch
             {
-                case "Rytíř": return Minulost.Rytir;
-                case "Lovec": return Minulost.Lovec;
-                case "Čaroděj": return Minulost.Carodej;
-                default: return Minulost.Rytir;
-            }
+                "Rytíř" => Minulost.Rytir,
+                "Lovec" => Minulost.Lovec,
+                "Čaroděj" => Minulost.Carodej,
+                _ => Minulost.Rytir,
+            };
         }
 
         public static Trida StringToTrida(string trida)
         {
-            switch (trida)
+            return trida switch
             {
-                case "Válečník": return Trida.Bojovnik;
-                case "Lučištník": return Trida.Lucistnik;
-                case "Kouzelník": return Trida.Kouzelnik;
-                default: return Trida.Bojovnik;
-            }
+                "Válečník" => Trida.Valecnik,
+                "Lučištník" => Trida.Lucistnik,
+                "Kouzelník" => Trida.Kouzelnik,
+                _ => Trida.Valecnik,
+            };
         }
 
         public static void NastavButtonSchopnosti(Efekty efekty, Button butt, Schopnost sch, Postava pos, int x, int y, int width, int height, SpriteFont font, Texture2D texture, Color buttonCol, Color textCol)

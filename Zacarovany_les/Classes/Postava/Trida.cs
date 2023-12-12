@@ -6,6 +6,6 @@ namespace Zacarovany_les.Classes
 {
     public enum Trida
     {
-        Bojovnik, Lucistnik, Kouzelnik
+        Valecnik, Lucistnik, Kouzelnik
     }
 }

@@ -134,7 +134,7 @@ namespace Zacarovany_les.Classes
                 case Pohlavi.Muz:
                     switch (trida)
                     {
-                        case Trida.Bojovnik: return Valecnik;
+                        case Trida.Valecnik: return Valecnik;
                         case Trida.Lucistnik: return Lucistnik;
                         case Trida.Kouzelnik: return Kouzelnik;
 
@@ -143,7 +143,7 @@ namespace Zacarovany_les.Classes
                 case Pohlavi.Zena:
                     switch (trida)
                     {
-                        case Trida.Bojovnik: return Valecnice;
+                        case Trida.Valecnik: return Valecnice;
                         case Trida.Lucistnik: return Lucistnice;
                         case Trida.Kouzelnik: return Kouzelnice;
                     }

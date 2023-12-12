@@ -467,8 +467,7 @@ namespace Zacarovany_les
                 }
                 obj.Draw(gameTime, spriteBatch);
             }
-            if (hracNahore != null)
-                hracNahore.Draw(gameTime, spriteBatch);
+            hracNahore?.Draw(gameTime, spriteBatch);
             if (vyhra)
             {
                 velikostTextuUtocnik = SpravceMedii.FontNadpis.MeasureString(textVyhra);

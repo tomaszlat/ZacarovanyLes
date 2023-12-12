@@ -18,7 +18,7 @@ namespace Zacarovany_les.Classes.Interface
 
         public event EventHandler Click;
         public event EventHandler RightClick;
-        public bool Clicked { get; private set; }
+        //public bool Clicked { get; private set; }
         public Color FontColor { get; set; } = Color.Black;
         public Vector2 Position { get; set; }
         public Texture2D Texture { get; set; }

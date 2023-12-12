@@ -145,10 +145,7 @@ namespace Zacarovany_les.Classes
 
             if (Hrajici.Majitel != Majitel.Hrac)
             {
-                if (vybranaHrajici == null)
-                {
-                    vybranaHrajici = AI.VyberSchopnostAI(Hrajici, vybranaSouper, vybranaSouper, Souper, Hrajici, this);
-                }
+                vybranaHrajici ??= AI.VyberSchopnostAI(Hrajici, vybranaSouper, vybranaSouper, Souper, Hrajici, this);
                 messagePrvni = Hrajici.Name + " použije schopnost " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
             }
             return messagePrvni;
@@ -162,10 +159,7 @@ namespace Zacarovany_les.Classes
             }
             if (Souper.Majitel != Majitel.Hrac)
             {
-                if (vybranaSouper == null)
-                {
-                    vybranaSouper = AI.VyberSchopnostAI(Souper, vybranaHrajici, vybranaSouper, Hrajici, Hrajici, this);
-                }
+                vybranaSouper ??= AI.VyberSchopnostAI(Souper, vybranaHrajici, vybranaSouper, Hrajici, Hrajici, this);
                 messageDruhy = Souper.Name + " použije schopnost " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
             }
             return messageDruhy;
@@ -224,17 +218,23 @@ namespace Zacarovany_les.Classes
                     }
                     if (vybranaHrajici.Druh == Druh.Vysati_zivota)
                     {
-                        messagePrvni = Hrajici.Name + " částečně vysál pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví ";
+                        int zdravi = skPosk;
                         if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
                         {
-                            skPosk = (int)Math.Round(skPosk * 2.0 / 3.0);
+                            zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
                         }
-                        Hrajici.PridejNeboUberZdravi(skPosk);
+                        messagePrvni = Hrajici.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
+
+                        Hrajici.PridejNeboUberZdravi(zdravi);
                     }
                     else if (vybranaHrajici.Druh == Druh.Vysati_many)
                     {
-                        mana = Souper.Mana - Math.Max(Souper.Mana - skPosk * 2, 0);
-                        messagePrvni = Hrajici.Name + " částečně ubral pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
+                        mana = Souper.Mana - Math.Max(Souper.Mana - skPosk, 0);
+                        if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
+                        {
+                            mana = (int)Math.Round(mana * 2.0 / 3.0);
+                        }
+                        messagePrvni = Hrajici.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
                     }
                     else
                         messagePrvni = Hrajici.Name + " částečně útočí schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " za " + skPosk + " poškození";
@@ -251,7 +251,7 @@ namespace Zacarovany_les.Classes
                         poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                     }
                     Hrajici.PridejNeboUberZdravi(poskozeni);
-                    messagePrvni = Hrajici.Name + " regeneruje zdraví za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                    messagePrvni = Hrajici.Name + " regeneruje zdraví za " + poskozeni + " bodů schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                 }
                 else if (vybranaHrajici.Druh == Druh.Lahvicka_Zdravi)
                 {
@@ -272,7 +272,7 @@ namespace Zacarovany_les.Classes
                         poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                     }
                     Hrajici.PridejNeboUberZdravi(poskozeni);
-                    messagePrvni = Hrajici.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                    messagePrvni = Hrajici.Name + " regeneruje zdravi za " + poskozeni + " bodů schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                 }
                 else if (vybranaHrajici.Druh == Druh.Lahvicka_Many)
                 {
@@ -296,7 +296,7 @@ namespace Zacarovany_les.Classes
                 {
                     spravceMedii.Battlecry.Play();
                     efektyHrajici.Soustredeni += 4;
-                    messagePrvni = Hrajici.Name + " se soustředí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
+                    messagePrvni = Hrajici.Name + " se soustředí schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh);
                 }
                 else if (vybranaHrajici.Druh == Druh.Rychlost)
                 {
@@ -312,12 +312,12 @@ namespace Zacarovany_les.Classes
                 else if ((vybranaSouper.Druh == Druh.Magicky_Stit || vybranaSouper.Druh == Druh.Obrana_Stitem || vybranaSouper.Druh == Druh.Uskok) &&
                     (vybranaHrajici.Druh == Druh.Strelba_Lukem))
                 {
-                    messagePrvni = Hrajici.Name + " se pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " netrefil";
+                    messagePrvni = Hrajici.Name + " se schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " netrefil";
                     spravceMedii.BowMiss.Play();
                 }
                 else if (rychlost || vybranaSouper.Druh == Druh.Magicky_Stit || vybranaSouper.Druh == Druh.Obrana_Stitem || vybranaSouper.Druh == Druh.Uskok)
                 {
-                    messagePrvni = Hrajici.Name + " se pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " netrefil";
+                    messagePrvni = Hrajici.Name + " se schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " netrefil";
                 }
                 else
                 {
@@ -378,17 +378,24 @@ namespace Zacarovany_les.Classes
                     }
                     if (vybranaHrajici.Druh == Druh.Vysati_zivota)
                     {
-                        messagePrvni = Hrajici.Name + " vysál pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví ";
+                        int zdravi = skPosk;
                         if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
                         {
-                            skPosk = (int)Math.Round(skPosk * 2.0 / 3.0);
+                            zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
                         }
-                        Hrajici.PridejNeboUberZdravi(skPosk);
+                        messagePrvni = Hrajici.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
+
+
+                        Hrajici.PridejNeboUberZdravi(zdravi);
                     }
                     else if (vybranaHrajici.Druh == Druh.Vysati_many)
                     {
-                        mana = Souper.Mana - Math.Max(Souper.Mana - skPosk * 2, 0);
-                        messagePrvni = Hrajici.Name + " ubral pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
+                        mana = Souper.Mana - Math.Max(Souper.Mana - skPosk, 0);
+                        if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
+                        {
+                            mana = (int)Math.Round(mana * 2.0 / 3.0);
+                        }
+                        messagePrvni = Hrajici.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
                     }
                     else
                         messagePrvni = Hrajici.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaHrajici.Druh) + " za " + skPosk + " poškození";
@@ -413,10 +420,7 @@ namespace Zacarovany_les.Classes
                     if (vybranaHrajici.Druh == Druh.Vysati_many)
                     {
                         Souper.PridejNeboUberManu(-mana);
-                        if (efektyHrajici.Horeni > 0 || efektyHrajici.Jed > 0 || efektyHrajici.Krvaceni > 0)
-                        {
-                            mana = (int)Math.Round(mana * 2.0 / 3.0);
-                        }
+
                         Hrajici.PridejNeboUberManu(mana);
 
                     }
@@ -487,17 +491,23 @@ namespace Zacarovany_les.Classes
                     }
                     if (vybranaSouper.Druh == Druh.Vysati_zivota)
                     {
-                        messageDruhy = Souper.Name + " částečně vysál pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví ";
+                        int zdravi = skPosk;
                         if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
                         {
-                            skPosk = (int)Math.Round(skPosk * 2.0 / 3.0);
+                            zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
                         }
-                        Souper.PridejNeboUberZdravi(skPosk);
+                        messageDruhy = Souper.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
+
+                        Souper.PridejNeboUberZdravi(zdravi);
                     }
                     else if (vybranaSouper.Druh == Druh.Vysati_many)
                     {
-                        mana = Hrajici.Mana - Math.Max(Hrajici.Mana - skPosk * 2, 0);
-                        messageDruhy = Souper.Name + " částečně ubral pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
+                        mana = Hrajici.Mana - Math.Max(Hrajici.Mana - skPosk, 0);
+                        if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
+                        {
+                            mana = (int)Math.Round(mana * 2.0 / 3.0);
+                        }
+                        messageDruhy = Souper.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
                     }
                     else
                         messageDruhy = Souper.Name + " částečně útočí schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " za " + skPosk + " poškození";
@@ -514,7 +524,7 @@ namespace Zacarovany_les.Classes
                         poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                     }
                     Souper.PridejNeboUberZdravi(poskozeni);
-                    messageDruhy = Souper.Name + " regeneruje zdraví za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
+                    messageDruhy = Souper.Name + " regeneruje zdraví za " + poskozeni + " bodů schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                 }
                 else if (vybranaSouper.Druh == Druh.Lahvicka_Zdravi)
                 {
@@ -535,7 +545,7 @@ namespace Zacarovany_les.Classes
                         poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
                     }
                     Souper.PridejNeboUberZdravi(poskozeni);
-                    messageDruhy = Souper.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
+                    messageDruhy = Souper.Name + " regeneruje zdravi za " + poskozeni + " bodů schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh);
                 }
                 else if (vybranaSouper.Druh == Druh.Lahvicka_Many)
                 {
@@ -575,12 +585,12 @@ namespace Zacarovany_les.Classes
                 else if ((vybranaHrajici.Druh == Druh.Magicky_Stit || vybranaHrajici.Druh == Druh.Obrana_Stitem || vybranaHrajici.Druh == Druh.Uskok) &&
                     (vybranaSouper.Druh == Druh.Strelba_Lukem))
                 {
-                    messageDruhy = Souper.Name + " se pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " netrefil";
+                    messageDruhy = Souper.Name + " se schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " netrefil";
                     spravceMedii.BowMiss.Play();
                 }
                 else if (rychlost || vybranaHrajici.Druh == Druh.Magicky_Stit || vybranaHrajici.Druh == Druh.Obrana_Stitem || vybranaHrajici.Druh == Druh.Uskok)
                 {
-                    messageDruhy = Souper.Name + " se pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " netrefil";
+                    messageDruhy = Souper.Name + " se schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " netrefil";
                 }
                 else
                 {
@@ -639,17 +649,23 @@ namespace Zacarovany_les.Classes
                     }
                     if (vybranaSouper.Druh == Druh.Vysati_zivota)
                     {
-                        messageDruhy = Souper.Name + " vysál pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví ";
+                        int zdravi = skPosk;
                         if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
                         {
-                            skPosk = (int)Math.Round(skPosk * 2.0 / 3.0);
+                            zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
                         }
-                        Souper.PridejNeboUberZdravi(skPosk);
+                        messageDruhy = Souper.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
+
+                        Souper.PridejNeboUberZdravi(zdravi);
                     }
                     else if (vybranaSouper.Druh == Druh.Vysati_many)
                     {
-                        mana = Hrajici.Mana - Math.Max(Hrajici.Mana - skPosk * 2, 0);
-                        messageDruhy = Souper.Name + "  ubral pomocí schopnosti " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
+                        mana = Hrajici.Mana - Math.Max(Hrajici.Mana - skPosk, 0);
+                        if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
+                        {
+                            mana = (int)Math.Round(mana * 2.0 / 3.0);
+                        }
+                        messageDruhy = Souper.Name + "  ubral schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
                     }
                     else
                         messageDruhy = Souper.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaSouper.Druh) + " za " + skPosk + " poškození";
@@ -674,10 +690,7 @@ namespace Zacarovany_les.Classes
                     if (vybranaSouper.Druh == Druh.Vysati_many)
                     {
                         Hrajici.PridejNeboUberManu(-mana);
-                        if (efektySouper.Horeni > 0 || efektySouper.Jed > 0 || efektySouper.Krvaceni > 0)
-                        {
-                            mana = (int)Math.Round(mana * 2.0 / 3.0);
-                        }
+
                         Souper.PridejNeboUberManu(mana);
                     }
                 }
@@ -707,10 +720,51 @@ namespace Zacarovany_les.Classes
             Utocnik.Reset();
             Obrance.Reset();
         }
-        public void ZhodnotSchopnosti()
+        public void ZhodnotSchopnosti(ref Schopnost vybranaHrajici, ref Schopnost vybranaSouper)
         {
             Utocnik.ZhodnotSchopnosti();
             Obrance.ZhodnotSchopnosti();
+
+            Schopnost pom1 = null;
+            Schopnost pom2 = null;
+            if (vybranaHrajici.Faze > 0)
+            {
+
+                if (Hrajici.Efekty.Omraceni == 0)
+                {
+                    pom1 = vybranaHrajici;
+                    vybranaHrajici.Faze--;
+                }
+                else
+                {
+                    vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
+                }
+
+            }
+            else
+            {
+                vybranaHrajici.Faze = vybranaHrajici.FazeVychozi;
+            }
+            if (vybranaSouper.Faze > 0)
+            {
+
+                if (Souper.Efekty.Omraceni == 0)
+                {
+                    pom2 = vybranaSouper;
+                    vybranaSouper.Faze--;
+                }
+                else
+                {
+                    vybranaSouper.Faze = vybranaSouper.FazeVychozi;
+                }
+
+            }
+            else
+            {
+                vybranaSouper.Faze = vybranaSouper.FazeVychozi;
+            }
+            vybranaHrajici = pom2;
+            vybranaSouper = pom1;
         }
         public int ZautocNaObrance(int poskozeni, bool magicke)
         {

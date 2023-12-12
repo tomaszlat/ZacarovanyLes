@@ -137,7 +137,7 @@ namespace Zacarovany_les
                     if (option3._isMouseOver)
                     {
                         text1 = "Inteligence +3";
-                        text2 = "Mana +70";
+                        text2 = "Mana +60";
                         text3 = "Obratnost -1";
                         text4 = "Síla -2";
                     }
@@ -193,7 +193,7 @@ namespace Zacarovany_les
                     otazky = Otazky.TRETI;
                     break;
                 case Otazky.TRETI:
-                    trida = Trida.Bojovnik;
+                    trida = Trida.Valecnik;
                     otazky = Otazky.CTVRTA;
                     break;
                 case Otazky.CTVRTA:
