@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using Zacarovany_les.Classes.Mapy;
 
@@ -37,11 +35,16 @@ namespace Zacarovany_les.Classes.Pomocne
         {
             try
             {
-                using OpenFileDialog openFileDialog = new OpenFileDialog();
-                //openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "save files (*.save)|*.save|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 1;
-                openFileDialog.RestoreDirectory = true;
+                string adresar = Directory.GetCurrentDirectory() + "\\saves";
+                Directory.CreateDirectory(adresar);
+                System.Diagnostics.Debug.WriteLine(adresar);
+                using OpenFileDialog openFileDialog = new OpenFileDialog()
+                {
+                    InitialDirectory = adresar,
+                    Filter = "save files (*.save)|*.save|All files (*.*)|*.*",
+                    FilterIndex = 1,
+                    RestoreDirectory = true
+                };
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -59,9 +62,12 @@ namespace Zacarovany_les.Classes.Pomocne
         {
             try
             {
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog
+                string adresar = Directory.GetCurrentDirectory() + "\\saves";
+                Directory.CreateDirectory(adresar);
+                System.Diagnostics.Debug.WriteLine(adresar);
+                using SaveFileDialog saveFileDialog1 = new SaveFileDialog
                 {
-                    //saveFileDialog1.InitialDirectory = "c:\\";
+                    InitialDirectory = adresar,
                     Filter = "save files (*.save)|*.save|All files (*.*)|*.*",
                     FilterIndex = 1,
                     RestoreDirectory = true

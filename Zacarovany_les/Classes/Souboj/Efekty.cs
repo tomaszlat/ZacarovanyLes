@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Zacarovany_les.Classes.Pomocne;
+﻿using Zacarovany_les.Classes.Pomocne;
 
 namespace Zacarovany_les.Classes
 {

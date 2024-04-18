@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zacarovany_les.Classes
+﻿namespace Zacarovany_les.Classes
 {
     static class AI
     {
-        public static Schopnost VyberSchopnostAI(Postava pocitac, Schopnost souperSch,Schopnost vybranaSouper, Postava souper,Postava hrajici,Souboj souboj)
+        public static Schopnost VyberSchopnostAI(Postava pocitac, Schopnost druhySch,Schopnost vybranaDruhy, Postava druhy,Postava prvni,Souboj souboj)
         {
             Efekty efektyPocitac = pocitac == souboj.Obrance ? souboj.EfektyObrance : souboj.EfektyUtocnika;
             Inventar inventarPocitac = pocitac == souboj.Obrance ? souboj.Obrance.Inventar : souboj.Utocnik.Inventar;
-            Efekty efektySouper = souper == souboj.Obrance ? souboj.EfektyObrance : souboj.EfektyUtocnika;
+            Efekty efektyDruhy = druhy == souboj.Obrance ? souboj.EfektyObrance : souboj.EfektyUtocnika;
             Schopnost sch;
             switch (pocitac.Majitel)
             {
@@ -40,10 +36,10 @@ namespace Zacarovany_les.Classes
                             {
                                 goto start10;
                             }
-                            if (souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) || (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) ||
-                                ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem || souperSch.Druh == Druh.Vrh_sekerou ||
-                                (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) || souperSch.Druh == Druh.Ohniva_Koule ||
-                                souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota || souperSch.Druh == Druh.Vysati_many || souperSch.Druh == Druh.Jedova_sipka))
+                            if (druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) || (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) ||
+                                ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem || druhySch.Druh == Druh.Vrh_sekerou ||
+                                (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) || druhySch.Druh == Druh.Ohniva_Koule ||
+                                druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota || druhySch.Druh == Druh.Vysati_many || druhySch.Druh == Druh.Jedova_sipka))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -55,7 +51,7 @@ namespace Zacarovany_les.Classes
                             }
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Uder_stitem && pocitac == hrajici)
+                                if (s.Druh == Druh.Uder_stitem && pocitac == prvni)
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
@@ -75,10 +71,10 @@ namespace Zacarovany_les.Classes
                             {
                                 goto start11;
                             }
-                            if (souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) || (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) ||
-                                ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem || souperSch.Druh == Druh.Vrh_sekerou ||
-                                (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) || souperSch.Druh == Druh.Ohniva_Koule ||
-                                souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota || souperSch.Druh == Druh.Vysati_many || souperSch.Druh == Druh.Jedova_sipka))
+                            if (druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) || (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) ||
+                                ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem || druhySch.Druh == Druh.Vrh_sekerou ||
+                                (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) || druhySch.Druh == Druh.Ohniva_Koule ||
+                                druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota || druhySch.Druh == Druh.Vysati_many || druhySch.Druh == Druh.Jedova_sipka))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -90,7 +86,7 @@ namespace Zacarovany_les.Classes
                             }
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Rychlost && hrajici == pocitac)
+                                if (s.Druh == Druh.Rychlost && prvni == pocitac)
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
@@ -114,10 +110,10 @@ namespace Zacarovany_les.Classes
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
                             }
-                            if (souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) || (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) ||
-                                ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem || souperSch.Druh == Druh.Vrh_sekerou ||
-                                (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) || souperSch.Druh == Druh.Ohniva_Koule ||
-                                souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota || souperSch.Druh == Druh.Vysati_many || souperSch.Druh == Druh.Jedova_sipka))
+                            if (druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) || (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) ||
+                                ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem || druhySch.Druh == Druh.Vrh_sekerou ||
+                                (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) || druhySch.Druh == Druh.Ohniva_Koule ||
+                                druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota || druhySch.Druh == Druh.Vysati_many || druhySch.Druh == Druh.Jedova_sipka))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -165,10 +161,10 @@ namespace Zacarovany_les.Classes
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
                             }
-                            foreach (Schopnost schop in souper.Schopnosti)
+                            foreach (Schopnost schop in druhy.Schopnosti)
                             {
                                 if (schop.Druh == Druh.Uskok && schop.Cd > 1 || schop.Druh == Druh.Obrana_Stitem && schop.Cd > 1 ||
-                                    schop.Druh == Druh.Magicky_Stit && (schop.Cd > 1 || schop.CenaMany > souper.Mana))
+                                    schop.Druh == Druh.Magicky_Stit && (schop.Cd > 1 || schop.CenaMany > druhy.Mana))
                                 {
                                     foreach (Schopnost schopnost in pocitac.Schopnosti)
                                     {
@@ -196,10 +192,10 @@ namespace Zacarovany_les.Classes
                                 }
                             }
 
-                            foreach (Schopnost schop in souper.Schopnosti)
+                            foreach (Schopnost schop in druhy.Schopnosti)
                             {
                                 if (schop.Druh == Druh.Uskok && schop.Cd > 0 || schop.Druh == Druh.Obrana_Stitem && schop.Cd > 0 ||
-                                    schop.Druh == Druh.Magicky_Stit && (schop.Cd > 0 || schop.CenaMany > souper.Mana))
+                                    schop.Druh == Druh.Magicky_Stit && (schop.Cd > 0 || schop.CenaMany > druhy.Mana))
                                 {
                                     foreach (Schopnost schopnost in pocitac.Schopnosti)
                                     {
@@ -213,7 +209,7 @@ namespace Zacarovany_les.Classes
 
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Uder_stitem && pocitac == hrajici && efektyPocitac.Pokrik > 0)
+                                if (s.Druh == Druh.Uder_stitem && pocitac == prvni && efektyPocitac.Pokrik > 0)
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
@@ -236,7 +232,7 @@ namespace Zacarovany_les.Classes
 
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Utok_Mecem && souper.Zivoty <= (s.Pouzij(pocitac, false) - souper.Brneni))
+                                if (s.Druh == Druh.Utok_Mecem && druhy.Zivoty <= (s.Pouzij(pocitac, false) - druhy.Brneni))
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
@@ -244,16 +240,16 @@ namespace Zacarovany_les.Classes
 
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Berserk && souper.Zivoty <= (s.Pouzij(pocitac, false) - souper.Brneni))
+                                if (s.Druh == Druh.Berserk && druhy.Zivoty <= (s.Pouzij(pocitac, false) - druhy.Brneni))
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
                             }
 
-                            if (souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) ||
-                                (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) || ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem ||
-                                souperSch.Druh == Druh.Vrh_sekerou || (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) ||
-                                souperSch.Druh == Druh.Ohniva_Koule || souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota))
+                            if (druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) ||
+                                (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) || ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem ||
+                                druhySch.Druh == Druh.Vrh_sekerou || (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) ||
+                                druhySch.Druh == Druh.Ohniva_Koule || druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -264,10 +260,10 @@ namespace Zacarovany_les.Classes
                                 }
                             }
 
-                            if (pocitac == hrajici && souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) ||
-                                (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) || ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem ||
-                                souperSch.Druh == Druh.Vrh_sekerou || (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) ||
-                                souperSch.Druh == Druh.Ohniva_Koule || souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota))
+                            if (pocitac == prvni && druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) ||
+                                (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) || ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem ||
+                                druhySch.Druh == Druh.Vrh_sekerou || (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) ||
+                                druhySch.Druh == Druh.Ohniva_Koule || druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -322,10 +318,10 @@ namespace Zacarovany_les.Classes
                                 }
                             }
 
-                            foreach (Schopnost schop in souper.Schopnosti)
+                            foreach (Schopnost schop in druhy.Schopnosti)
                             {
                                 if (schop.Druh == Druh.Uskok && schop.Cd > 1 || schop.Druh == Druh.Obrana_Stitem && schop.Cd > 1 ||
-                                    schop.Druh == Druh.Magicky_Stit && (schop.Cd > 1 || schop.CenaMany > souper.Mana))
+                                    schop.Druh == Druh.Magicky_Stit && (schop.Cd > 1 || schop.CenaMany > druhy.Mana))
                                 {
                                     foreach (Schopnost schopnost in pocitac.Schopnosti)
                                     {
@@ -350,16 +346,16 @@ namespace Zacarovany_les.Classes
 
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Bodnuti_Dykou && souper.Zivoty <= (s.Pouzij(pocitac, false) - souper.Brneni))
+                                if (s.Druh == Druh.Bodnuti_Dykou && druhy.Zivoty <= (s.Pouzij(pocitac, false) - druhy.Brneni))
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
                             }
 
-                            if (souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) ||
-                                (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) || ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem ||
-                                souperSch.Druh == Druh.Vrh_sekerou || (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) ||
-                                souperSch.Druh == Druh.Ohniva_Koule || souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota))
+                            if (druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) ||
+                                (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) || ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem ||
+                                druhySch.Druh == Druh.Vrh_sekerou || (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) ||
+                                druhySch.Druh == Druh.Ohniva_Koule || druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -371,7 +367,7 @@ namespace Zacarovany_les.Classes
                             }
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Rychlost && hrajici == pocitac)
+                                if (s.Druh == Druh.Rychlost && prvni == pocitac)
                                 {
                                     sch = s.Cd > 0 || s.CenaMany > pocitac.Mana ? sch : s;
                                 }
@@ -387,7 +383,7 @@ namespace Zacarovany_les.Classes
                                 }
                             }
 
-                            if (efektySouper.Mraz == 0)
+                            if (efektyDruhy.Mraz == 0)
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -397,7 +393,7 @@ namespace Zacarovany_les.Classes
                                     }
                                 }
                             }
-                            if (efektySouper.Horeni == 0)
+                            if (efektyDruhy.Horeni == 0)
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {
@@ -409,7 +405,7 @@ namespace Zacarovany_les.Classes
                             }
                             if (pocitac.Minulost == Minulost.Lovec)
                             {
-                                if (efektySouper.Mraz == 0)
+                                if (efektyDruhy.Mraz == 0)
                                 {
                                     foreach (Schopnost s in pocitac.Schopnosti)
                                     {
@@ -422,7 +418,7 @@ namespace Zacarovany_les.Classes
                             }
                             else if (pocitac.Minulost == Minulost.Rytir)
                             {
-                                if (efektySouper.Horeni == 0)
+                                if (efektyDruhy.Horeni == 0)
                                 {
                                     foreach (Schopnost s in pocitac.Schopnosti)
                                     {
@@ -433,10 +429,10 @@ namespace Zacarovany_les.Classes
                                     }
                                 }
                             }
-                            if (souper.Brneni > 1 || (vybranaSouper != null && (vybranaSouper.Druh == Druh.Magicky_sip || vybranaSouper.Druh == Druh.Strelba_Lukem) && vybranaSouper.Faze > 0) ||
-                                (vybranaSouper != null && (vybranaSouper.Druh == Druh.Magicky_sip || vybranaSouper.Druh == Druh.Strelba_Lukem) && vybranaSouper.Faze == 0 && hrajici == pocitac))
+                            if (druhy.Brneni > 1 || (vybranaDruhy != null && (vybranaDruhy.Druh == Druh.Magicky_sip || vybranaDruhy.Druh == Druh.Strelba_Lukem) && vybranaDruhy.Faze > 0) ||
+                                (vybranaDruhy != null && (vybranaDruhy.Druh == Druh.Magicky_sip || vybranaDruhy.Druh == Druh.Strelba_Lukem) && vybranaDruhy.Faze == 0 && prvni == pocitac))
                             {
-                                if (efektySouper.Mraz == 0)
+                                if (efektyDruhy.Mraz == 0)
                                 {
                                     foreach (Schopnost s in pocitac.Schopnosti)
                                     {
@@ -492,8 +488,8 @@ namespace Zacarovany_les.Classes
 
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Vysati_many && pocitac.Mana < (pocitac.ManaMax - (s.Pouzij(pocitac, false) - souper.Brneni) * 2)
-                                    && souper.Mana > ((s.Pouzij(pocitac, false) - souper.Brneni) * 2))
+                                if (s.Druh == Druh.Vysati_many && pocitac.Mana < (pocitac.ManaMax - (s.Pouzij(pocitac, false) - druhy.Brneni) * 2)
+                                    && druhy.Mana > ((s.Pouzij(pocitac, false) - druhy.Brneni) * 2))
                                 {
                                     sch = s.Cd > 0 || (efektyPocitac.Soustredeni == 0 && s.CenaMany > pocitac.Mana) || (efektyPocitac.Soustredeni > 0 && (s.CenaMany / 2) > pocitac.Mana) ? sch : s;
                                 }
@@ -526,24 +522,24 @@ namespace Zacarovany_les.Classes
 
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Uder_Holi && souper.Zivoty <= (s.Pouzij(pocitac, false) - souper.Brneni))
+                                if (s.Druh == Druh.Uder_Holi && druhy.Zivoty <= (s.Pouzij(pocitac, false) - druhy.Brneni))
                                 {
                                     sch = s.Cd > 0 || (efektyPocitac.Soustredeni == 0 && s.CenaMany > pocitac.Mana) || (efektyPocitac.Soustredeni > 0 && (s.CenaMany / 2) > pocitac.Mana) ? sch : s;
                                 }
                             }
                             foreach (Schopnost s in pocitac.Schopnosti)
                             {
-                                if (s.Druh == Druh.Ohniva_Koule && souper.Zivoty <= (s.Pouzij(pocitac, false) - souper.Brneni / 2.0))
+                                if (s.Druh == Druh.Ohniva_Koule && druhy.Zivoty <= (s.Pouzij(pocitac, false) - druhy.Brneni / 2.0))
                                 {
                                     sch = s.Cd > 0 || (efektyPocitac.Soustredeni == 0 && s.CenaMany > pocitac.Mana) || (efektyPocitac.Soustredeni > 0 && (s.CenaMany / 2) > pocitac.Mana) ? sch : s;
                                 }
                             }
 
 
-                            if (souperSch != null && ((souperSch.Druh == Druh.Magicky_sip && souperSch.Faze == 0) || (souperSch.Druh == Druh.Strelba_Lukem && souperSch.Faze == 0) ||
-                                ((souperSch.Druh == Druh.Utok_Mecem || souperSch.Druh == Druh.Uder_stitem || souperSch.Druh == Druh.Vrh_sekerou ||
-                                (souperSch.Druh == Druh.Berserk && souper.Zivoty / (double)souper.ZivotyMax < 0.4)) && efektySouper.Pokrik > 0) || souperSch.Druh == Druh.Ohniva_Koule ||
-                                souperSch.Druh == Druh.Ledove_Kopi || souperSch.Druh == Druh.Vysati_zivota || souperSch.Druh == Druh.Vysati_many))
+                            if (druhySch != null && ((druhySch.Druh == Druh.Magicky_sip && druhySch.Faze == 0) || (druhySch.Druh == Druh.Strelba_Lukem && druhySch.Faze == 0) ||
+                                ((druhySch.Druh == Druh.Utok_Mecem || druhySch.Druh == Druh.Uder_stitem || druhySch.Druh == Druh.Vrh_sekerou ||
+                                (druhySch.Druh == Druh.Berserk && druhy.Zivoty / (double)druhy.ZivotyMax < 0.4)) && efektyDruhy.Pokrik > 0) || druhySch.Druh == Druh.Ohniva_Koule ||
+                                druhySch.Druh == Druh.Ledove_Kopi || druhySch.Druh == Druh.Vysati_zivota || druhySch.Druh == Druh.Vysati_many))
                             {
                                 foreach (Schopnost s in pocitac.Schopnosti)
                                 {

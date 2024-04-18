@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +19,10 @@ namespace Zacarovany_les
         public bool Duel = false;
         private Souboj souboj;
         private Faze faze;
-        private Postava hrajici;
-        private Postava souper;
-        private Schopnost vybranaHrajici = null;
-        private Schopnost vybranaSouper = null;
+        private Postava prvni;
+        private Postava druhy;
+        private Schopnost vybranaPrvni = null;
+        private Schopnost vybranaDruhy = null;
         private string messageKolo = "";
         private string messagePrvni = "";
         private string messageDruhy = "";
@@ -244,9 +242,9 @@ namespace Zacarovany_les
                 case Faze.EfektyPrvni:
                     if (!ZacarovanyLes.delayed)
                     {
-                        oznaceniUtocnik = hrajici == souboj.Utocnik;
-                        messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + hrajici.Name;
-                        //Efekty efektyHrajici = hrajici == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
+                        oznaceniUtocnik = prvni == souboj.Utocnik;
+                        messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + prvni.Name;
+                        //Efekty efektyPrvni = prvni == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
                         messagePrvni = souboj.EfektyPrvni(ref efekt, SpravceMedii);
                         messageDruhy = "";
@@ -262,9 +260,9 @@ namespace Zacarovany_les
                 case Faze.EfektyDruhy:
                     if (!ZacarovanyLes.delayed)
                     {
-                        oznaceniUtocnik = souper == souboj.Utocnik;
-                        messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + souper.Name;
-                        //Efekty efektySouper = souper == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
+                        oznaceniUtocnik = druhy == souboj.Utocnik;
+                        messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + druhy.Name;
+                        //Efekty efektyDruhy = druhy == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
                         messagePrvni = souboj.EfektyDruhy(ref efekt, SpravceMedii);
 
@@ -282,35 +280,35 @@ namespace Zacarovany_les
                     {
                         if (zacatek)
                         {
-                            hrajici = souboj.Obrance;
-                            souper = souboj.Utocnik;
+                            prvni = souboj.Obrance;
+                            druhy = souboj.Utocnik;
                             if (souboj.ZacinaUtocnik)
                             {
-                                hrajici = souboj.Utocnik;
-                                souper = souboj.Obrance;
+                                prvni = souboj.Utocnik;
+                                druhy = souboj.Obrance;
                             }
                             zacatek = false;
                         }
                         else
                         {
-                            if (hrajici == souboj.Utocnik)
+                            if (prvni == souboj.Utocnik)
                             {
-                                hrajici = souboj.Obrance;
-                                souper = souboj.Utocnik;
+                                prvni = souboj.Obrance;
+                                druhy = souboj.Utocnik;
                             }
                             else
                             {
-                                hrajici = souboj.Utocnik;
-                                souper = souboj.Obrance;
+                                prvni = souboj.Utocnik;
+                                druhy = souboj.Obrance;
                             }
                         }
-                        souboj.Hrajici = hrajici;
-                        souboj.Souper = souper;
+                        souboj.Prvni = prvni;
+                        souboj.Druhy = druhy;
                         souboj.PocetKol++;
                         messagePrvni = "";
                         messageDruhy = "";
-                        messageKolo = souboj.PocetKol + ". kolo, začíná ho " + hrajici.Name;
-                        oznaceniUtocnik = hrajici == souboj.Utocnik;
+                        messageKolo = souboj.PocetKol + ". kolo, začíná ho " + prvni.Name;
+                        oznaceniUtocnik = prvni == souboj.Utocnik;
                         faze = Faze.Zacatek;
                     }
                     break;
@@ -323,12 +321,12 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.VyberPrvni:
-                    if (hrajici.Efekty.Omraceni == 0)
+                    if (prvni.Efekty.Omraceni == 0)
                     {
-                        messagePrvni = hrajici.Name + " vybírá schopnost";
+                        messagePrvni = prvni.Name + " vybírá schopnost";
                         if (!ZacarovanyLes.delayed)
                         {
-                            string message = souboj.VyberPrvniSchopnosti(ref vybranaSouper, ref vybranaHrajici);
+                            string message = souboj.VyberPrvniSchopnosti(ref vybranaDruhy, ref vybranaPrvni);
                             if (message != "")
                             {
                                 messagePrvni = message;
@@ -340,21 +338,21 @@ namespace Zacarovany_les
                     }
                     else
                     {
-                        messagePrvni = hrajici.Name + " je omráčený";
+                        messagePrvni = prvni.Name + " je omráčený";
                         ZacarovanyLes.delay = 3;
                         ZacarovanyLes.delayed = true;
                         faze = Faze.VyberDruhy;
                     }
                     break;
                 case Faze.VyberDruhy:
-                    if (souper.Efekty.Omraceni == 0)
+                    if (druhy.Efekty.Omraceni == 0)
                     {
-                        messageDruhy = souper.Name + " vybírá schopnost";
-                        messageKolo = souboj.PocetKol + ". kolo, nyní hraje " + souper.Name;
-                        oznaceniUtocnik = souper == souboj.Utocnik;
+                        messageDruhy = druhy.Name + " vybírá schopnost";
+                        messageKolo = souboj.PocetKol + ". kolo, nyní hraje " + druhy.Name;
+                        oznaceniUtocnik = druhy == souboj.Utocnik;
                         if (!ZacarovanyLes.delayed)
                         {
-                            string message = souboj.VyberDruheSchopnosti(ref vybranaSouper, ref vybranaHrajici);
+                            string message = souboj.VyberDruheSchopnosti(ref vybranaDruhy, ref vybranaPrvni);
                             if (message != "")
                             {
                                 messageDruhy = message;
@@ -366,18 +364,18 @@ namespace Zacarovany_les
                     }
                     else
                     {
-                        messagePrvni = souper.Name + " je omráčený";
+                        messageDruhy = druhy.Name + " je omráčený";
                         ZacarovanyLes.delay = 3;
                         ZacarovanyLes.delayed = true;
                         faze = Faze.UtokPrvni;
                     }
                     break;
                 case Faze.UtokPrvni:
-                    oznaceniUtocnik = hrajici == souboj.Utocnik;
-                    messageKolo = souboj.PocetKol + ". kolo, " + hrajici.Name + " používá schopnost";
+                    oznaceniUtocnik = prvni == souboj.Utocnik;
+                    messageKolo = souboj.PocetKol + ". kolo, " + prvni.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
-                        messagePrvni = souboj.UtokPrvniSchopnosti(vybranaSouper, ref vybranaHrajici, SpravceMedii);
+                        messagePrvni = souboj.UtokSchopnosti(prvni,ref vybranaPrvni, ref vybranaDruhy, SpravceMedii);
 
                         ZacarovanyLes.delay = 3;
                         ZacarovanyLes.delayed = true;
@@ -385,16 +383,16 @@ namespace Zacarovany_les
                     }
                     break;
                 case Faze.UtokDruhy:
-                    oznaceniUtocnik = souper == souboj.Utocnik;
-                    messageKolo = souboj.PocetKol + ". kolo, " + souper.Name + " používá schopnost";
+                    oznaceniUtocnik = druhy == souboj.Utocnik;
+                    messageKolo = souboj.PocetKol + ". kolo, " + druhy.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
-                        messageDruhy = souboj.UtokDruheSchopnosti(ref vybranaSouper, vybranaHrajici, SpravceMedii);
+                        messageDruhy = souboj.UtokSchopnosti(druhy,ref vybranaDruhy, ref vybranaPrvni, SpravceMedii);
                         faze = Faze.Zhodnoceni;
                     }
                     break;
                 case Faze.Zhodnoceni:
-                    souboj.ZhodnotSchopnosti(ref vybranaHrajici,ref vybranaSouper);
+                    souboj.ZhodnotSchopnosti(ref vybranaPrvni,ref vybranaDruhy);
                     ZacarovanyLes.delay = 3;
                     ZacarovanyLes.delayed = true;
                     faze = Faze.EfektyPrvni;
@@ -435,13 +433,13 @@ namespace Zacarovany_les
                 butt.Visible = false;
             }
 
-            if ((hrajici != null && hrajici.Majitel == Majitel.Hrac && faze == Faze.VyberPrvni && vybranaHrajici == null) ||
-                (souper != null && souper.Majitel == Majitel.Hrac && faze == Faze.VyberDruhy && vybranaSouper == null))
+            if ((prvni != null && prvni.Majitel == Majitel.Hrac && faze == Faze.VyberPrvni && vybranaPrvni == null) ||
+                (druhy != null && druhy.Majitel == Majitel.Hrac && faze == Faze.VyberDruhy && vybranaDruhy == null))
             {
                 int y = 200;
                 int i = 0;
 
-                Postava naRade = faze == Faze.VyberPrvni ? hrajici : souper;
+                Postava naRade = faze == Faze.VyberPrvni ? prvni : druhy;
                 Efekty efekty = naRade == souboj.Obrance ? souboj.EfektyObrance : souboj.EfektyUtocnika;
                 foreach (Schopnost schop in naRade.Schopnosti)
                 {
@@ -604,26 +602,18 @@ namespace Zacarovany_les
                     butt.Draw(gameTime, spriteBatch);
                 }
             }
-            //Test
-            //spriteBatch.DrawString(SpravceMedii.FontText, souboj.EfektyUtocnika.Postava.Inteligence.ToString()+" "+souboj.EfektyUtocnika.PuvodniIntelekt.ToString(), new Vector2(400, 300), Color.White);
             spriteBatch.End();
         }
-
-
-
-
-
-
 
         private void ButtonUtokMecemClickedHandler(object sender, EventArgs args)
         {
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Utok_Mecem);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Utok_Mecem);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Utok_Mecem);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Utok_Mecem);
                     break;
             }
         }
@@ -632,10 +622,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Obrana_Stitem);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Obrana_Stitem);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Obrana_Stitem);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Obrana_Stitem);
                     break;
             }
         }
@@ -644,10 +634,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Regenerace);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Regenerace);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Regenerace);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Regenerace);
                     break;
             }
         }
@@ -656,10 +646,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Bojovy_Pokrik);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Bojovy_Pokrik);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Bojovy_Pokrik);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Bojovy_Pokrik);
                     break;
             }
         }
@@ -669,10 +659,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Uder_stitem);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Uder_stitem);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Uder_stitem);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Uder_stitem);
                     break;
             }
         }
@@ -682,10 +672,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Vrh_sekerou);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Vrh_sekerou);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Vrh_sekerou);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Vrh_sekerou);
                     break;
             }
         }
@@ -695,10 +685,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Berserk);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Berserk);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Berserk);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Berserk);
                     break;
             }
         }
@@ -708,10 +698,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Bodnuti_Dykou);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Bodnuti_Dykou);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Bodnuti_Dykou);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Bodnuti_Dykou);
                     break;
             }
         }
@@ -721,10 +711,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Strelba_Lukem);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Strelba_Lukem);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Strelba_Lukem);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Strelba_Lukem);
                     break;
             }
         }
@@ -734,10 +724,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Magicky_sip);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Magicky_sip);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Magicky_sip);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Magicky_sip);
                     break;
             }
         }
@@ -747,10 +737,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Uskok);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Uskok);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Uskok);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Uskok);
                     break;
             }
         }
@@ -759,10 +749,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Rychlost);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Rychlost);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Rychlost);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Rychlost);
                     break;
             }
         }
@@ -771,10 +761,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Lesni_bobule);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Lesni_bobule);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Lesni_bobule);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Lesni_bobule);
                     break;
             }
         }
@@ -784,10 +774,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Jedova_sipka);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Jedova_sipka);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Jedova_sipka);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Jedova_sipka);
                     break;
             }
         }
@@ -796,10 +786,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Uder_Holi);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Uder_Holi);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Uder_Holi);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Uder_Holi);
                     break;
             }
         }
@@ -808,10 +798,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Ohniva_Koule);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Ohniva_Koule);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Ohniva_Koule);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Ohniva_Koule);
                     break;
             }
         }
@@ -820,10 +810,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Ledove_Kopi);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Ledove_Kopi);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Ledove_Kopi);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Ledove_Kopi);
                     break;
             }
         }
@@ -832,10 +822,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Vysati_zivota);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Vysati_zivota);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Vysati_zivota);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Vysati_zivota);
                     break;
             }
         }
@@ -845,10 +835,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Magicke_soustredeni);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Magicke_soustredeni);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Magicke_soustredeni);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Magicke_soustredeni);
                     break;
             }
         }
@@ -858,10 +848,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Vysati_many);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Vysati_many);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Vysati_many);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Vysati_many);
                     break;
             }
         }
@@ -871,10 +861,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Magicky_Stit);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Magicky_Stit);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Magicky_Stit);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Magicky_Stit);
                     break;
             }
         }
@@ -884,10 +874,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Utek);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Utek);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Utek);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Utek);
                     break;
             }
         }
@@ -897,10 +887,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Lahvicka_Zdravi);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Lahvicka_Zdravi);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Lahvicka_Zdravi);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Lahvicka_Zdravi);
                     break;
             }
         }
@@ -910,10 +900,10 @@ namespace Zacarovany_les
             switch (faze)
             {
                 case Faze.VyberPrvni:
-                    vybranaHrajici = hrajici.DejSchopnost(Druh.Lahvicka_Many);
+                    vybranaPrvni = prvni.DejSchopnost(Druh.Lahvicka_Many);
                     break;
                 case Faze.VyberDruhy:
-                    vybranaSouper = souper.DejSchopnost(Druh.Lahvicka_Many);
+                    vybranaDruhy = druhy.DejSchopnost(Druh.Lahvicka_Many);
                     break;
             }
         }

@@ -12,33 +12,33 @@ namespace Zacarovany_les
 {
     public class ZacarovanyLes : Game
     {
-        //Monogame
+        // Monogame
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static ContentManager content;
         public static ZacarovanyLes game;
-        //States
+        // States - fáze hry
         public State CurrentState;
         public State NextState;
-        //States - druhy
+        // Jednotlivé druhy - herní, pohyb po mapě a menu
         public static State gameState;
         public static State mapState;
         public static State menuState;
-        //static vars
+        // Statické proměnné - využívá je vícero tříd
         public static Postava utocnik;
         public static Postava obrance;
         public static MapManager maps;
-        // Delay herní a klávesnice
+        // Zpoždění hry a kláves
         public const double DELAY_TIME = 0.5;
         public static double delay = 0;
         public static bool delayed = false;
         public static double keyDelay = 0;
         public static bool keyDelayed = false;
-        // stavy kláves po a při stisknutí
+        // Stavy kláves po a při stisknutí
         public static KeyboardState oldState;
         public static KeyboardState newState;
 
-        //Spravce Medii
+        // Správce Médii - spravuje obrázky, zvuk atd.
         public static SpravceMedii spravceMedii;
 
 
