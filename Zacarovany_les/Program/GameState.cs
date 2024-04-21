@@ -375,7 +375,7 @@ namespace Zacarovany_les
                     messageKolo = souboj.PocetKol + ". kolo, " + prvni.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
-                        messagePrvni = souboj.UtokSchopnosti(prvni,ref vybranaPrvni, ref vybranaDruhy, SpravceMedii);
+                        messagePrvni = souboj.UtokSchopnosti(ref prvni,ref druhy,ref vybranaPrvni, ref vybranaDruhy,ref SpravceMedii);
 
                         ZacarovanyLes.delay = 3;
                         ZacarovanyLes.delayed = true;
@@ -387,7 +387,7 @@ namespace Zacarovany_les
                     messageKolo = souboj.PocetKol + ". kolo, " + druhy.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
-                        messageDruhy = souboj.UtokSchopnosti(druhy,ref vybranaDruhy, ref vybranaPrvni, SpravceMedii);
+                        messageDruhy = souboj.UtokSchopnosti(ref druhy,ref prvni,ref vybranaDruhy, ref vybranaPrvni, ref SpravceMedii);
                         faze = Faze.Zhodnoceni;
                     }
                     break;

@@ -162,15 +162,15 @@ namespace Zacarovany_les.Classes
             }
             return messageDruhy;
         }
-       
-        public string UtokSchopnosti(Postava naTahu, ref Schopnost vybranaNaTahu, ref Schopnost vybranaDruhy,  SpravceMedii spravceMedii)
+
+        public string UtokSchopnostiOld(Postava naTahu, ref Schopnost vybranaNaTahu, ref Schopnost vybranaDruhy, SpravceMedii spravceMedii)
         {
             Efekty efektyNaTahu = naTahu == Utocnik ? EfektyUtocnika : EfektyObrance;
             string message;
             if (efektyNaTahu.Omraceni == 0)
             {
                 Postava druhy = naTahu == Utocnik ? Obrance : Utocnik;
-                Efekty efektyDruhy = naTahu == Utocnik ? EfektyObrance: EfektyUtocnika;
+                Efekty efektyDruhy = naTahu == Utocnik ? EfektyObrance : EfektyUtocnika;
                 vybranaDruhy ??= new Schopnost(Druh.Zadna, 0, 0, 0, false);
 
                 bool rychlost = ((efektyDruhy.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektyDruhy.Rychlost * 6.0 / 4.0)));
@@ -435,6 +435,263 @@ namespace Zacarovany_les.Classes
             }
             return message;
         }
+
+        public string UtokSchopnosti(ref Postava naTahu, ref Postava cil, ref Schopnost vybranaNaTahu, ref Schopnost vybranaDruhy, ref SpravceMedii spravceMedii)
+        {
+            Efekty efektyNaTahu = naTahu == Utocnik ? EfektyUtocnika : EfektyObrance;
+            string message;
+            if (efektyNaTahu.Omraceni == 0)
+            {
+                Postava druhy = naTahu == Utocnik ? Obrance : Utocnik;
+                Efekty efektyDruhy = naTahu == Utocnik ? EfektyObrance : EfektyUtocnika;
+                vybranaDruhy ??= new Schopnost(Druh.Zadna, 0, 0, 0, false);
+
+                bool rychlost = (efektyDruhy.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektyDruhy.Rychlost * 6.0 / 4.0));
+                int poskozeni = naTahu.PouzijSchopnost(vybranaNaTahu.Druh);
+
+                int skPosk = 0;
+                int zdravi = skPosk;
+                int mana = druhy.Mana - Math.Max(druhy.Mana - skPosk, 0);
+
+
+                switch (vybranaNaTahu.Druh)
+                {
+                    case Druh.Obrana_Stitem:
+                    case Druh.Uskok:
+                    case Druh.Magicky_Stit:
+                        if (vybranaDruhy.Magicka && vybranaDruhy.Faze == 0)
+                        {
+                            message = naTahu.Name + " se částečně brání schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        }
+                        else
+                        {
+                            message = naTahu.Name + " se brání schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        }
+                        break;
+                    case Druh.Utok_Mecem:
+                    case Druh.Berserk:
+                    case Druh.Bodnuti_Dykou:
+                    case Druh.Uder_Holi:
+                    case Druh.Uder_stitem:
+                    case Druh.Vrh_sekerou:
+                    case Druh.Jedova_sipka:
+                        if (BraniSe(vybranaDruhy, rychlost))
+                        {
+                            spravceMedii.BowMiss.Play();
+                            message = naTahu.Name + " se schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " netrefil";
+                        }
+                        else
+                        {
+                            spravceMedii.Hit.Play();
+                            skPosk = ZautocNaPostavu(ref cil, efektyNaTahu.Pokrik > 0 ? poskozeni * 2 : poskozeni, vybranaNaTahu.Magicka);
+                            message = naTahu.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                            if (vybranaNaTahu.Druh == Druh.Berserk)
+                                spravceMedii.Battlecry.Play();
+                            if (vybranaNaTahu.Druh == Druh.Uder_stitem)
+                                efektyDruhy.Omraceni += efektyNaTahu.Pokrik > 0 ? 2 : 1;
+                            if (vybranaNaTahu.Druh == Druh.Vrh_sekerou)
+                                efektyDruhy.Krvaceni += efektyNaTahu.Pokrik > 0 ? 3 : 2;
+                            if (vybranaNaTahu.Druh == Druh.Jedova_sipka)
+                                efektyDruhy.Jed += 3;
+                        }
+                        break;
+                    case Druh.Regenerace:
+                        spravceMedii.Regen.Play();
+                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                        {
+                            poskozeni = (int)Math.Round((efektyNaTahu.Pokrik > 0 ? poskozeni * 2 : poskozeni) * 2.0 / 3.0);
+                        }
+                        naTahu.PridejNeboUberZdravi(poskozeni);
+                        message = naTahu.Name + " regeneruje zdraví za " + poskozeni + " bodů schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+
+                        break;
+                    case Druh.Bojovy_Pokrik:
+                        spravceMedii.Battlecry.Play();
+                        efektyNaTahu.Pokrik += 2;
+                        message = naTahu.Name + " zařval " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        break;
+
+                    case Druh.Strelba_Lukem:
+                        if (vybranaNaTahu.Faze > 0)
+                        {
+                            message = naTahu.Name + " natahuje luk, aby použil schopnost " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                            spravceMedii.BowPull.Play();
+                        }
+                        else
+                        {
+                            if (BraniSe(vybranaDruhy, rychlost))
+                            {
+                                message = naTahu.Name + " se schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " netrefil";
+                                spravceMedii.BowMiss.Play();
+                            }
+                            else
+                            {
+                                skPosk = ZautocNaPostavu(ref cil, poskozeni, vybranaNaTahu.Magicka);
+                                message = naTahu.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                                spravceMedii.Hit.Play();
+                            }
+                        }
+                        break;
+                    case Druh.Magicky_sip:
+                        if (vybranaNaTahu.Faze > 0)
+                        {
+                            message = naTahu.Name + " natahuje luk, aby použil schopnost " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                            spravceMedii.BowPull.Play();
+                        }
+                        else
+                        {
+                            if (BraniSe(vybranaDruhy, rychlost))
+                            {
+                                skPosk = ZautocNaPostavu(ref cil, poskozeni / 2, vybranaNaTahu.Magicka);
+                                message = naTahu.Name + " částečně útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                                spravceMedii.Hit.Play();
+                            }
+                            else
+                            {
+                                skPosk = ZautocNaPostavu(ref cil, poskozeni, vybranaNaTahu.Magicka);
+                                message = naTahu.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                                spravceMedii.Hit.Play();
+                            }
+                        }
+                        break;
+
+                    case Druh.Rychlost:
+                        spravceMedii.Battlecry.Play();
+                        efektyNaTahu.Rychlost += 4;
+                        message = naTahu.Name + " použil schopnost " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        break;
+                    case Druh.Lesni_bobule:
+                        spravceMedii.Regen.Play();
+                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                        {
+                            poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
+                        }
+                        naTahu.PridejNeboUberZdravi(poskozeni);
+                        message = naTahu.Name + " regeneruje zdravi za " + poskozeni + " bodů schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        break;
+                    case Druh.Ohniva_Koule:
+                        spravceMedii.Fireball.Play();
+                        if (BraniSe(vybranaDruhy, rychlost))
+                        {
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni / 2, vybranaNaTahu.Magicka);
+                            message = naTahu.Name + " částečně útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                        }
+                        else
+                        {
+                            efektyDruhy.Horeni += 2;
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni, vybranaNaTahu.Magicka);
+                            message = naTahu.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                        }
+                        break;
+                    case Druh.Ledove_Kopi:
+                        spravceMedii.Frostbolt.Play();
+                        if (BraniSe(vybranaDruhy, rychlost))
+                        {
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni / 2, vybranaNaTahu.Magicka);
+                            message = naTahu.Name + " částečně útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                        }
+                        else
+                        {
+                            efektyDruhy.Mraz += 2;
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni, vybranaNaTahu.Magicka);
+                            message = naTahu.Name + " útočí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " za " + skPosk + " poškození";
+                        }
+                        break;
+                    case Druh.Vysati_zivota:
+                        spravceMedii.Fireball.Play();
+
+                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                        {
+                            zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
+                        }
+                        if (BraniSe(vybranaDruhy, rychlost))
+                        {
+                            message = naTahu.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
+                        }
+                        else
+                        {
+                            message = naTahu.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
+
+                        }
+                        naTahu.PridejNeboUberZdravi(zdravi);
+                        break;
+                    case Druh.Vysati_many:
+                        spravceMedii.Frostbolt.Play();
+
+                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                        {
+                            mana = (int)Math.Round(mana * 2.0 / 3.0);
+                        }
+                        if (BraniSe(vybranaDruhy, rychlost))
+                        {
+                            message = naTahu.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
+                        }
+                        else
+                        {
+                            message = naTahu.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
+                        }
+                        druhy.PridejNeboUberManu(-mana);
+                        naTahu.PridejNeboUberManu(mana);
+                        break;
+                    case Druh.Magicke_soustredeni:
+                        spravceMedii.Battlecry.Play();
+                        efektyNaTahu.Soustredeni += 4;
+                        message = naTahu.Name + " se soustředí schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        break;
+                    case Druh.Utek:
+                        message = naTahu.Name + " utíká"; // možnost přidat funkčnost, nyní není součástí hry
+                        break;
+                    case Druh.Lahvicka_Zdravi:
+                        spravceMedii.Regen.Play();
+                        naTahu.Inventar.LahvickyZdravi--;
+                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                        {
+                            poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
+
+                        }
+                        message = naTahu.Name + " regeneruje zdravi za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        naTahu.PridejNeboUberZdravi(poskozeni);
+                        break;
+                    case Druh.Lahvicka_Many:
+                        spravceMedii.Regen.Play();
+                        naTahu.Inventar.LahvickyMany--;
+                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                        {
+                            poskozeni = (int)Math.Round(poskozeni * 2.0 / 3.0);
+                        }
+                        naTahu.PridejNeboUberManu(poskozeni);
+                        message = naTahu.Name + " regeneruje manu za " + poskozeni + " bodů pomocí " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh);
+                        break;
+                    case Druh.Zadna:
+                        message = naTahu.Name + " nepoužil žádnou schopnost";
+                        break;
+                    default:
+                        message = naTahu.Name + " neví co dělá";
+                        break;
+                }
+
+                if (vybranaNaTahu.Faze == 0)
+                {
+                    if (efektyNaTahu.Soustredeni > 0)
+                        naTahu.PridejNeboUberManu(-vybranaNaTahu.CenaMany / 2);
+                    else
+                        naTahu.PridejNeboUberManu(-vybranaNaTahu.CenaMany);
+                }
+            }
+            else
+            {
+                if (vybranaNaTahu != null)
+                    vybranaNaTahu.Faze = vybranaNaTahu.FazeVychozi;
+                vybranaNaTahu = new Schopnost(Druh.Zadna, 0, 0, 0, false);
+                message = naTahu.Name + " je omráčený";
+            }
+            return message;
+        }
+        public bool BraniSe(Schopnost vybranaSchopnost, bool rychlost)
+        {
+            return vybranaSchopnost.Druh == Druh.Obrana_Stitem || vybranaSchopnost.Druh == Druh.Uskok || vybranaSchopnost.Druh == Druh.Magicky_Stit || rychlost;
+        }
+
         public void ZhodnotEfekty()
         {
             EfektyUtocnika.ZhodnotEfekty();
@@ -500,6 +757,10 @@ namespace Zacarovany_les.Classes
         public int ZautocNaObrance(int poskozeni, bool magicke)
         {
             return Obrance.ObdrzPoskozeni(poskozeni, magicke);
+        }
+        public int ZautocNaPostavu(ref Postava postava, int poskozeni, bool magicke)
+        {
+            return postava.ObdrzPoskozeni(poskozeni, magicke);
         }
 
         public int ZautocNaUtocnika(int poskozeni, bool magicke)

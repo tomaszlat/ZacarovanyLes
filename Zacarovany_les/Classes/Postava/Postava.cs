@@ -229,7 +229,7 @@ namespace Zacarovany_les.Classes
                     Schopnosti.Add(new Schopnost(Druh.Utok_Mecem, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Obrana_Stitem, 3, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Bojovy_Pokrik, 2, 0, 0, false));
-                    Schopnosti.Add(new Schopnost(Druh.Regenerace, 2, 0, 20, true));
+                    Schopnosti.Add(new Schopnost(Druh.Regenerace, 2, 0, 20, false));
                     Schopnosti.Add(new Schopnost(Druh.Uder_stitem, 5, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Vrh_sekerou, 3, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Berserk, 2, 0, 0, false));
@@ -253,12 +253,12 @@ namespace Zacarovany_les.Classes
                     Inteligence += 3 + (Level - 1) * 2;
                     ManaMax += 60;
                     Schopnosti.Add(new Schopnost(Druh.Uder_Holi, 0, 0, 0, false));
-                    Schopnosti.Add(new Schopnost(Druh.Magicky_Stit, 3, 0, 10, true));
+                    Schopnosti.Add(new Schopnost(Druh.Magicky_Stit, 3, 0, 10, false));
                     Schopnosti.Add(new Schopnost(Druh.Ohniva_Koule, 0, 0, 20, true));
                     Schopnosti.Add(new Schopnost(Druh.Ledove_Kopi, 0, 0, 20, true));
                     Schopnosti.Add(new Schopnost(Druh.Vysati_zivota, 3, 0, 10, true));
                     Schopnosti.Add(new Schopnost(Druh.Vysati_many, 4, 0, 10, true));
-                    Schopnosti.Add(new Schopnost(Druh.Magicke_soustredeni, 5, 0, 0, true));
+                    Schopnosti.Add(new Schopnost(Druh.Magicke_soustredeni, 5, 0, 0, false));
                     break;
             }
             Schopnosti.Add(new Schopnost(Druh.Lahvicka_Many, 0, 0, 0, false));

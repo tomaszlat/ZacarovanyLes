@@ -90,17 +90,6 @@ namespace Zacarovany_les.Classes
             Magicka = magicka;
         }
 
-        public Schopnost(Druh druh, int cdVychozi, int cd, int fazeVychozi, int faze, int cenaMany, bool magicka)
-        {
-            Druh = druh;
-            CdVychozi = cdVychozi;
-            Cd = cd;
-            FazeVychozi = fazeVychozi;
-            Faze = faze;
-            CenaMany = cenaMany;
-            Magicka = magicka;
-        }
-
         public void ZhodnotSchopnost()
         {
             if (Cd > 0)
