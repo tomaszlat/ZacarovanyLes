@@ -169,8 +169,7 @@ namespace Zacarovany_les
                                     break;
                                 case DverePosledni _:
                                     vyhra = true;
-                                    ZacarovanyLes.delay = 3;
-                                    ZacarovanyLes.delayed = true;
+                                    ZacarovanyLes.NastavitZpozdeniHry(3);
                                     break;
                                 case Trava _:
                                     NastavAnimaci(-1, 0, ref aktualni);
@@ -226,8 +225,7 @@ namespace Zacarovany_les
                                     break;
                                 case DverePosledni _:
                                     vyhra = true;
-                                    ZacarovanyLes.delay = 3;
-                                    ZacarovanyLes.delayed = true;
+                                    ZacarovanyLes.NastavitZpozdeniHry(3);
                                     break;
                                 case Trava _:
                                     NastavAnimaci(1, 0, ref aktualni);
@@ -283,8 +281,7 @@ namespace Zacarovany_les
                                     break;
                                 case DverePosledni _:
                                     vyhra = true;
-                                    ZacarovanyLes.delay = 3;
-                                    ZacarovanyLes.delayed = true;
+                                    ZacarovanyLes.NastavitZpozdeniHry(3);
                                     break;
                                 case Trava _:
                                     NastavAnimaci(0, -1, ref aktualni);
@@ -340,8 +337,7 @@ namespace Zacarovany_les
                                     break;
                                 case DverePosledni _:
                                     vyhra = true;
-                                    ZacarovanyLes.delay = 3;
-                                    ZacarovanyLes.delayed = true;
+                                    ZacarovanyLes.NastavitZpozdeniHry(3);
                                     break;
                                 case Trava _:
                                     NastavAnimaci(0, 1, ref aktualni);

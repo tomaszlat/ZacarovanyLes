@@ -161,8 +161,7 @@ namespace Zacarovany_les
             if ((souboj.Utocnik.Zivoty <= 0 || souboj.Obrance.Zivoty <= 0) && faze != Faze.Konec && faze != Faze.VyhraObrance && faze != Faze.VyhraUtocnik)
             {
                 faze = Faze.Konec;
-                ZacarovanyLes.delay = 3;
-                ZacarovanyLes.delayed = true;
+                ZacarovanyLes.NastavitZpozdeniHry(3);
             }
             foreach (Button butt in buttons)
             {
@@ -183,8 +182,7 @@ namespace Zacarovany_les
                             messagePrvni = souboj.Utocnik.Name + " byl poražen";
                             messageDruhy = souboj.Obrance.Name + " zvítězil !";
                             faze = Faze.VyhraObrance;
-                            ZacarovanyLes.delay = 3;
-                            ZacarovanyLes.delayed = true;
+                            ZacarovanyLes.NastavitZpozdeniHry(3);
                         }
                         else
                         {
@@ -193,8 +191,7 @@ namespace Zacarovany_les
                             messagePrvni = souboj.Obrance.Name + " byl poražen";
                             messageDruhy = souboj.Utocnik.Name + " zvítězil !";
                             faze = Faze.VyhraUtocnik;
-                            ZacarovanyLes.delay = 3;
-                            ZacarovanyLes.delayed = true;
+                            ZacarovanyLes.NastavitZpozdeniHry(3);
                         }
                     }
                     break;
@@ -252,8 +249,7 @@ namespace Zacarovany_les
                         faze = Faze.EfektyDruhy;
                         if (efekt)
                         {
-                            ZacarovanyLes.delay = 3;
-                            ZacarovanyLes.delayed = true;
+                            ZacarovanyLes.NastavitZpozdeniHry(3);
                         }
                     }
                     break;
@@ -270,8 +266,7 @@ namespace Zacarovany_les
                         faze = Faze.Kolo;
                         if (efekt)
                         {
-                            ZacarovanyLes.delay = 3;
-                            ZacarovanyLes.delayed = true;
+                            ZacarovanyLes.NastavitZpozdeniHry(3);
                         }
                     }
                     break;
@@ -315,8 +310,7 @@ namespace Zacarovany_les
                 case Faze.Zacatek:
                     if (!ZacarovanyLes.delayed)
                     {
-                        ZacarovanyLes.delay = 3;
-                        ZacarovanyLes.delayed = true;
+                        ZacarovanyLes.NastavitZpozdeniHry(3);
                         faze = Faze.VyberPrvni;
                     }
                     break;
@@ -330,8 +324,7 @@ namespace Zacarovany_les
                             if (message != "")
                             {
                                 messagePrvni = message;
-                                ZacarovanyLes.delay = 3;
-                                ZacarovanyLes.delayed = true;
+                                ZacarovanyLes.NastavitZpozdeniHry(3);
                                 faze = Faze.VyberDruhy;
                             }
                         }
@@ -339,8 +332,7 @@ namespace Zacarovany_les
                     else
                     {
                         messagePrvni = prvni.Name + " je omráčený";
-                        ZacarovanyLes.delay = 3;
-                        ZacarovanyLes.delayed = true;
+                        ZacarovanyLes.NastavitZpozdeniHry(3);
                         faze = Faze.VyberDruhy;
                     }
                     break;
@@ -356,8 +348,7 @@ namespace Zacarovany_les
                             if (message != "")
                             {
                                 messageDruhy = message;
-                                ZacarovanyLes.delay = 3;
-                                ZacarovanyLes.delayed = true;
+                                ZacarovanyLes.NastavitZpozdeniHry(3);
                                 faze = Faze.UtokPrvni;
                             }
                         }
@@ -365,8 +356,7 @@ namespace Zacarovany_les
                     else
                     {
                         messageDruhy = druhy.Name + " je omráčený";
-                        ZacarovanyLes.delay = 3;
-                        ZacarovanyLes.delayed = true;
+                        ZacarovanyLes.NastavitZpozdeniHry(3);
                         faze = Faze.UtokPrvni;
                     }
                     break;
@@ -377,8 +367,7 @@ namespace Zacarovany_les
                     {
                         messagePrvni = souboj.UtokSchopnosti(ref prvni,ref druhy,ref vybranaPrvni, ref vybranaDruhy,ref SpravceMedii);
 
-                        ZacarovanyLes.delay = 3;
-                        ZacarovanyLes.delayed = true;
+                        ZacarovanyLes.NastavitZpozdeniHry(3);
                         faze = Faze.UtokDruhy;
                     }
                     break;
@@ -393,8 +382,7 @@ namespace Zacarovany_les
                     break;
                 case Faze.Zhodnoceni:
                     souboj.ZhodnotSchopnosti(ref vybranaPrvni,ref vybranaDruhy);
-                    ZacarovanyLes.delay = 3;
-                    ZacarovanyLes.delayed = true;
+                    ZacarovanyLes.NastavitZpozdeniHry(3);
                     faze = Faze.EfektyPrvni;
                     break;
             }

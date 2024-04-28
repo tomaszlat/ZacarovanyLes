@@ -111,6 +111,11 @@ namespace Zacarovany_les
 
             base.Update(gameTime);
         }
+        public static void NastavitZpozdeniHry(int delka)
+        {
+            delay = delka;
+            delayed = true;
+        }
 
         protected override void Draw(GameTime gameTime)
         {
