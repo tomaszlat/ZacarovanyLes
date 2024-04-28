@@ -449,9 +449,9 @@ namespace Zacarovany_les.Classes
                 bool rychlost = (efektyDruhy.Rychlost > 0) && (Kostka.Next(10) < (int)Math.Round(efektyDruhy.Rychlost * 6.0 / 4.0));
                 int poskozeni = naTahu.PouzijSchopnost(vybranaNaTahu.Druh);
 
-                int skPosk = 0;
-                int zdravi = skPosk;
-                int mana = druhy.Mana - Math.Max(druhy.Mana - skPosk, 0);
+                int skPosk;
+                int zdravi;
+                int mana;
 
 
                 switch (vybranaNaTahu.Druh)
@@ -599,17 +599,24 @@ namespace Zacarovany_les.Classes
                         break;
                     case Druh.Vysati_zivota:
                         spravceMedii.Fireball.Play();
-
-                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
-                        {
-                            zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
-                        }
                         if (BraniSe(vybranaDruhy, rychlost))
                         {
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni / 2, vybranaNaTahu.Magicka);
+                            zdravi =skPosk;
+                            if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                            {
+                                zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
+                            }
                             message = naTahu.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
                         }
                         else
                         {
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni, vybranaNaTahu.Magicka);
+                            zdravi = skPosk;
+                            if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                            {
+                                zdravi = (int)Math.Round(skPosk * 2.0 / 3.0);
+                            }
                             message = naTahu.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + zdravi + " zdraví";
 
                         }
@@ -617,17 +624,26 @@ namespace Zacarovany_les.Classes
                         break;
                     case Druh.Vysati_many:
                         spravceMedii.Frostbolt.Play();
-
-                        if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
-                        {
-                            mana = (int)Math.Round(mana * 2.0 / 3.0);
-                        }
+                        
+                        
                         if (BraniSe(vybranaDruhy, rychlost))
                         {
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni / 2, vybranaNaTahu.Magicka);
+                            mana = druhy.Mana - Math.Max(druhy.Mana - skPosk, 0);
+                            if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                            {
+                                mana = (int)Math.Round(mana * 2.0 / 3.0);
+                            }
                             message = naTahu.Name + " částečně ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
                         }
                         else
                         {
+                            skPosk = ZautocNaPostavu(ref cil, poskozeni, vybranaNaTahu.Magicka);
+                            mana = druhy.Mana - Math.Max(druhy.Mana - skPosk, 0);
+                            if (efektyNaTahu.Horeni > 0 || efektyNaTahu.Jed > 0 || efektyNaTahu.Krvaceni > 0)
+                            {
+                                mana = (int)Math.Round(mana * 2.0 / 3.0);
+                            }
                             message = naTahu.Name + " ubral schopností " + PomocneMetody.SchopnostToString(vybranaNaTahu.Druh) + " " + skPosk + " zdraví a vysál " + mana + " many ";
                         }
                         druhy.PridejNeboUberManu(-mana);
