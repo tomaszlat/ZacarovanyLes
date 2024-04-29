@@ -16,6 +16,31 @@ namespace Zacarovany_les.Classes.Mapy
             Aktualni = aktualni;
         }
 
+        public MapManager(List<Map> maps)
+        {
+            Maps = maps;
+            if (maps.Count > 0)
+                Aktualni = maps[0];
+        }
+
+        public void DalsiMapa()
+        {
+            int index = Maps.IndexOf(Aktualni) + 1;
+            if (index < Maps.Count && index >= 0)
+            {
+                Aktualni = Maps[index];
+            }
+        }
+
+        public void PredchoziMapa()
+        {
+            int index = Maps.IndexOf(Aktualni) - 1;
+            if (index < Maps.Count && index >= 0)
+            {
+                Aktualni = Maps[index];
+            }
+        }
+
         public void Write(BinaryWriter bw)
         {
             bw.Write(Maps.Count);
@@ -81,30 +106,6 @@ namespace Zacarovany_les.Classes.Mapy
             }
             Map aktualni = maps[br.ReadInt32()];
             return new MapManager(maps, aktualni);
-        }
-
-        public MapManager(List<Map> maps)
-        {
-            Maps = maps;
-            if (maps.Count > 0)
-                Aktualni = maps[0];
-        }
-
-        public void DalsiMapa() {
-            int index = Maps.IndexOf(Aktualni) + 1;
-            if (index < Maps.Count && index >= 0)
-            {
-                Aktualni = Maps[index];
-            }
-        }
-
-        public void PredchoziMapa()
-        {
-            int index = Maps.IndexOf(Aktualni) - 1;
-            if (index < Maps.Count && index >= 0)
-            {
-                Aktualni = Maps[index];
-            }
         }
     }
 }

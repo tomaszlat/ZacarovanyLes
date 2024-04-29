@@ -223,8 +223,8 @@ namespace Zacarovany_les.Classes
             {
                 case Trida.Valecnik:
                     Sila += 3 + (Level - 1) * 2;
-                    Obratnost += -1 + (Level - 1) * 1;
-                    Inteligence += -2 + (Level - 1) * 1;
+                    Obratnost += -1 + (Level - 1);
+                    Inteligence += -2 + (Level - 1);
                     Brneni += 2;
                     Schopnosti.Add(new Schopnost(Druh.Utok_Mecem, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Obrana_Stitem, 3, 0, 0, false));
@@ -235,9 +235,9 @@ namespace Zacarovany_les.Classes
                     Schopnosti.Add(new Schopnost(Druh.Berserk, 2, 0, 0, false));
                     break;
                 case Trida.Lucistnik:
-                    Sila += -1 + (Level - 1) * 1;
+                    Sila += -1 + (Level - 1);
                     Obratnost += 3 + (Level - 1) * 2;
-                    Inteligence += -1 + (Level - 1) * 1;
+                    Inteligence += -1 + (Level - 1);
                     Brneni += 1;
                     Schopnosti.Add(new Schopnost(Druh.Bodnuti_Dykou, 0, 0, 0, false));
                     Schopnosti.Add(new Schopnost(Druh.Uskok, 3, 0, 0, false));
@@ -248,8 +248,8 @@ namespace Zacarovany_les.Classes
                     Schopnosti.Add(new Schopnost(Druh.Jedova_sipka, 3, 0, 0, false));
                     break;
                 case Trida.Kouzelnik:
-                    Sila += -2 + (Level - 1) * 1;
-                    Obratnost += -1 + (Level - 1) * 1;
+                    Sila += -2 + (Level - 1);
+                    Obratnost += -1 + (Level - 1);
                     Inteligence += 3 + (Level - 1) * 2;
                     ManaMax += 60;
                     Schopnosti.Add(new Schopnost(Druh.Uder_Holi, 0, 0, 0, false));
