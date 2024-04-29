@@ -172,27 +172,21 @@ namespace Zacarovany_les
                 case Faze.Konec:
                     if (!ZacarovanyLes.delayed)
                     {
-
-                        messagePrvni = "";
-                        messageDruhy = "";
+                        Postava vitez = souboj.Utocnik;
+                        Postava porazeny = souboj.Obrance;
+                        faze = Faze.VyhraUtocnik;
+                        oznaceniUtocnik = true;
                         if (souboj.Utocnik.Zivoty <= 0)
                         {
+                            vitez = souboj.Obrance;
+                            porazeny = souboj.Utocnik;
                             oznaceniUtocnik = false;
-                            messageKolo = souboj.PocetKol + ". kolo, " + souboj.Obrance.Name + " zvítěžil";
-                            messagePrvni = souboj.Utocnik.Name + " byl poražen";
-                            messageDruhy = souboj.Obrance.Name + " zvítězil !";
                             faze = Faze.VyhraObrance;
-                            ZacarovanyLes.NastavitZpozdeniHry(3);
                         }
-                        else
-                        {
-                            oznaceniUtocnik = true;
-                            messageKolo = souboj.PocetKol + ". kolo, " + souboj.Utocnik.Name + " zvítěžil";
-                            messagePrvni = souboj.Obrance.Name + " byl poražen";
-                            messageDruhy = souboj.Utocnik.Name + " zvítězil !";
-                            faze = Faze.VyhraUtocnik;
-                            ZacarovanyLes.NastavitZpozdeniHry(3);
-                        }
+                        messageKolo = souboj.PocetKol + ". kolo, " + vitez.Name + " zvítěžil";
+                        messagePrvni = vitez.Name + " zvítězil !";
+                        messageDruhy = porazeny.Name + " byl poražen";
+                        ZacarovanyLes.NastavitZpozdeniHry(5);
                     }
                     break;
                 case Faze.VyhraUtocnik:
@@ -217,23 +211,17 @@ namespace Zacarovany_les
                         }
                         else
                         {
-                            _game.ChangeState(ZacarovanyLes.menuState);
+                            _game.ChangeCurrentState(ZacarovanyLes.menuState);
                         }
+                        ZacarovanyLes.gameState = null;
                     }
                     break;
                 case Faze.VyhraObrance:
                     if (!ZacarovanyLes.delayed)
                     {
-                        if (ZacarovanyLes.mapState != null)
-                        {
-                            ZacarovanyLes.gameState = null;
-                            ZacarovanyLes.mapState = null;
-                            _game.ChangeState(ZacarovanyLes.menuState);
-                        }
-                        else
-                        {
-                            _game.ChangeState(ZacarovanyLes.menuState);
-                        }
+                        ZacarovanyLes.gameState = null;
+                        ZacarovanyLes.mapState = null;
+                        _game.ChangeCurrentState(ZacarovanyLes.menuState);
                     }
                     break;
                 case Faze.EfektyPrvni:
@@ -241,9 +229,8 @@ namespace Zacarovany_les
                     {
                         oznaceniUtocnik = prvni == souboj.Utocnik;
                         messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + prvni.Name;
-                        //Efekty efektyPrvni = prvni == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
-                        messagePrvni = souboj.EfektyPrvni(ref efekt, SpravceMedii);
+                        messagePrvni = souboj.AplikujEfekty(prvni,ref efekt, SpravceMedii);
                         messageDruhy = "";
 
                         faze = Faze.EfektyDruhy;
@@ -258,9 +245,8 @@ namespace Zacarovany_les
                     {
                         oznaceniUtocnik = druhy == souboj.Utocnik;
                         messageKolo = souboj.PocetKol + ". kolo, efekty postavy " + druhy.Name;
-                        //Efekty efektyDruhy = druhy == souboj.Utocnik ? souboj.EfektyUtocnika : souboj.EfektyObrance;
                         bool efekt = false;
-                        messagePrvni = souboj.EfektyDruhy(ref efekt, SpravceMedii);
+                        messagePrvni = souboj.AplikujEfekty(druhy,ref efekt, SpravceMedii);
 
                         souboj.ZhodnotEfekty();
                         faze = Faze.Kolo;
@@ -365,7 +351,7 @@ namespace Zacarovany_les
                     messageKolo = souboj.PocetKol + ". kolo, " + prvni.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
-                        messagePrvni = souboj.UtokSchopnosti(ref prvni,ref druhy,ref vybranaPrvni, ref vybranaDruhy,ref SpravceMedii);
+                        messagePrvni = souboj.UtokSchopnosti(ref prvni, ref druhy, ref vybranaPrvni, ref vybranaDruhy, ref SpravceMedii);
 
                         ZacarovanyLes.NastavitZpozdeniHry(3);
                         faze = Faze.UtokDruhy;
@@ -376,12 +362,12 @@ namespace Zacarovany_les
                     messageKolo = souboj.PocetKol + ". kolo, " + druhy.Name + " používá schopnost";
                     if (!ZacarovanyLes.delayed)
                     {
-                        messageDruhy = souboj.UtokSchopnosti(ref druhy,ref prvni,ref vybranaDruhy, ref vybranaPrvni, ref SpravceMedii);
+                        messageDruhy = souboj.UtokSchopnosti(ref druhy, ref prvni, ref vybranaDruhy, ref vybranaPrvni, ref SpravceMedii);
                         faze = Faze.Zhodnoceni;
                     }
                     break;
                 case Faze.Zhodnoceni:
-                    souboj.ZhodnotSchopnosti(ref vybranaPrvni,ref vybranaDruhy);
+                    souboj.ZhodnotSchopnosti(ref vybranaPrvni, ref vybranaDruhy);
                     ZacarovanyLes.NastavitZpozdeniHry(3);
                     faze = Faze.EfektyPrvni;
                     break;
@@ -504,8 +490,8 @@ namespace Zacarovany_les
             spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + souboj.Utocnik.Level, new Vector2(20, 300), Color.Black);
             spriteBatch.DrawString(SpravceMedii.FontText, "Level: " + souboj.Obrance.Level, new Vector2(620, 300), Color.Black);
             //Zkusenosti
-            if(!Duel)
-            spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Utocnik.Zkusenosti + "/" + souboj.Utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
+            if (!Duel)
+                spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Utocnik.Zkusenosti + "/" + souboj.Utocnik.ZkusenostiNext, new Vector2(20, 320), Color.Black);
             //spriteBatch.DrawString(SpravceMedii.FontText, "Zkušenosti: " + souboj.Obrance.Zkusenosti + "/" + souboj.Obrance.ZkusenostiNext, new Vector2(620, 320), Color.Black);
 
             //Zivoty

@@ -2,6 +2,6 @@
 {
     public enum Faze
     {
-        EfektyPrvni,EfektyDruhy, Kolo, Zacatek,VyberPrvni,VyberDruhy,UtokPrvni,UtokDruhy,Zhodnoceni,Konec,VyhraUtocnik,VyhraObrance
+        EfektyPrvni, EfektyDruhy, Kolo, Zacatek, VyberPrvni, VyberDruhy, UtokPrvni, UtokDruhy, Zhodnoceni, Konec, VyhraUtocnik, VyhraObrance
     }
 }

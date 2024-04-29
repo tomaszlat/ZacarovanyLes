@@ -9,16 +9,13 @@ namespace Zacarovany_les.Classes.Pomocne
     {
         private static void Serializuj(string file)
         {
-
             using BinaryWriter binWriter = new BinaryWriter(File.Open(file, FileMode.Create));
             ZacarovanyLes.utocnik.Write(binWriter);
             ZacarovanyLes.maps.Write(binWriter);
             binWriter.Close();
-
         }
         private static void Deserializuj(string file)
         {
-
             using BinaryReader binReader = new BinaryReader(File.Open(file, FileMode.Open));
             ZacarovanyLes.game.ChangeCurrentState(ZacarovanyLes.menuState);
             ZacarovanyLes.gameState = null;
@@ -29,7 +26,6 @@ namespace Zacarovany_les.Classes.Pomocne
             ((MapState)ZacarovanyLes.mapState).UpdateTextures();
             ZacarovanyLes.game.ChangeCurrentState(ZacarovanyLes.mapState);
             binReader.Close();
-
         }
         public static void Nacti()
         {
@@ -48,9 +44,7 @@ namespace Zacarovany_les.Classes.Pomocne
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-
                     Deserializuj(Path.GetFullPath(openFileDialog.FileName));
-
                 }
             }
             catch (Exception ex)
