@@ -27,3 +27,5 @@ Každá mapa by měla obsahovat počáteční pozici hráče. Hra začíná na p
 10 = lahvička mana
 11 = dveře konec hry (poslední dveře, které ukončí hru)
 
+Původní projekt v programovacím prostředí Raptor
+https://github.com/tomaszlat/ZacarovanyLesRaptor
