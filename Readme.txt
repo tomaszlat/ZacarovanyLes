@@ -24,8 +24,8 @@ Každá mapa by měla obsahovat počáteční pozici hráče. Hra začíná na p
 7 = středně těžký soupeř
 8 = těžký soupeř
 9 = lahvička zdraví
-10 = lahvička mana
-11 = dveře konec hry (poslední dveře, které ukončí hru)
+10 = lahvička many
+11 = dveře ukončující hru
 
 Původní projekt v programovacím prostředí Raptor
 https://github.com/tomaszlat/ZacarovanyLesRaptor
