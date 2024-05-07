@@ -33,5 +33,8 @@ Každá mapa by měla obsahovat počáteční pozici hráče. Hra začíná na p
 10 = lahvička many
 11 = dveře ukončující hru
 
+Licence grafiky, zvuků a hudby
+https://github.com/tomaszlat/ZacarovanyLes/blob/master/References.txt
+
 Původní projekt v programovacím prostředí Raptor
 https://github.com/tomaszlat/ZacarovanyLesRaptor
