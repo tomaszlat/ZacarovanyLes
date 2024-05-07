@@ -3,7 +3,6 @@ Začarovaný les
 Instalace - release spustitelná verze
 https://github.com/tomaszlat/ZacarovanyLes/releases/download/v.1.0.0/Zacarovany.les.rar
 
-
 Instalace - zdrojový kód
 Pro kompilaci doporučuji Visual Studio 2022 s rozšířením MonoGame a po zkompilování je nutné do adresáře se hrou přidat složku Maps (https://github.com/tomaszlat/ZacarovanyLes/tree/master/Zacarovany_les/Maps) obsahující mapy, nebo si vytvořit vlastní dle níže uvedených informací.
 
