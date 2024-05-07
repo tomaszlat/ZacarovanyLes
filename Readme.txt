@@ -1,6 +1,6 @@
 Začarovaný les
 
-Instalace - release spustitelná verze
+Instalace - spustitelné release verze
 https://github.com/tomaszlat/ZacarovanyLes/releases/download/v.1.0.0/Zacarovany.les.rar
 
 Instalace - zdrojový kód
