@@ -1,5 +1,12 @@
 Začarovaný les
 
+Instalace - release spustitelná verze
+https://github.com/tomaszlat/ZacarovanyLes/releases/download/v.1.0.0/Zacarovany.les.rar
+
+
+Instalace - zdrojový kód
+Pro kompilaci doporučuji Visual Studio 2022 s rozšířením MonoGame a po zkompilování je nutné do adresáře se hrou přidat složku Maps (https://github.com/tomaszlat/ZacarovanyLes/tree/master/Zacarovany_les/Maps) obsahující mapy, nebo si vytvořit vlastní dle níže uvedených informací.
+
 Ovládání
 F5 - Uložení hry (funkční pouze při pohybu na mapě)
 F9 - Načtení hry (funkční v každé fázi hry)
@@ -7,7 +14,7 @@ Kurzorové šipky - Pohyb po mapě
 Myš - Klepnutí LTM nebo PTM na ovládací prvky
 
 Mapy
-Pro hru se dají vytvářet vlastní mapy, stačí vložit soubor do složky Maps ve tvaru mapa(x).csv (bez závorek, kde x je číslo mapy)
+Pro hru se dají vytvářet vlastní mapy, stačí vložit soubor do složky Maps v adresáři hry ve tvaru mapa(x).csv (bez závorek, kde x je číslo mapy)
 Při spuštění nové hry si hra automaticky projde mapy od mapa1.csv po mapax.csv. Při ukládání hry se data mapy ukládají takže i když mapy ve složce změníme hra bude vycházet z načtených dat.
 
 Herní mapy mají velikost 12x12 políček.
