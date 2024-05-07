@@ -1,6 +1,6 @@
 Grafika
-/Content/Sprites/Postavy - tvorba pøítelkynì - https://www.behance.net/domkadiva
-Veškerá ostatní grafika je vlastní tvorba
+/Content/Sprites/Postavy - tvorba pÅ™Ã­telkynÄ› - https://www.behance.net/domkadiva
+VeÅ¡kerÃ¡ ostatnÃ­ grafika je vlastnÃ­ tvorba
 Zvuky
 /Content/Sound/click - Licence: CC0 1.0 - https://freesound.org/people/JonnyRuss01/sounds/478197/
 /Content/Sound/ledove_kopi - Licence: CC0 1.0 - https://freesound.org/people/qubodup/sounds/442872/
