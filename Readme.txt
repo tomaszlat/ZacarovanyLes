@@ -6,6 +6,9 @@ https://github.com/tomaszlat/ZacarovanyLes/releases/download/v.1.0.0/Zacarovany.
 Instalace - zdrojový kód
 Pro kompilaci doporučuji Visual Studio 2022 s rozšířením MonoGame a po zkompilování je nutné do adresáře se hrou přidat složku Maps (https://github.com/tomaszlat/ZacarovanyLes/tree/master/Zacarovany_les/Maps) obsahující mapy, nebo si vytvořit vlastní dle níže uvedených informací.
 
+Příručka ke hře Začarovaný les
+
+
 Ovládání
 F5 - Uložení hry (funkční pouze při pohybu na mapě)
 F9 - Načtení hry (funkční v každé fázi hry)
