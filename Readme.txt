@@ -10,7 +10,7 @@ Příručka ke hře Začarovaný les
 https://github.com/tomaszlat/ZacarovanyLes/blob/master/P%C5%99%C3%ADru%C4%8Dka%20ke%20h%C5%99e%20Za%C4%8Darovan%C3%BD%20les.pdf
 
 Výpočty hodnot schopností v excelu
-
+https://github.com/tomaszlat/ZacarovanyLes/blob/master/ZacarovanyLesVypoctySchopnosti.xlsx
 
 Ovládání
 F5 - Uložení hry (funkční pouze při pohybu na mapě)
